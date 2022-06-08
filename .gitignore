@@ -106,3 +106,4 @@ dist
 # Custom ignore
 .idea/
 .DS_Store
+.vscode/
