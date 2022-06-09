@@ -18,9 +18,11 @@ const Site = () => {
                     ),}}>
                 </TextField>
                 <Typography mt={1}>비밀번호</Typography>
-                <TextField id="input-password" label="비밀번호" variant="outlined" size="small" style ={{width: '40%'}}/>
+                <TextField id="input-password" label="비밀번호" variant="outlined" size="small" 
+                style ={{width: '40%'}} type="password"/>
                 <Typography mt={1}>비밀번호 확인</Typography>
-                <TextField id="input-check-password" label="비밀번호 확인" variant="outlined" size="small" style ={{width: '40%'}}/>
+                <TextField id="input-check-password" label="비밀번호 확인" variant="outlined" size="small" 
+                style ={{width: '40%'}} type="password"/>
                 <Typography mt={2}></Typography>
                 <Button variant="contained" style ={{width: '40%'}}>회원가입</Button>
             </Stack>
