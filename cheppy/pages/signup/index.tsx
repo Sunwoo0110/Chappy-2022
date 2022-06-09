@@ -19,6 +19,7 @@ const signup: NextPage = () => {
       <OtherService />
       <Stack alignItems="center" direction="row" justifyContent="center" style ={{width: '100%'}} mt={2}>
         <Link href="/">
+          {/* href 변경 */}
           <a>더보기</a>
         </Link>
       </Stack>
