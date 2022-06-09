@@ -6,11 +6,13 @@ import StudentInfo from "./components/StudentInfo";
 import { getUserInfo } from "../../constants";
 import ChangePassword from "./components/ChangePassword";
 import Quit from "./components/Quit";
+import { Typography } from "@mui/material";
 
 
 const ChangeInfo: NextPage = ({ result }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <div>
+      <Typography fontWeight='bold' fontSize={30}>계정관리</Typography>
       <StudentInfo Props={result}/>
       <ChangePassword/>
       <Quit/>

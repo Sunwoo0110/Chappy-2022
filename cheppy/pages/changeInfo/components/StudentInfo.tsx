@@ -36,7 +36,7 @@ const StudentInfo = (props) =>{
         <Stack alignItems="center" onSubmit={handleSubmit} spacing={2} direction="column" justifyContent="center">
             <Grid container spacing={1}>
                 <Grid item>
-                    <Typography fontWeight='bold'>학생정보</Typography>
+                    <Typography fontWeight='bold' fontSize={20}>학생정보</Typography>
                 </Grid>
                 <Grid item>
                     <Button variant="contained" type="submit">수정하기</Button>

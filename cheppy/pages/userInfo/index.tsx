@@ -4,11 +4,15 @@ import type { NextPage, GetStaticProps, InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import StudentInfo from "./components/StudentInfo";
 import { getUserInfo } from '../../constants';
+import { Typography } from "@mui/material";
 
 
 const UserInfo: NextPage = ({ result }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return (    
-    <StudentInfo Props={result}></StudentInfo>
+  return (  
+    <>
+      <Typography fontWeight='bold' fontSize={30}>마이페이지</Typography> 
+      <StudentInfo Props={result}></StudentInfo>
+    </>
   );
 };
 

@@ -10,7 +10,7 @@ const StudentInfo = (props) =>{
         <Stack spacing={2} direction="column" justifyContent="center">
             <Grid container spacing={10}>
                 <Grid item>
-                    <Typography fontWeight='bold'>학생정보</Typography>
+                    <Typography fontWeight='bold' fontSize={20}>학생정보</Typography>
                 </Grid>
                 <Grid item>
                     <Link href="../../changeInfo">{'계정관리에서 수정하기 >'}</Link>

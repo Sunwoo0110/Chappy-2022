@@ -3,7 +3,7 @@ import {Button, Grid, Stack, TextField, Typography} from '@mui/material'
 const ChangePassword = () =>{
     return(
         <Stack spacing={2} direction="column" justifyContent="center">
-            <Typography fontWeight='bold'>비밀번호 변경하기</Typography>
+            <Typography fontWeight='bold' fontSize={20}>비밀번호 변경하기</Typography>
             <Grid container spacing={1}>
                 <Grid item>
                     <Typography>현재 비밀번호 입력</Typography>
