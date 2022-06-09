@@ -5,8 +5,8 @@ import { getUserInfo } from './userDB';
 
 @Resolver()
 export class UserResolver {
-    @Query(() => String)
-    async hello() {
-      return 'hi';
+    @Query(() => [User])
+    showUserInfo(): User[]{
+      return getUserInfo();
     }
 }

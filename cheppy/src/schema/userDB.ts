@@ -7,7 +7,7 @@ let userInfo = [
         "cellnumber": "01012345678",
         "department": "software",
         "usertype": 0,
-        "semseter": 5
+        "semester": 5
     },
     {
         "userid": "woojeong",
@@ -17,7 +17,7 @@ let userInfo = [
         "cellnumber": "01012345677",
         "department": "software",
         "usertype": 0,
-        "semseter": 5
+        "semester": 5
     },
     {
         "userid": "sumin",
@@ -27,7 +27,7 @@ let userInfo = [
         "cellnumber": "01012345676",
         "department": "software",
         "usertype": 0,
-        "semseter": 5
+        "semester": 5
     }
 ]
 
