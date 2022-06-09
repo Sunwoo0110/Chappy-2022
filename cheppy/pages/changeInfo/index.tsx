@@ -5,6 +5,7 @@ import Link from "next/link";
 import StudentInfo from "./components/StudentInfo";
 import { getUserInfo } from "../../constants";
 import ChangePassword from "./components/ChangePassword";
+import Quit from "./components/Quit";
 
 
 const ChangeInfo: NextPage = ({ result }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -12,6 +13,7 @@ const ChangeInfo: NextPage = ({ result }: InferGetStaticPropsType<typeof getStat
     <div>
       <StudentInfo Props={result}></StudentInfo>
       <ChangePassword></ChangePassword>
+      <Quit></Quit>
     </div>
   );
 };
@@ -21,7 +23,7 @@ export const getStaticProps: GetStaticProps = async () => {
   //the first argument is the URL of our GraphQL server
   const res = await request("http://localhost:3000/api/userServer", getUserInfo);
   const result = res.showUserInfo;
-  console.log("test ", result)
+  console.log("test ", res)
   
   return {
     props: {

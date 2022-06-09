@@ -1,4 +1,4 @@
-import {Grid, Link, TextField, Typography} from '@mui/material'
+import {Button, Grid, InputAdornment, Link, Stack, TextField, Typography} from '@mui/material'
 import request from 'graphql-request';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { getUserInfo } from '../../../constants';
@@ -7,7 +7,7 @@ const StudentInfo = (props) =>{
     const info = props.Props[0]
     console.log("why  ", info)
     return(
-        <div>
+        <Stack alignItems="center" direction="column" justifyContent="center">
             <Typography>학생정보</Typography>
             <Link href="../../changeInfo">{'계정관리에서 수정하기 >'}</Link>
             <Typography>이름</Typography>
@@ -22,13 +22,7 @@ const StudentInfo = (props) =>{
             <Typography>{info.semester}</Typography>
             <Typography>이메일</Typography>
             <Typography>{info.email}</Typography>
-            {/* <Grid container>
-                <Grid item xs={12}>
-                    <Typography>이름?</Typography>
-                    <TextField id="input_name" label="이름" variant="outlined"></TextField>
-                </Grid>
-            </Grid> */}
-        </div>
+        </Stack>
     )
 
 }
