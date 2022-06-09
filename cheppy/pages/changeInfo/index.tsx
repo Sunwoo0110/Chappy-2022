@@ -11,9 +11,9 @@ import Quit from "./components/Quit";
 const ChangeInfo: NextPage = ({ result }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <div>
-      <StudentInfo Props={result}></StudentInfo>
-      <ChangePassword></ChangePassword>
-      <Quit></Quit>
+      <StudentInfo Props={result}/>
+      <ChangePassword/>
+      <Quit/>
     </div>
   );
 };
