@@ -13,12 +13,11 @@ export class UserResolver {
     @Mutation(() => [User])
     async signUpUser(
       @Arg('userid') userid: string,
-      // @Arg('password') password: string,
-      // @Arg('username') username: string,
-      // @Arg('email') email: string
+      @Arg('password') password: string,
+      @Arg('username') username: string,
+      @Arg('email') email: string,
     ): Promise<User[]>{
-      // signUpUser(userid, password, username, email);
-      signUpUser(userid)
+      signUpUser(userid, password, username, email);
       return getUserInfo();
     }
 }

@@ -35,29 +35,12 @@ export const getUserInfo = () => {
     return userInfo;
 }
 
-// export const signUpUser = (userid, password, email, username) => {
-//     let newInfo = {
-//         userid: userid,
-//         password: password,
-//         email: email,
-//         username: username,
-//         cellnumber: "",
-//         department: "",
-//         usertype: 0,
-//         semester: 0
-//     };
-
-//     userInfo.push(newInfo);
-//     return true;
-
-// } 
-
-export const signUpUser = (userid: string) => {
+export const signUpUser = (userid, password, email, username) => {
     let newInfo = {
         userid: userid,
-        password: "password",
-        email: "email",
-        username: "username",
+        password: password,
+        email: email,
+        username: username,
         cellnumber: "",
         department: "",
         usertype: 0,
@@ -67,4 +50,4 @@ export const signUpUser = (userid: string) => {
     userInfo.push(newInfo);
     return true;
 
-}
+} 

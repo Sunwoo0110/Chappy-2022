@@ -7,17 +7,6 @@ import router from 'next/router'
 
 const Site = () => {
     
-    //let userid, email, password, check_password
-
-    // let signUpUser = async (data: any) => {
-    //     console.log(username);
-    //     const res = await request("http://localhost:3000/api/userServer", signUpUserMutation, data);
-    //     console.log(res);
-    // }
-
-    //
-    
-    //const [username, setUsername] = useState('');
     const [values, setValues] = useState({ username: "", userid: "", email: "", password: "", check_password: ""})
 
     const signUpUser = async () => {
@@ -31,17 +20,15 @@ const Site = () => {
         }
 
         else {
-            const res = await request("http://localhost:3000/api/userServer", signUpUserMutation, { userid: "2", password: "2", email: "2", username: "2"});
+            const res = await request("http://localhost:3000/api/userServer", signUpUserMutation, values);
             console.log(res)
-            // router.push("/")
-            // <Link href="/"></Link>
+            router.push("/")
         }
     }
 
     const handleChange = (event) => {
         const { name, value } = event.target
         setValues({ ...values, [name]: value })
-        //console.log(values)
     }
 
     return(
