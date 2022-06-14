@@ -20,7 +20,7 @@ const Site = () => {
         }
 
         else {
-            const res = await request("http://localhost:3000/api/userServer", signUpUserMutation, values);
+            const res = await request("http://localhost:3000/api/testServer", signUpUserMutation, values);
             console.log(res)
             router.push("/")
         }
