@@ -1,28 +1,88 @@
 import { Stack, Grid, TextField, Typography, Button, InputAdornment } from '@mui/material'
 import { signUpUserMutation } from "../../../constants"
+import { gql, useMutation, useQuery, ApolloClient } from '@apollo/client'
+import { typeDefs } from '../../../database/schema'
 import { request } from "graphql-request"
 import { useState } from 'react'
 import Link from 'next/link'
 import router from 'next/router'
+import { client } from "../../../src/client/client";
 
 const Site = () => {
     
     const [values, setValues] = useState({ username: "", userid: "", email: "", password: "", check_password: ""})
 
-    const signUpUser = async () => {
-        console.log(values)
+    // const signUpUser = async () => {
+    //     console.log(values)
 
-        // check password
-        if (values.password != values.check_password) {
-            let cp = document.querySelector('#input-check-password')
-            // password 칸 빨간색
-            console.log("wrong")
+    //     // check password
+    //     if (values.password != values.check_password) {
+    //         let cp = document.querySelector('#input-check-password')
+    //         // password 칸 빨간색
+    //         console.log("wrong")
+    //     }
+
+    //     else {
+    //         // const res = await request("http://localhost:3000/api/testServer", , values);
+    //         // console.log(res)
+    //         // router.push("/")
+            
+            
+    //     }
+    // }
+
+    interface UserInventory {
+        id: number
+        userid: string
+        password: string
+        email: string
+        username: string
+        // cellnumber: string
+        // department: string
+        // usertype: number
+        // semester: number
+    }
+
+    interface UserInput {
+        userid: string
+        password: string
+        email: string
+        username: string
+    }
+
+    const NEW_USER = gql`
+    mutation newUser($input: UserInput!){
+        # //userid: $userid, password: $password, email: $email, username: $username
+        newUser(input: $input){
+            userid
+            password
+            email
+            username
         }
+    }
+    `
 
+    const [newUser, { data, loading, error }] = useMutation<
+        {newUser: UserInventory},
+        {input: UserInput}
+    >(NEW_USER, {
+    variables: { input: {userid: values.userid, password: values.password, email: values.email, username: values.username}}
+    })
+
+    if (loading) return 'Submitting...';
+    if (error) return `Submission error! ${error.message}`;
+
+    const handleClick = async () => {
+        if (values.password != values.check_password) {
+        }
         else {
-            const res = await request("http://localhost:3000/api/testServer", signUpUserMutation, values);
-            console.log(res)
-            router.push("/")
+            // NEW_USER(values.userid, values.password, values.email, values.username)
+            // newUser({variables: { type: (values.userid, values.password, values.email, values.username)}})
+            // const res = await request("http://localhost:3000/api/testServer", NEW_USER, values);
+            // console.log(res)
+            newUser( {variables: { input: {userid: values.userid, password: values.password, email: values.email, username: values.username}}})
+            console.log(data)
+            // values.userid && values.password && values.email && values.username && newUser()
         }
     }
 
@@ -65,7 +125,7 @@ const Site = () => {
                 <TextField id="input-check-password" label="비밀번호 확인" variant="outlined" size="small" 
                 style ={{width: '40%'}} type="password" onChange={handleChange} name="check_password"/>
                 <Typography mt={2}></Typography>
-                <Button variant="contained" style ={{width: '40%'}} onClick={signUpUser}>회원가입</Button>
+                <Button variant="contained" style ={{width: '40%'}} onClick={handleClick}>회원가입</Button>
             </Stack>
         </div>
     )

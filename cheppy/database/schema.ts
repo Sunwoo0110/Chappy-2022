@@ -12,21 +12,25 @@ const typeDefs = gql`
         usertype: Int
         semester: Int
     }
-    # input ProductInput {
-    #     name: String!
-    #     productionCapacity: Int!
-    #     price: Float!
-    #     description: String
-    # }
+    input UserInput {
+        userid: String
+        password: String
+        email: String
+        username: String
+    }
     type Query {
         getUsers: [User]
         # getProduct(id: ID!): Product
     }
-    # type Mutation {
-    #     #Products
-    #     newProduct(input: ProductInput): Product
-    #     updateProduct(id: ID!, input: ProductInput): Product
-    #     deleteProduct(id: ID!): String
-    # }
+    type Mutation {
+        #Products
+        newUser(
+            userid: String
+            password: String
+            email: String
+            username: String): User
+        # updateProduct(id: ID!, input: ProductInput): Product
+        # deleteProduct(id: ID!): String
+    }
 `
 export {typeDefs};
