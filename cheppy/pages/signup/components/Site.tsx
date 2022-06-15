@@ -69,8 +69,8 @@ const Site = () => {
     variables: { input: {userid: values.userid, password: values.password, email: values.email, username: values.username}}
     })
 
-    if (loading) return 'Submitting...';
-    if (error) return `Submission error! ${error.message}`;
+    // if (loading) return 'Submitting...';
+    // if (error) return `Submission error! ${error.message}`;
 
     const handleClick = async () => {
         if (values.password != values.check_password) {
@@ -93,6 +93,9 @@ const Site = () => {
 
     return(
         <div>
+            {loading ? <p>loading! </p> : null}
+            {error ? <p>Oh no! {error.message}</p> : null}
+            {data && data.newUser ? <p>Saved!</p> : null}
             <Stack alignItems="center" direction="column" justifyContent="center">
                 {/* <h4>이름</h4> */}
                 <Typography mt={1}> 이름</Typography>

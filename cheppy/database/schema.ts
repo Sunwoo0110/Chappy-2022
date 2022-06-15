@@ -25,10 +25,7 @@ const typeDefs = gql`
     type Mutation {
         #Products
         newUser(
-            userid: String
-            password: String
-            email: String
-            username: String): User
+            input: UserInput): User
         # updateProduct(id: ID!, input: ProductInput): Product
         # deleteProduct(id: ID!): String
     }
