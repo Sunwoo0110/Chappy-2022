@@ -29,10 +29,10 @@ mutation newUser($input: UserInput!){
 }
 `
 
-const GET_OBJECT_ID= gql`
-query getObjectId($userid: String!){
-    getObjectId(userid: $userid){
-        id
+const GET_USER_BY_ID= gql`
+query getUserById($id: ID!){
+    getUserById(_id: $id){
+        _id
         userid
         password
         email
@@ -45,4 +45,28 @@ query getObjectId($userid: String!){
 }
 `
 
-export { NEW_USER , GET_OBJECT_ID} ;
+const GET_USER_BY_USER_ID= gql`
+query getUserByUserId($userid: String!){
+    getUserByUserId(userid: $userid){
+        _id
+        userid
+        password
+        email
+        username
+        cellnumber
+        department
+        usertype
+        semester
+    }
+}
+`
+
+const GET_ID_BY_USER_ID=gql`
+query getIdByUserId($userid: String!){
+    getIdByUserId(userid: $userid){
+        _id
+    }
+}
+`
+
+export { NEW_USER , GET_USER_BY_ID, GET_USER_BY_USER_ID, GET_ID_BY_USER_ID} ;

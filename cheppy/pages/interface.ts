@@ -1,5 +1,5 @@
 interface UserInventory {
-    id: number
+    _id: number
     userid: string
     password: string
     email: string

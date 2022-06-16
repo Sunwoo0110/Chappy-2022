@@ -4,7 +4,7 @@ const { Schema, Types } = mongoose
 
 const UserSchema = new Schema(
 {
-    id: {
+    _id: {
         type: Types.ObjectId,
         required: true,
         trim: true

@@ -13,7 +13,7 @@ const resolvers = {
       }
     },
     
-    getUser: async (_, { id }) => {
+    getUserById: async (_, { id }) => {
       try {
         // const users = await User.find({userid: userid})
         const users = await User.findById(id)
@@ -24,15 +24,27 @@ const resolvers = {
       }
     },
 
-    getObjectId: async (_, { userid }) => {
+    getUserByUserId: async (_,  { userid }) => {
       try {
-        const users = await User.find({userid: userid})
+        const user = await User.findOne({userid: userid})
         //const users = await User.findById(id)
         
-        return users
+        return user
       } catch (err) {
         console.log(err)
       }
+    },
+
+    getIdByUserId: async (_,  { userid }) => {
+      try {
+        const user = await User.findOne({userid: userid})
+        //const users = await User.findById(id)
+        
+        return user._id
+      } catch (err) {
+        console.log(err)
+      }
+
     }
     // getProduct: async (_, { id }) => {
     //   const product = await Product.findById(id)
