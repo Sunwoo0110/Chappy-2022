@@ -21,6 +21,7 @@ const testQuery = gql`
 const NEW_USER = gql`
 mutation newUser($input: UserInput!){
     newUser(input: $input){
+        id
         userid
         password
         email
@@ -32,7 +33,7 @@ mutation newUser($input: UserInput!){
 const GET_USER_BY_ID= gql`
 query getUserById($id: ID!){
     getUserById(_id: $id){
-        _id
+        id
         userid
         password
         email
@@ -48,7 +49,7 @@ query getUserById($id: ID!){
 const GET_USER_BY_USER_ID= gql`
 query getUserByUserId($userid: String!){
     getUserByUserId(userid: $userid){
-        _id
+        id
         userid
         password
         email
@@ -64,7 +65,7 @@ query getUserByUserId($userid: String!){
 const GET_ID_BY_USER_ID=gql`
 query getIdByUserId($userid: String!){
     getIdByUserId(userid: $userid){
-        _id
+        id
     }
 }
 `

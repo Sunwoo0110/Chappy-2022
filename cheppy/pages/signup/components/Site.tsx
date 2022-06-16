@@ -5,42 +5,41 @@ import Link from 'next/link'
 import router from 'next/router'
 import { UserInventory, UserInput } from '../../interface'
 import { NEW_USER, GET_ID_BY_USER_ID } from '../../../database/constants'
+import mongoose from 'mongoose'
 
 const Site = () => {
     
     const [values, setValues] = useState({ username: "", userid: "", email: "", password: "", check_password: ""})
 
-    // const [newUser, { data, loading, error }] = useMutation<
-    //     {newUser: UserInventory},
-    //     {input: UserInput}
-    // >(NEW_USER, {
-    //     onCompleted: (data) => {
-    //         console.log(data)
-    //     },
-    //     variables: { input: {userid: values.userid, password: values.password, email: values.email, username: values.username}}
-    // })
+    const [newUser, {}] = useMutation<
+        {newUser: UserInventory},
+        {input: UserInput}
+    >(NEW_USER, {
+        // onCompleted: (data) => {
+        //     console.log(data)
+        // },
+        variables: { input: { userid: values.userid, password: values.password, email: values.email, username: values.username}}
+    })
 
     const {data, loading, error } = useQuery(GET_ID_BY_USER_ID, {
-        variables: { userid: values.userid}
+        variables: { userid: values.userid }
     })
 
     const handleClick = () => {
         if (values.password != values.check_password) {
         }
         else {
-            //newUser()
+            newUser()
             router.push('/')
         }
     }
 
     const handleCheckUserId = () => {
-        if ( data.getIdByUserId._id == null) {
+        if ( data.getIdByUserId == null) {
             console.log("success")
         } else {
             console.log(data.getIdByUserId._id)
         }
-
-        
     }
 
     const handleChange = (event) => {
@@ -65,14 +64,7 @@ const Site = () => {
                     endAdornment: (
                         <InputAdornment position="end">
                             {/* href 변경 (아이디 중복) */}
-                            <Button variant='outlined' size="small" onClick={() => {
-                                if ( data.getIdByUserId === null) {
-                                    
-                                    console.log("success")
-                                } else {
-                                    console.log(data.getIdByUserId._id)
-                                }
-                            }}>중복 확인</Button>
+                            <Button variant='outlined' size="small" onClick={handleCheckUserId}>중복 확인</Button>
                         </InputAdornment>
                     ),}} onChange={handleChange} name="userid"/>
                 <Typography mt={1}>이메일</Typography>

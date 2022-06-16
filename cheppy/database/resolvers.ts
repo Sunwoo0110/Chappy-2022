@@ -1,4 +1,7 @@
+import mongoose from 'mongoose';
 import User from './models/User'
+
+const { Schema, Types } = mongoose
 
 const resolvers = {
   Query: {
@@ -40,7 +43,7 @@ const resolvers = {
         const user = await User.findOne({userid: userid})
         //const users = await User.findById(id)
         
-        return user._id
+        return user
       } catch (err) {
         console.log(err)
       }

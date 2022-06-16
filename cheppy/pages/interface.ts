@@ -1,5 +1,7 @@
+import mongoose, { Types } from 'mongoose'
+
 interface UserInventory {
-    _id: number
+    id: Types.ObjectId
     userid: string
     password: string
     email: string

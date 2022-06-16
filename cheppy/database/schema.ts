@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-micro'
 const typeDefs = gql`
     # Users
     type User {
-        _id: ID
+        id: ID
         userid: String
         password: String
         email: String
