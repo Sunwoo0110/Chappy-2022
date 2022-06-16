@@ -1,6 +1,6 @@
 import { Stack, Grid, TextField, Typography, Button, InputAdornment } from '@mui/material'
 import { signUpUserMutation } from "../../../constants"
-import { gql, useMutation, useQuery, ApolloClient } from '@apollo/client'
+import { gql, useMutation, useQuery, ApolloClient, ApolloProvider } from '@apollo/client'
 import { typeDefs } from '../../../database/schema'
 import { request } from "graphql-request"
 import { useState } from 'react'
@@ -11,25 +11,6 @@ import { client } from "../../../src/client/client";
 const Site = () => {
     
     const [values, setValues] = useState({ username: "", userid: "", email: "", password: "", check_password: ""})
-
-    // const signUpUser = async () => {
-    //     console.log(values)
-
-    //     // check password
-    //     if (values.password != values.check_password) {
-    //         let cp = document.querySelector('#input-check-password')
-    //         // password 칸 빨간색
-    //         console.log("wrong")
-    //     }
-
-    //     else {
-    //         // const res = await request("http://localhost:3000/api/testServer", , values);
-    //         // console.log(res)
-    //         // router.push("/")
-            
-            
-    //     }
-    // }
 
     interface UserInventory {
         id: number
@@ -66,23 +47,18 @@ const Site = () => {
         {newUser: UserInventory},
         {input: UserInput}
     >(NEW_USER, {
-    variables: { input: {userid: values.userid, password: values.password, email: values.email, username: values.username}}
+        onCompleted: (data) => {
+            console.log(data)
+        },
+        variables: { input: {userid: values.userid, password: values.password, email: values.email, username: values.username}}
     })
 
-    // if (loading) return 'Submitting...';
-    // if (error) return `Submission error! ${error.message}`;
 
-    const handleClick = async () => {
+    const handleClick = () => {
         if (values.password != values.check_password) {
         }
         else {
-            // NEW_USER(values.userid, values.password, values.email, values.username)
-            // newUser({variables: { type: (values.userid, values.password, values.email, values.username)}})
-            // const res = await request("http://localhost:3000/api/testServer", NEW_USER, values);
-            // console.log(res)
-            newUser( {variables: { input: {userid: values.userid, password: values.password, email: values.email, username: values.username}}})
-            console.log(data)
-            // values.userid && values.password && values.email && values.username && newUser()
+            newUser()
         }
     }
 
@@ -92,6 +68,7 @@ const Site = () => {
     }
 
     return(
+
         <div>
             {loading ? <p>loading! </p> : null}
             {error ? <p>Oh no! {error.message}</p> : null}
@@ -128,9 +105,11 @@ const Site = () => {
                 <TextField id="input-check-password" label="비밀번호 확인" variant="outlined" size="small" 
                 style ={{width: '40%'}} type="password" onChange={handleChange} name="check_password"/>
                 <Typography mt={2}></Typography>
-                <Button variant="contained" style ={{width: '40%'}} onClick={handleClick}>회원가입</Button>
+                <Button type='submit' variant="contained" style ={{width: '40%'}} 
+                onClick={handleClick}>회원가입</Button>
             </Stack>
         </div>
+
     )
 }
 
