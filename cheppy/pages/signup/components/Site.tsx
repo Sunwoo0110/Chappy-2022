@@ -1,47 +1,14 @@
 import { Stack, Grid, TextField, Typography, Button, InputAdornment } from '@mui/material'
-import { signUpUserMutation } from "../../../constants"
 import { gql, useMutation, useQuery, ApolloClient, ApolloProvider } from '@apollo/client'
-import { typeDefs } from '../../../database/schema'
-import { request } from "graphql-request"
 import { useState } from 'react'
 import Link from 'next/link'
 import router from 'next/router'
-import { client } from "../../../src/client/client";
+import { UserInventory, UserInput } from '../../interface'
+import { NEW_USER } from '../../../database/constants'
 
 const Site = () => {
     
     const [values, setValues] = useState({ username: "", userid: "", email: "", password: "", check_password: ""})
-
-    interface UserInventory {
-        id: number
-        userid: string
-        password: string
-        email: string
-        username: string
-        // cellnumber: string
-        // department: string
-        // usertype: number
-        // semester: number
-    }
-
-    interface UserInput {
-        userid: string
-        password: string
-        email: string
-        username: string
-    }
-
-    const NEW_USER = gql`
-    mutation newUser($input: UserInput!){
-        # //userid: $userid, password: $password, email: $email, username: $username
-        newUser(input: $input){
-            userid
-            password
-            email
-            username
-        }
-    }
-    `
 
     const [newUser, { data, loading, error }] = useMutation<
         {newUser: UserInventory},
@@ -59,6 +26,7 @@ const Site = () => {
         }
         else {
             newUser()
+            router.push('/')
         }
     }
 
@@ -70,9 +38,9 @@ const Site = () => {
     return(
 
         <div>
-            {loading ? <p>loading! </p> : null}
+            {/* {loading ? <p>loading! </p> : null}
             {error ? <p>Oh no! {error.message}</p> : null}
-            {data && data.newUser ? <p>Saved!</p> : null}
+            {data && data.newUser ? <p>Saved!</p> : null} */}
             <Stack alignItems="center" direction="column" justifyContent="center">
                 {/* <h4>이름</h4> */}
                 <Typography mt={1}> 이름</Typography>
