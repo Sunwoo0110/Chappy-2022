@@ -73,19 +73,19 @@ const resolvers = {
         console.log(err)
       }
     },
-    // updateProduct: async (_, { id, input }) => {
-    //   let product = await Product.findById(id)
+    updateUser: async (_, { id, input }) => {
+      let user = await User.findById(id)
 
-    //   if (!product) {
-    //     throw new Error('Product not found')
-    //   }
+      if (!user) {
+        throw new Error('User not found')
+      }
 
-    //   product = await Product.findOneAndUpdate({ _id: id }, input, {
-    //     new: true,
-    //   })
+      user = await User.findOneAndUpdate({ _id: id }, input, {
+        new: true,
+      })
 
-    //   return product
-    // },
+      return user
+    },
     // deleteProduct: async (_, { id }) => {
     //   const product = await Product.findById(id)
 

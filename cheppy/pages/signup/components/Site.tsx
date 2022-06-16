@@ -10,14 +10,15 @@ import mongoose from 'mongoose'
 const Site = () => {
     
     const [values, setValues] = useState({ username: "", userid: "", email: "", password: "", check_password: ""})
+    const [idError, setIdError] = useState(false)
+    const [pwError, setPwError] = useState(false)
+    const [idhelperText, setIdHelperText] = useState("")
+    const [pwhelperText, setPwHelperText] = useState("")
 
     const [newUser, {}] = useMutation<
         {newUser: UserInventory},
         {input: UserInput}
     >(NEW_USER, {
-        // onCompleted: (data) => {
-        //     console.log(data)
-        // },
         variables: { input: { userid: values.userid, password: values.password, email: values.email, username: values.username}}
     })
 
@@ -26,19 +27,29 @@ const Site = () => {
     })
 
     const handleClick = () => {
-        if (values.password != values.check_password) {
-        }
-        else {
+        if (values.password == values.check_password && !idError && idhelperText != "" ) {
             newUser()
             router.push('/')
+        }
+        else{
+            if (values.password != values.check_password) {
+                setPwError(true)
+                setPwHelperText("비밀번호를 재확인해주세요")
+            }
         }
     }
 
     const handleCheckUserId = () => {
         if ( data.getIdByUserId == null) {
             console.log("success")
+            setIdError(false)
+            setIdHelperText("사용 가능한 아이디입니다")
+
         } else {
             console.log(data.getIdByUserId._id)
+            setIdError(true)
+            setIdHelperText("중복된 아이디입니다")
+
         }
     }
 
@@ -59,7 +70,7 @@ const Site = () => {
                 <TextField id="input-name" label="이름" variant="outlined" size="small" 
                 style ={{width: '40%'}} onChange={handleChange} name="username"/>
                 <Typography mt={1}>아이디</Typography>
-                <TextField id="input-userid" label="아이디" variant="outlined" size="small" style ={{width: '40%'}} 
+                <TextField id="input-userid" error={idError} helperText={idhelperText} label="아이디" variant="outlined" size="small" style ={{width: '40%'}} 
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -82,7 +93,7 @@ const Site = () => {
                 <TextField id="input-password" label="비밀번호" variant="outlined" size="small" 
                 style ={{width: '40%'}} type="password" onChange={handleChange} name="password"/>
                 <Typography mt={1}>비밀번호 확인</Typography>
-                <TextField id="input-check-password" label="비밀번호 확인" variant="outlined" size="small" 
+                <TextField id="input-check-password" error={pwError} helperText={pwhelperText} label="비밀번호 확인" variant="outlined" size="small" 
                 style ={{width: '40%'}} type="password" onChange={handleChange} name="check_password"/>
                 <Typography mt={2}></Typography>
                 <Button type='submit' variant="contained" style ={{width: '40%'}} 
