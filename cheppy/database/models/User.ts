@@ -1,9 +1,14 @@
 import mongoose from 'mongoose'
 
-const { Schema } = mongoose
+const { Schema, Types } = mongoose
 
 const UserSchema = new Schema(
 {
+    id: {
+        type: Types.ObjectId,
+        required: true,
+        trim: true
+    },
     userid: {
         type: String,
         required: true,

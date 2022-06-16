@@ -3,6 +3,7 @@ import { gql } from 'apollo-server-micro'
 const typeDefs = gql`
     # Users
     type User {
+        id: ID
         userid: String
         password: String
         email: String
@@ -20,7 +21,8 @@ const typeDefs = gql`
     }
     type Query {
         getUsers: [User]
-        # getProduct(id: ID!): Product
+        getUser(id: ID!): User
+        getObjectId(userid: String!): User
     }
     type Mutation {
         #Products

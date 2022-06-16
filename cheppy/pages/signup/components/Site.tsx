@@ -20,7 +20,6 @@ const Site = () => {
         variables: { input: {userid: values.userid, password: values.password, email: values.email, username: values.username}}
     })
 
-
     const handleClick = () => {
         if (values.password != values.check_password) {
         }

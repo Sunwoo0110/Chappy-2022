@@ -6,12 +6,34 @@ const resolvers = {
     getUsers: async () => {
       try {
         const users = await User.find({})
-
+        return users
+      } catch (err) {
+        console.log(err)
+        
+      }
+    },
+    
+    getUser: async (_, { id }) => {
+      try {
+        // const users = await User.find({userid: userid})
+        const users = await User.findById(id)
+        
         return users
       } catch (err) {
         console.log(err)
       }
     },
+
+    getObjectId: async (_, { userid }) => {
+      try {
+        const users = await User.find({userid: userid})
+        //const users = await User.findById(id)
+        
+        return users
+      } catch (err) {
+        console.log(err)
+      }
+    }
     // getProduct: async (_, { id }) => {
     //   const product = await Product.findById(id)
 

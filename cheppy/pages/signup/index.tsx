@@ -7,7 +7,7 @@ import Link from 'next/link'
 import styles from '../../styles/Home.module.css'
 import OtherService from './components/OtherService'
 import Site from './components/Site'
-import { client } from "../../src/client/client";
+import { client } from "../../src/client/client"
 
 const signup: NextPage = () => {
   return (

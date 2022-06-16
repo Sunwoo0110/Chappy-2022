@@ -29,4 +29,20 @@ mutation newUser($input: UserInput!){
 }
 `
 
-export { NEW_USER } ;
+const GET_OBJECT_ID= gql`
+query getObjectId($userid: String!){
+    getObjectId(userid: $userid){
+        id
+        userid
+        password
+        email
+        username
+        cellnumber
+        department
+        usertype
+        semester
+    }
+}
+`
+
+export { NEW_USER , GET_OBJECT_ID} ;
