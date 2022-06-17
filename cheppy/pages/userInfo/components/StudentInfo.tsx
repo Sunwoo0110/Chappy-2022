@@ -1,11 +1,15 @@
-import {Button, Grid, InputAdornment, Link, Stack, TextField, Typography} from '@mui/material'
-import request from 'graphql-request';
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
-import { getUserInfo } from '../../../constants';
+import {Button, Grid, InputAdornment, Stack, TextField, Typography} from '@mui/material'
+import { gql, useMutation, useQuery, ApolloClient, ApolloProvider } from '@apollo/client'
+import { GET_USER, GET_USER_BY_USERID } from '../../../database/constants'
+import { DataUsageTwoTone } from '@mui/icons-material';
+import Link from "next/link"
 
-const StudentInfo = (props) =>{
-    const info = props.Props[0]
-    console.log("why  ", info)
+const StudentInfo = () =>{
+    const { data } = useQuery(GET_USER, {
+        variables: { "id": "62a9a23fd5ca81cddd59604b"}
+    })
+    const user=data.getUser
+    console.log("result: ", user)
     return(
         <Stack spacing={2} direction="column" justifyContent="center">
             <Grid container spacing={10}>
@@ -24,9 +28,9 @@ const StudentInfo = (props) =>{
                     <Typography>학과</Typography>
                 </Grid>
                 <Grid item>
-                    <Typography>{info.username}</Typography>
-                    <Typography>{info.userid}</Typography>
-                    <Typography>{info.department}</Typography>
+                    <Typography>{user.username}</Typography>
+                    <Typography>{user.userid}</Typography>
+                    <Typography>{user.department}</Typography>
                 </Grid>
                 <Grid item>
                     <Typography>연락처</Typography>
@@ -34,9 +38,9 @@ const StudentInfo = (props) =>{
                     <Typography>이메일</Typography>
                 </Grid>
                 <Grid item>
-                    <Typography>{info.cellnumber}</Typography>
-                    <Typography>{info.semester}</Typography>
-                    <Typography>{info.email}</Typography>
+                    <Typography>{user.cellnumber}</Typography>
+                    <Typography>{user.semester}</Typography>
+                    <Typography>{user.email}</Typography>
                 </Grid>                
             </Grid>                     
         </Stack>

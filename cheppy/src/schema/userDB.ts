@@ -30,7 +30,7 @@ let userInfo = [
         "semester": 5
     }
 ]
-
+// localStorage.setItem("test2", JSON.stringify(userInfo));
 export const getUserInfo = () => {
     return userInfo;
 }

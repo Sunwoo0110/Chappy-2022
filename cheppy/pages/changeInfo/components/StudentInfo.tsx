@@ -1,45 +1,61 @@
 import {Box, Button, Grid, Stack, TextField, Typography} from '@mui/material'
 import Image from 'next/image'
 import profile from '../img/profile.JPG'
-
-// const handleClick = (e, text: string) => {
-//     console.log(e);
-//     console.log(text);
-//   };
-
-const handleSubmit = (e) => {
-    e.preventDefault();
-    const data = e.target;
-
-    const name=data.input_name.value;
-    const id=data.input_id.value;
-    const department=data.input_department.value;
-    const cellnumber=data.input_cellnumber.value;
-    const semester=data.input_semester.value;
-    const email=data.input_email.value;
-
-    console.log("name", name);
-    console.log("id", id);
-    console.log("department", department);
-    console.log("cellnumber", cellnumber);
-    console.log("semeseter", semester);
-    console.log("email", email);
-
-    // const res = await request("http://localhost:3000/api/userServer", addTaskMutation, data);
-};
+import { GET_USER, UPDATE_USER_INFO } from '../../../database/constants'
+import { gql, useMutation, useQuery, ApolloClient, ApolloProvider } from '@apollo/client'
+import { useState } from 'react'
+import React from "react";
 
 
-const StudentInfo = (props) =>{
-    console.log("all data ", props.Props)
-    const info = props.Props[0]
+const StudentInfo = () =>{
+
+    const [values, setValues] = useState({ username: "", userid: "", department: "", cellnumber: "", semester: null, email: ""})
+
+    const [updateUserInfo, {}] = useMutation(UPDATE_USER_INFO, {
+        variables: {input: {username: values.username, userid: values.userid,
+              department: values.department, cellnumber: values.cellnumber,
+              semester: +values.semester, email: values.email },
+            "id": "62ab7d4865ffc19129687a35",
+          }
+    })
+
+    const textInput1 = React.useRef(null);
+    const textInput2 = React.useRef(null);
+    const textInput3 = React.useRef(null);
+    const textInput4 = React.useRef(null);
+    const textInput5 = React.useRef(null);
+    const textInput6 = React.useRef(null);
+
+    const handleClick = () => {
+        updateUserInfo()
+        textInput1.current.value = ""
+        textInput2.current.value = ""
+        textInput3.current.value = ""
+        textInput4.current.value = ""
+        textInput5.current.value = ""
+        textInput6.current.value = ""
+    }
+
+    const { data } = useQuery(GET_USER, {
+        variables: { "id": "62ab7d4865ffc19129687a35"}
+    })
+    //console.log("result1: ", data)
+    const user=data.getUser
+    console.log("result2: ", user)
+
+    const handleChange = (event) => {
+        const { id, value } = event.target
+        setValues({ ...values, [id]: value })
+    }
+
     return(
-        <Stack alignItems="center" onSubmit={handleSubmit} spacing={2} direction="column" justifyContent="center">
+        <Stack alignItems="center" spacing={2} direction="column" justifyContent="center">
             <Grid container spacing={1}>
                 <Grid item>
                     <Typography fontWeight='bold' fontSize={20}>학생정보</Typography>
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" type="submit">수정하기</Button>
+                    <Button variant="contained" type="submit" onClick={handleClick}>수정하기</Button>
                 </Grid>
             </Grid>
 
@@ -49,19 +65,19 @@ const StudentInfo = (props) =>{
                 </Grid>
                 <Grid item>
                     <Typography>이름</Typography>
-                    <TextField id="input_name" label={info.username} variant="outlined"></TextField>
+                    <TextField inputRef={textInput1} id="username" label={user.username} variant="outlined" onChange={handleChange}></TextField>
                     <Typography>학과</Typography>
-                    <TextField id="input_department" label={info.department} variant="outlined"></TextField>
+                    <TextField inputRef={textInput2} id="department" label={user.department} variant="outlined" onChange={handleChange}></TextField>
                     <Typography>학기수</Typography>
-                    <TextField id="input_semester" label={info.semester} variant="outlined"></TextField>
+                    <TextField inputRef={textInput3} id="semester" label={user.semester} variant="outlined" onChange={handleChange}></TextField>
                 </Grid>
                 <Grid item>
                     <Typography>아이디</Typography>
-                    <TextField id="input_id" label={info.userid} variant="outlined"></TextField>
+                    <TextField inputRef={textInput4} id="userid" label={user.userid} variant="outlined" onChange={handleChange}></TextField>
                     <Typography>연락처</Typography>
-                    <TextField id="input_cellnumber" label={info.cellnumber} variant="outlined"></TextField>
+                    <TextField inputRef={textInput5} id="cellnumber" label={user.cellnumber} variant="outlined" onChange={handleChange}></TextField>
                     <Typography>이메일</Typography>
-                    <TextField id="input_email" label={info.email} variant="outlined"></TextField>
+                    <TextField inputRef={textInput6} id="email" label={user.email} variant="outlined" onChange={handleChange}></TextField>
                 </Grid>
             </Grid>
         </Stack>
