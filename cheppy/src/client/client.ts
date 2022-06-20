@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink } from "@apollo/client";
 import { cache } from "./cache";
 
 const httpLink = createHttpLink({
-    uri: "http://localhost:3000/api/testServer",
+    uri: "http://localhost:3000/api/expressServer",
 });
 
 export const client = new ApolloClient({
