@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "exrpess": "^0.0.1-security"
+    "exrpess": "^0.0.1-security",
+    "mongoose": "^6.4.0"
   }
 }

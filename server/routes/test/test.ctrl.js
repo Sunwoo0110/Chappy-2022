@@ -1,4 +1,4 @@
-const db = require("../db");
+const user = require("../../database/schema");
 const { Router } = require("express");
 const router = Router();
 
