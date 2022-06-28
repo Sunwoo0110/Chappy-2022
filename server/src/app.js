@@ -7,7 +7,7 @@ class App {
 
         //미들웨어
         // this.setMiddleWare();
-        this.bodyParsing()
+        this.bodyParsing();
 
         // 라우팅
         this.getRouting();
