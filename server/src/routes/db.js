@@ -4,9 +4,6 @@ const config = require('../config/config');
 
 dotenv.config(); //LOAD CONFOG
 
-// const MongoDb = process.env.MONGODB_URI
-// const MongoDb = "mongodb+srv://Sunwoo:sunkim8609@cluster0.yzrxx.mongodb.net/Cheppy?retryWrites=true&w=majority"
-
 const connectDb = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
