@@ -1,7 +1,11 @@
 const { Router } = require("express");
 const router = Router();
 
-router.use("/", require("./root"));
+const connectDb = require("./db");
+
+connectDb();
+
+// router.use("/", require("./root"));
 // router.use("/users", require("./users"))
 router.use("/test", require("./test"))
 // router.use("/habit", require("./habit"))

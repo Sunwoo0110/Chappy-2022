@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { Schema, Types } = mongoose
+const { Schema, Types } = mongoose;
 
 const UserSchema = new Schema(
 {
@@ -45,6 +45,6 @@ const UserSchema = new Schema(
 },
 )
 
-const User = mongoose.models.User || mongoose.model('User', UserSchema)
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
-export default User
+module.exports = User;

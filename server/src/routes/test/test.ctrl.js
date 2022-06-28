@@ -1,16 +1,17 @@
-const user = require("../../database/schema");
+const user = require("../../schema/UserSchema");
+// const connectDb = require("../db");
 const { Router } = require("express");
 const router = Router();
 
 exports.get_root = async (req,res) => {
-    /* mysql example */
-    // db.query('SELECT * from habit', (error, rows) => {
-    //     if (error) {
-    //         throw error;
-    //     }
-    //     console.log(rows);
-    //     res.send(rows);
-    // });
+    try {
+        const users = await user.find({});
+        res.send({ users: users });
+    } catch (err) {
+        console.log(err);
+        res.send("error");
+        
+    }
 };
 
 // // add user habit
