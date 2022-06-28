@@ -6,8 +6,8 @@ const connectDb = require("./db");
 connectDb();
 
 // router.use("/", require("./root"));
-// router.use("/users", require("./users"))
-router.use("/test", require("./test"))
-// router.use("/habit", require("./habit"))
+router.use("/test", require("./test"));
+router.use("/runcode", require("./runcode"));
+
 
 module.exports = router;

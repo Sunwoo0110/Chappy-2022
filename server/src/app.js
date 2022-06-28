@@ -7,6 +7,7 @@ class App {
 
         //미들웨어
         // this.setMiddleWare();
+        this.bodyParsing()
 
         // 라우팅
         this.getRouting();
@@ -22,7 +23,12 @@ class App {
     // dbConnection() {
     //     // DB authentication
     //     require('./routes');
-    // }
+    // } 
+    
+    bodyParsing() {
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express.json());
+    }
 
     getRouting() {
         this.app.use(require("./routes"));

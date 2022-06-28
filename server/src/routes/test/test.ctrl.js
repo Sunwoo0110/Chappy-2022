@@ -1,5 +1,4 @@
 const user = require("../../schema/UserSchema");
-// const connectDb = require("../db");
 const { Router } = require("express");
 const router = Router();
 
