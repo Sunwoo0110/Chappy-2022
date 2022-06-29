@@ -30,7 +30,7 @@ const Header = () =>{
             >
             <HomeIcon color="inherit" />
             </IconButton>
-            <Box sx={{  marginLeft:"10%", width:1000, bgcolor: 'background.paper', borderRadius: 1 }} >
+            <Box sx={{  marginLeft:"10%", width:1000, bgcolor: '#f0f0f0', borderRadius: 1 }} >
                 <Typography fontSize={15} component="div" sx={{ flexGrow: 1 }} align="center" style={{color: 'black' }}>
                 duplicate elimination
                 </Typography>
