@@ -6,17 +6,8 @@ import Link from "next/link"
 import ReactDOM from "react-dom";
 
 import Editor from "@monaco-editor/react";
-import router from 'next/router';
 
 const CodingBox = () =>{
-    const executionClick = () => {
-        router.push('../../codingExecution')
-    }
-
-    const submitClick = () => {
-        router.push('../../codingSubmit')
-    }
-
     return(
         <>
             <Box sx={{height: '90vh', width: '50vw', border: 1, borderColor: '#bdbdbd' }} >
@@ -25,9 +16,6 @@ const CodingBox = () =>{
                 <Box sx={{border: 1, borderColor: '#bdbdbd'}} style={{ marginLeft: "2%", marginRight: "2%", marginBottom: 20}}>
                     <Editor height="70vh" defaultLanguage="javascript" defaultValue="// some comment"/>
                 </Box>
-                <Button variant="contained" style={{ marginLeft: '1%' }} onClick={executionClick}>실행</Button>
-                <Button variant="contained" style={{ marginLeft: '1%' }} >채점</Button>
-                <Button variant="contained" color="error" style={{ marginLeft: "70%" }} onClick={submitClick}>제출</Button>
             </Box>
         </>
     )

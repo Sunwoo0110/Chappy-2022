@@ -7,7 +7,7 @@ const CompareAnswer = () =>{
     return(
         <>
             <Box sx={{width: '25vw'}}>
-                <Box sx={{ height: 40, backgroundColor: "#414E5A"}}>
+                <Box sx={{ height: 40, backgroundColor: "#414E5A", pt:1.2}}>
                     <Typography fontWeight='bold' fontSize={15} style={{ marginLeft: "3%", color: 'white'}}>답안비교</Typography>
                 </Box>
             </Box>

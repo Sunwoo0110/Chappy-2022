@@ -3,12 +3,12 @@ import { GET_USER, GET_USER_BY_USERID } from '../../../database/constants'
 import { DataUsageTwoTone } from '@mui/icons-material';
 import Link from "next/link"
 
-const Result = () =>{
+const Grade = () =>{
     return(
         <>
             <Box sx={{width: '25vw', marginBottom:3}} >
                 <Box sx={{ height: 40, backgroundColor: "#414E5A", pt:1.2}}>
-                    <Typography fontWeight='bold' fontSize={15} style={{ marginLeft: "3%", color: 'white'}}>채점 결과</Typography>
+                    <Typography fontWeight='bold' fontSize={15} style={{ marginLeft: "3%", color: 'white'}}>성적</Typography>
                 </Box>
 
                 <Typography fontSize={13} style={{ marginLeft: "3%", marginTop:10}}>bwj2800님의 채점 결과는 wrong 입니다.</Typography>
@@ -38,4 +38,4 @@ const Result = () =>{
 
 }
 
-export default Result
+export default Grade

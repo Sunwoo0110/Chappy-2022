@@ -6,10 +6,9 @@ import Problem from "./components/problem";
 import Testcase from "./components/testcase";
 import Header from "./components/header";
 import CodingBox from "./components/codingBox";
-import Hint from "./components/hint";
-import Result from "./components/result";
+import ExecuteResult from "./components/executeResult";
 
-const CodingPage: NextPage = () => {
+const CodingExecution: NextPage = () => {
   return (
     <>
         <Header/>
@@ -22,8 +21,7 @@ const CodingPage: NextPage = () => {
                 <CodingBox/>
             </Grid>
             <Grid item>
-                <Result/>
-                <Hint/>       
+                <ExecuteResult/>
             </Grid>
         </Grid>              
     </>
@@ -31,4 +29,4 @@ const CodingPage: NextPage = () => {
 };
 
 
-export default CodingPage;
+export default CodingExecution;
