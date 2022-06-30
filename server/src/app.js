@@ -6,10 +6,8 @@ class App {
         this.app = express();
 
         //미들웨어
-        // this.setMiddleWare();
-        
+        // this.setMiddleWare();        
         this.setCors();
-
         this.bodyParsing();
 
         // 라우팅
