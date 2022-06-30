@@ -1,10 +1,10 @@
 const user = require("../../schema/UserSchema");
-// const connectDb = require("../db");
 const { Router } = require("express");
 const router = Router();
 
 exports.get_root = async (req,res) => {
     try {
+        // res.header("Access-Control-Allow-Origin", "*");
         const users = await user.find({});
         res.send({ users: users });
     } catch (err) {

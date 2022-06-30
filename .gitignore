@@ -108,3 +108,6 @@ dist
 .DS_Store
 .vscode/
 .env
+# server/run.py
+*.py
+server/__pycache__

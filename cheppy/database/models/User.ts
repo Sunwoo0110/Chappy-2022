@@ -42,7 +42,7 @@ const UserSchema = new Schema(
         type: Number,
         required: false,
     }
-},
+}
 )
 
 const User = mongoose.models.User || mongoose.model('User', UserSchema)

@@ -5,9 +5,9 @@ import { getUserInfo, signUpUser } from './userDB';
 
 @Resolver()
 export class UserResolver {
-    @Query(() => String)
-    async hello() {
-      return 'hi';
+    @Query(() => [User])
+    showUserInfo(): User[]{
+      return getUserInfo();
     }
 
     @Mutation(() => [User])
