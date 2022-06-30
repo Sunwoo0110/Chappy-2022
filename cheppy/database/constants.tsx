@@ -1,5 +1,22 @@
 import {gql} from "@apollo/client";
 
+const testQuery = gql`
+    query {
+        hello
+    }
+`;
+
+// const signUpUserMutation = gql`
+//     mutation signUpUser($userid: String!, $password: String!, $email: String!, $username: String!){
+//         signUpUser(userid: $userid, password: $password, email: $email, username: $username){
+//             userid
+//             password
+//             email
+//             username
+//         }
+//     }
+
+// `;
 
 const GET_USER = gql`
 query getUser($id: ID){
@@ -17,6 +34,14 @@ query getUser($id: ID){
 }
 `
 
+const GET_USER_BY_ID= gql`
+query getUserById($id: ID!){
+    getUserById(_id: $id){
+        id
+    }
+}`
+
+
 const GET_USER_BY_USERID = gql`
 query getUserByUserId($userid: String!){
     getUserByUserId(userid: $userid) {
@@ -33,6 +58,13 @@ query getUserByUserId($userid: String!){
 }
 `
 
+const GET_USER_BY_USER_ID= gql`
+query getUserByUserId($userid: String!){
+    getUserByUserId(userid: $userid){
+        id
+    }
+}`
+
 const NEW_USER = gql`
 mutation newUser($input: UserInput!){
     newUser(input: $input){
@@ -40,6 +72,10 @@ mutation newUser($input: UserInput!){
         password
         email
         username
+        cellnumber
+        department
+        usertype
+        semester
     }
 }
 `
@@ -57,12 +93,11 @@ mutation UpdateUserInfo($id: ID!, $input: UserInfoInput) {
     }
 }
 `
-
 const UPDATE_USER_PASSWORD = gql`
 mutation UpdateUserPassword($id: ID!, $input: UserPasswordInput) {
     updateUserPassword(_id: $id, input: $input) {
     password
-  }
+}
 }
 `
 

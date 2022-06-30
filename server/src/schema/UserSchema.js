@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose');
 
-const { Schema, Types } = mongoose
+const { Schema, Types } = mongoose;
 
 const UserSchema = new Schema(
 {
@@ -41,14 +41,10 @@ const UserSchema = new Schema(
     semester: {
         type: Number,
         required: false,
-<<<<<<< HEAD
     }
-=======
-    },
->>>>>>> 66787d4988b48d48110de7c7e9ce04119ce501ae
 },
 )
 
-const User = mongoose.models.User || mongoose.model('User', UserSchema)
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
-export default User
+module.exports = User;

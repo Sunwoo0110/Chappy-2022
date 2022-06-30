@@ -20,6 +20,12 @@ const typeDefs = gql`
         email: String
         username: String
     }
+    type Query {
+        getUsers: [User]
+        getUserById(id: ID!): User
+        getUserByUserId(userid: String!): User
+        getIdByUserId(userid: String!): User
+    }
     input UserInfoInput {
         username: String
         userid: String
@@ -31,12 +37,7 @@ const typeDefs = gql`
     input UserPasswordInput {
         password: String
     }
-    type Query {
-        getUsers: [User]
-        getUser(_id: ID): User
-        getUserByUserId(userid: String): User
-        # getProduct(id: ID!): Product
-    }
+
     type Mutation {
         #Products
         newUser(input: UserInput): User

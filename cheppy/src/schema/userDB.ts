@@ -34,3 +34,20 @@ let userInfo = [
 export const getUserInfo = () => {
     return userInfo;
 }
+
+export const signUpUser = (userid, password, email, username) => {
+    let newInfo = {
+        userid: userid,
+        password: password,
+        email: email,
+        username: username,
+        cellnumber: "",
+        department: "",
+        usertype: 0,
+        semester: 0
+    };
+
+    userInfo.push(newInfo);
+    return true;
+
+} 

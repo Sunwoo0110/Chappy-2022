@@ -6,8 +6,30 @@ const resolvers = {
     getUsers: async () => {
       try {
         const users = await User.find({})
-
         return users
+      } catch (err) {
+        console.log(err)
+        
+      }
+    },
+    
+    getUserById: async (_, { id }) => {
+      try {
+        // const users = await User.find({userid: userid})
+        const users = await User.findById(id)
+        
+        return users
+      } catch (err) {
+        console.log(err)
+      }
+    },
+
+    getUserByUserId: async (_,  { userid }) => {
+      try {
+        const user = await User.findOne({userid: userid})
+        //const users = await User.findById(id)
+
+        return user
       } catch (err) {
         console.log(err)
       }
@@ -22,18 +44,28 @@ const resolvers = {
         console.log(err)
       }
     },
-    getUserByUserId: async (_, { userid }) => {
+
+    getIdByUserId: async (_,  { userid }) => {
       try {
-        // const users = await User.find({userid: userid})
-        const users = await User.findOne({userid: userid})
+        const user = await User.findOne({userid: userid})
+        //const users = await User.findById(id)
         
-        return users
+        return user
       } catch (err) {
         console.log(err)
       }
-    },
-  },
 
+    }
+    // getProduct: async (_, { id }) => {
+    //   const product = await Product.findById(id)
+
+    //   if (!product) {
+    //     throw new Error('Product not found')
+    //   }
+
+    //   return product
+    // },
+  },
 
   Mutation: {
     // users
@@ -55,6 +87,12 @@ const resolvers = {
         throw new Error('User not found')
       }
 
+<<<<<<< HEAD
+      user = await User.findOneAndUpdate({ _id: id }, input, {
+        new: true,
+      })
+
+=======
       user = await User.findOneAndUpdate({ _id: _id }, input, {
         new: true,
       })
@@ -70,6 +108,7 @@ const resolvers = {
       user = await User.findOneAndUpdate({ _id: _id }, input, {
         new: true,
       })
+>>>>>>> 66787d4988b48d48110de7c7e9ce04119ce501ae
       return user
     },
     // deleteProduct: async (_, { id }) => {
