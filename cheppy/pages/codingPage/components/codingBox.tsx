@@ -9,6 +9,7 @@ import Editor from "@monaco-editor/react";
 import router from 'next/router';
 
 const CodingBox = () =>{
+
     const [value, setValue] = useState('');
 
     const handleEditorChange = (event) => {
@@ -28,13 +29,26 @@ const CodingBox = () =>{
             .catch(error => {
                 console.log(error.response)
             })
+
     }
 
     const submitClick = () => {
         router.push('../../codingSubmit')
     }
 
+    
+    const editorRef = useRef(null);
+
+    function handleEditorDidMount(editor, monaco) {
+        editorRef.current = editor; 
+    }
+    
+    function showValue() {
+        alert(editorRef.current.getValue());
+    }
+
     return(
+
         <>
             <Box sx={{height: '90vh', width: '50vw', border: 1, borderColor: '#bdbdbd' }} >
                 <Typography fontSize={15} style={{ marginLeft: "3%", marginTop: 15, marginBottom: 10}}>코드작성</Typography>
@@ -46,6 +60,7 @@ const CodingBox = () =>{
                         defaultValue="// some comment"
                         onChange={handleEditorChange}/>
                 </Box>
+
                 <Button variant="contained" style={{ marginLeft: '1%' }} onClick={executionClick}>실행</Button>
                 <Button variant="contained" style={{ marginLeft: '1%' }} >채점</Button>
                 <Button variant="contained" color="error" style={{ marginLeft: "70%" }} onClick={submitClick}>제출</Button>
