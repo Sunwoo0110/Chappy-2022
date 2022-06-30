@@ -35,7 +35,7 @@ const Solutions = () =>{
                 </Box>
 
                 <Typography fontSize={14} fontWeight='bold' style={{ marginLeft: "5%", marginTop: 15 }}>2번째 줄</Typography>
-                <Button variant="outlined" style={{ marginLeft: "20%", marginTop:10 }} onClick={handleClick}>Delete "this statement"</Button>
+                <Button variant="outlined" style={{ marginLeft: "20%", marginTop:10 }} onClick={handleClick}>Delete this statement</Button>
                 <Popover id={id} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
                     <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
                 </Popover>

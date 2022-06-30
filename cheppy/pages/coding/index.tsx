@@ -4,8 +4,7 @@ import ReactDOM from "react-dom";
 import Editor from "@monaco-editor/react";
 import { NextPage } from "next";
 
-const coding: NextPage = () => {
-    const editorRef = useRef(null);
+const Coding: NextPage = () => {
     const [value, setValue] = useState('')
 
     const handleEditorChange = (event) => {
@@ -40,4 +39,4 @@ const coding: NextPage = () => {
     );
 }
 
-export default coding
+export default Coding

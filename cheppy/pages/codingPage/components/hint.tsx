@@ -27,7 +27,7 @@ const Hint = () =>{
                         </Box>
                     </Grid>
                     <Grid item width="75%">
-                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Replace "Return" value</Typography>
+                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Replace Return value</Typography>
                     </Grid>
                 </Grid>
 
@@ -38,7 +38,7 @@ const Hint = () =>{
                         </Box>
                     </Grid>
                     <Grid item width="75%">
-                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Insert "Assignment" statement</Typography>
+                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Insert Assignment statement</Typography>
                     </Grid>
                 </Grid>
 
@@ -49,7 +49,7 @@ const Hint = () =>{
                         </Box>
                     </Grid>
                     <Grid item width="75%">
-                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Insert "For" statement</Typography>
+                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Insert For statement</Typography>
                     </Grid>
                 </Grid>
 
@@ -60,7 +60,7 @@ const Hint = () =>{
                         </Box>
                     </Grid>
                     <Grid item width="75%">
-                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Insert "If" statement</Typography>
+                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Insert If statement</Typography>
                     </Grid>
                 </Grid>
 
