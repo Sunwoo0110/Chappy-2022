@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const cors = require('cors');
 
 class App {
     constructor() {
@@ -7,6 +7,9 @@ class App {
 
         //미들웨어
         // this.setMiddleWare();
+        
+        this.setCors();
+
         this.bodyParsing();
 
         // 라우팅
@@ -44,6 +47,10 @@ class App {
         this.app.use((err, req, res, _) => {
             res.status(500).json("error","500");
         });
+    }
+
+    setCors() {
+        this.app.use(cors({orgin: 'http://localhost:4000'}));
     }
 
 }

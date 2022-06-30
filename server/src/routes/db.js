@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 const config = require('../config/config');
 
-dotenv.config(); //LOAD CONFOG
+dotenv.config(); //LOAD CONFIG
 
 const connectDb = async () => {
   try {

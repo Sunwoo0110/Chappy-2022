@@ -1,6 +1,6 @@
 import {Box, Button, Grid, Stack, TextField, Typography} from '@mui/material'
 import Image from 'next/image'
-import profile from '../img/profile.JPG'
+import profile from '../img/profile.jpg'
 import { GET_USER, UPDATE_USER_INFO } from '../../../database/constants'
 import { gql, useMutation, useQuery, ApolloClient, ApolloProvider } from '@apollo/client'
 import { useState } from 'react'
@@ -14,7 +14,7 @@ const StudentInfo = () =>{
     const [updateUserInfo, {}] = useMutation(UPDATE_USER_INFO, {
         variables: {input: {username: values.username, userid: values.userid,
               department: values.department, cellnumber: values.cellnumber,
-              semester: +values.semester, email: values.email },
+              semester: values.semester, email: values.email },
             "id": "62ab7d4865ffc19129687a35",
           }
     })
@@ -28,12 +28,12 @@ const StudentInfo = () =>{
 
     const handleClick = () => {
         updateUserInfo()
-        textInput1.current.value = ""
-        textInput2.current.value = ""
-        textInput3.current.value = ""
-        textInput4.current.value = ""
-        textInput5.current.value = ""
-        textInput6.current.value = ""
+        // textInput1.current.value = ""
+        // textInput2.current.value = ""
+        // textInput3.current.value = ""
+        // textInput4.current.value = ""
+        // textInput5.current.value = ""
+        // textInput6.current.value = ""
     }
 
     const { data } = useQuery(GET_USER, {

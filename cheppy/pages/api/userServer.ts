@@ -1,4 +1,4 @@
-// import { ApolloServer } from 'apollo-server-micro';
+import { ApolloServer } from 'apollo-server-micro';
 // import { buildSchema } from 'type-graphql';
 // // import { createConnection } from 'typeorm';
 // import { UserResolver } from '../../src/schema/UserResolver';

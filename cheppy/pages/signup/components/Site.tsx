@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import router from 'next/router'
 import { UserInventory, UserInput } from '../../interface'
-import { NEW_USER, GET_ID_BY_USER_ID } from '../../../database/constants'
+import { NEW_USER  } from '../../../database/constants'
 import mongoose from 'mongoose'
 
 const Site = () => {
@@ -22,9 +22,9 @@ const Site = () => {
         variables: { input: { userid: values.userid, password: values.password, email: values.email, username: values.username}}
     })
 
-    const {data, loading, error } = useQuery(GET_ID_BY_USER_ID, {
-        variables: { userid: values.userid }
-    })
+    // const {data, loading, error } = useQuery(GET_ID_BY_USER_ID, {
+    //     variables: { userid: values.userid }
+    // })
 
     const handleClick = () => {
         if (values.password == values.check_password && !idError && idhelperText != "" ) {
@@ -40,17 +40,17 @@ const Site = () => {
     }
 
     const handleCheckUserId = () => {
-        if ( data.getIdByUserId == null) {
-            console.log("success")
-            setIdError(false)
-            setIdHelperText("사용 가능한 아이디입니다")
+        // if ( data.getIdByUserId == null) {
+        //     console.log("success")
+        //     setIdError(false)
+        //     setIdHelperText("사용 가능한 아이디입니다")
 
-        } else {
-            console.log(data.getIdByUserId._id)
-            setIdError(true)
-            setIdHelperText("중복된 아이디입니다")
+        // } else {
+        //     console.log(data.getIdByUserId._id)
+        //     setIdError(true)
+        //     setIdHelperText("중복된 아이디입니다")
 
-        }
+        // }
     }
 
     const handleChange = (event) => {

@@ -7,6 +7,7 @@ const router = Router();
 
 exports.get_root = async (req,res) => {
     try {
+        // res.header("Access-Control-Allow-Origin", "*");
         const users = await User.find({});
         res.send({ users: users });
     } catch (err) {
@@ -20,6 +21,7 @@ exports.get_root = async (req,res) => {
 // body : {code: string} 
 exports.post_run_code = async (req,res) => {
     try {
+        // res.header("Access-Control-Allow-Origin", "*");
         converter(req.body.code);
         const result = await runPython();
         // console.log(result);

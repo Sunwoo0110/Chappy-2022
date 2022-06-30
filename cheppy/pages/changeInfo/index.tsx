@@ -12,12 +12,13 @@ import { useRouter } from "next/router"
 
 const ChangeInfo: NextPage = () => {
   return (
-    <ApolloProvider client={client}>
-      <Typography fontWeight='bold' fontSize={30}>계정관리</Typography>
-      <StudentInfo/>
-      <ChangePassword/>
-      <Quit/>
-    </ApolloProvider>
+    // // <ApolloProvider client={client}>
+    //   <Typography fontWeight='bold' fontSize={30}>계정관리</Typography>
+    //   <StudentInfo/>
+    //   <ChangePassword/>
+    //   <Quit/>
+    // // </ApolloProvider>
+    <></>
   );
 };
 

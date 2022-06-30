@@ -87,12 +87,6 @@ const resolvers = {
         throw new Error('User not found')
       }
 
-<<<<<<< HEAD
-      user = await User.findOneAndUpdate({ _id: id }, input, {
-        new: true,
-      })
-
-=======
       user = await User.findOneAndUpdate({ _id: _id }, input, {
         new: true,
       })
@@ -108,7 +102,6 @@ const resolvers = {
       user = await User.findOneAndUpdate({ _id: _id }, input, {
         new: true,
       })
->>>>>>> 66787d4988b48d48110de7c7e9ce04119ce501ae
       return user
     },
     // deleteProduct: async (_, { id }) => {
