@@ -8,7 +8,11 @@
 
     cd cheppy  
     npm run dev
+    
+## 3. 동시 실행
 
+    npm start
+    
 ## api 정리 (추가 필요)
 
 ### 1. 코드 실행: 
