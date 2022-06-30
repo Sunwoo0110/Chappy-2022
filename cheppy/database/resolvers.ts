@@ -1,7 +1,4 @@
-import mongoose from 'mongoose';
 import User from './models/User'
-
-const { Schema, Types } = mongoose
 
 const resolvers = {
   Query: {
@@ -31,6 +28,16 @@ const resolvers = {
       try {
         const user = await User.findOne({userid: userid})
         //const users = await User.findById(id)
+
+        return user
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    getUser: async (_, { _id }) => {
+      try {
+        // const users = await User.find({userid: userid})
+        const user = await User.findById(_id)
         
         return user
       } catch (err) {
@@ -73,17 +80,35 @@ const resolvers = {
         console.log(err)
       }
     },
-    updateUser: async (_, { id, input }) => {
-      let user = await User.findById(id)
+    updateUserInfo: async (_, { _id, input }) => {
+      let user = await User.findById(_id)
 
       if (!user) {
         throw new Error('User not found')
       }
 
+<<<<<<< HEAD
       user = await User.findOneAndUpdate({ _id: id }, input, {
         new: true,
       })
 
+=======
+      user = await User.findOneAndUpdate({ _id: _id }, input, {
+        new: true,
+      })
+      return user
+    },
+    updateUserPassword: async (_, { _id, input }) => {
+      let user = await User.findById(_id)
+
+      if (!user) {
+        throw new Error('User not found')
+      }
+
+      user = await User.findOneAndUpdate({ _id: _id }, input, {
+        new: true,
+      })
+>>>>>>> 66787d4988b48d48110de7c7e9ce04119ce501ae
       return user
     },
     // deleteProduct: async (_, { id }) => {
