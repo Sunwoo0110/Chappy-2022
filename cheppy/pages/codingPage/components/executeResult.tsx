@@ -3,7 +3,7 @@ import { GET_USER, GET_USER_BY_USERID } from '../../../database/constants'
 import { DataUsageTwoTone } from '@mui/icons-material';
 import Link from "next/link"
 
-const ExecuteResult = () =>{
+const ExecuteResult = ({result}) =>{
     return(
         <>
             <Box sx={{width: '25vw'}}>
@@ -12,7 +12,7 @@ const ExecuteResult = () =>{
                 </Box>
 
                 <Typography fontSize={13} style={{ marginLeft: "3%", marginTop:10}}>출력값:</Typography>
-                <Typography fontSize={13} style={{ marginLeft: "3%"}}>아무런 출력값이 없습니다.</Typography>
+                <Typography fontSize={13} style={{ marginLeft: "3%"}}>{result}</Typography>
             </Box>
         </>
     )

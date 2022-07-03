@@ -13,9 +13,12 @@ import Grade from "./components/grade";
 import Solutions from "./components/solutions";
 import CompareAnswer from "./components/compareAnswer";
 import axios from "axios";
+import CodingBoxForSubmit from "./components/codingBoxForSubmit";
 
 const CodingPage: NextPage = () => {
-    const [mode, setMode] = useState(3);
+    const [mode, setMode] = useState(0);
+
+    const [execution_res, setExecution] = useState("");
 
     return (
     <>
@@ -26,7 +29,17 @@ const CodingPage: NextPage = () => {
                 <Testcase/>
             </Grid>
             <Grid item>
-                <CodingBox mode={mode} modeChanger={setMode}/>
+            {
+                mode === 2 ?
+                <>
+                <CodingBoxForSubmit/>
+                </>
+                :
+                    <>
+                    <CodingBox mode={mode} modeChanger={setMode} result={execution_res} resultChanger={setExecution}/>
+                    </>
+            }
+                
             </Grid>
             <Grid item>
             {
@@ -37,7 +50,7 @@ const CodingPage: NextPage = () => {
                 </>
                 : mode === 1 ?
                 <>
-                <ExecuteResult/>
+                <ExecuteResult result={execution_res}/>
                 </>
                     :
                     <>
