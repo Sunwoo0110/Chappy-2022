@@ -35,12 +35,15 @@ const Hint = () =>{
             console.log("getHintData success");
             console.log(res.data);
             setHint(res.data);
-            const lines = Object.keys(res.data);
-            // for(let i=0; lines.length; i++){
-            //     for(let j=0; Object.keys(res.data[lines[i]]).length; j++){
-            //         setHintNum(hintNum+1);
-            //     }
-            // }
+            let cnt = 0;
+            const hint = Object.keys(res.data).map((line) => (
+                res.data[line].map((contents) => (
+                    Object.keys(contents).map((content) => (
+                        cnt++
+                    ))
+                ))
+            ));
+            setHintNum(cnt);
     })
         .catch(error => {
             console.log("getHintData failed");
@@ -63,6 +66,10 @@ const Hint = () =>{
                         </Grid>
                     </Grid>
                 </Box>
+
+                {hints.length == 0 &&
+                    <div>Loading ... </div>
+                }
 
                 {hints.length != 0 &&
                     Object.keys(hints).map((line) => (
