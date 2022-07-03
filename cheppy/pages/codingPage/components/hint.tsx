@@ -2,8 +2,18 @@ import {Box, Button, Grid, InputAdornment, Stack, TextField, Typography} from '@
 import { GET_USER, GET_USER_BY_USERID } from '../../../database/constants'
 import { DataUsageTwoTone } from '@mui/icons-material';
 import Link from "next/link"
+import { generateKey } from 'crypto';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import axios from 'axios';
+
 
 const Hint = () =>{
+
+    const hints = {"2":[{"Delete":"this statement"}, {"Insert":"'if' statement"}], "3":[{"Insert":"'Return' statement"}]};    
+    const lines = Object.keys(hints);
+
     return(
         <>
             <Box sx={{width: '25vw'}} >
@@ -19,6 +29,52 @@ const Hint = () =>{
                         </Grid>
                     </Grid>
                 </Box>
+
+                {lines.map((line) => (
+                    hints[line].map((contents) => (
+                        Object.keys(contents).map((content) => (
+                            <List key={line.toString()+content.toString()} disablePadding>
+                                <ListItem>
+                                    <Grid container sx={{ml:3, mt:2}}>
+                                        <Grid item width="15%">
+                                            <Box sx={{backgroundColor: "#FFD600", borderRadius: 1}}>
+                                                <ListItemText>
+                                                    <Typography align="center" fontWeight='bold' fontSize={15}>line {line}</Typography>
+                                                </ListItemText> 
+                                            </Box>
+                                        </Grid>
+                                        <Grid item width="75%">
+                                            <ListItemText>
+                                                <Typography fontSize={13} style={{ marginLeft: "5%" }}>{content+" "+contents[content]}</Typography>
+                                            </ListItemText>
+                                        </Grid>
+                                    </Grid>
+                                </ListItem>
+                                </List>                                
+                        ))
+                    ))
+                ))}
+
+                {/* {lines.map((line) => (
+                    <List key={line.toString()} disablePadding>
+                        <ListItem>
+                            <Grid container sx={{ml:3, mt:2}}>
+                                <Grid item width="15%">
+                                    <Box sx={{backgroundColor: "#FFD600", borderRadius: 1}}>
+                                        <ListItemText>
+                                            <Typography align="center" fontWeight='bold' fontSize={15}>{line}</Typography>
+                                        </ListItemText> 
+                                    </Box>
+                                </Grid>
+                                <Grid item width="75%">
+                                    <ListItemText>
+                                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Replace Return value</Typography>
+                                    </ListItemText>
+                                </Grid>
+                            </Grid>
+                        </ListItem>
+                    </List>
+                ))} */}
 
                 <Grid container sx={{ml:3, mt:2}}>
                     <Grid item width="15%">
@@ -64,16 +120,6 @@ const Hint = () =>{
                     </Grid>
                 </Grid>
 
-                {/* <Grid container sx={{ml:3, mt:2}}>
-                    <Grid item width="15%">
-                        <Box sx={{backgroundColor: "#FFD600", borderRadius: 1}}>
-                            <Typography align="center" fontWeight='bold' fontSize={15}>line 5</Typography>
-                        </Box>
-                    </Grid>
-                    <Grid item width="75%">
-                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>Insert "Augmented Assignment" statement</Typography>
-                    </Grid>
-                </Grid> */}
             </Box>
         </>
     )
