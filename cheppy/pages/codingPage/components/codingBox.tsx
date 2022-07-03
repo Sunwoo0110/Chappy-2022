@@ -8,7 +8,7 @@ import axios from "axios";
 import Editor from "@monaco-editor/react";
 import router from 'next/router';
 
-const CodingBox = () =>{
+const CodingBox = ({ mode, modeChanger}) =>{
 
     const [value, setValue] = useState('');
 
@@ -17,9 +17,14 @@ const CodingBox = () =>{
         setValue(event)
     }
 
+    const gradingClick = async () => {;
+        // router.push('../../codingExecution')
+        modeChanger(0);
+    }
+
     const executionClick = async () => {;
         // router.push('../../codingExecution')
-
+        modeChanger(1);
         await axios.post('http://localhost:4000/runcode/run', {
                 code: "print(\"hello world\")"
             })
@@ -30,10 +35,11 @@ const CodingBox = () =>{
                 console.log(error.response)
             })
 
-    }
+    }    
 
     const submitClick = () => {
-        router.push('../../codingSubmit')
+        modeChanger(2);
+        // router.push('../../codingSubmit')
     }
 
     
@@ -57,12 +63,12 @@ const CodingBox = () =>{
                     <Editor
                         height="70vh"
                         defaultLanguage="python"
-                        defaultValue="// some comment"
+                        defaultValue="# some comment"
                         onChange={handleEditorChange}/>
                 </Box>
 
                 <Button variant="contained" style={{ marginLeft: '1%' }} onClick={executionClick}>실행</Button>
-                <Button variant="contained" style={{ marginLeft: '1%' }} >채점</Button>
+                <Button variant="contained" style={{ marginLeft: '1%' }} onClick={gradingClick}>채점</Button>
                 <Button variant="contained" color="error" style={{ marginLeft: "70%" }} onClick={submitClick}>제출</Button>
             </Box>
         </>
