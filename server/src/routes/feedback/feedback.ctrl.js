@@ -20,8 +20,23 @@ exports.post_test = async (req, res) => {
 // get feedback
 exports.get_feedback = async (req, res) => {
     try{
+        let dummy = {
+            "2":[
+                {
+                  "Delete":"this statement"
+                }, 
+                {	
+                  "Insert":" if lst==[]"
+                }
+                ],
+            "3":[
+                {
+                  "Insert":"   return []"
+                }
+                ]
+        };
         console.log(req.body);     
-        res.send("success");      
+        res.send(dummy);      
     } catch (err) {
         console.log("error!!");
         console.log(err);
