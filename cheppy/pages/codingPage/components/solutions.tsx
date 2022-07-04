@@ -10,12 +10,7 @@ import * as feedbackActions from "../../../store/modules/feedback";
 
 const Solutions = () =>{
     const dispatch = useDispatch();
-    const hintValue = useSelector((state: RootState) => state.feedback);
-    const getHint = useCallback((code)=>{
-        dispatch(feedbackActions.getFeedback(code));
-    }, [dispatch]);
-
-    console.log(hintValue);
+    const feedbackValue = useSelector((state: RootState) => state.feedback);
 
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);

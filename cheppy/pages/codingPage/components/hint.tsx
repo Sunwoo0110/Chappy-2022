@@ -15,39 +15,6 @@ import { RootState } from "../../../store/modules";
 
 const Hint = () =>{
     const hintValue = useSelector((state: RootState) => state.feedback);
-    console.log("hinthint------------");
-    console.log(hintValue);
-
-    const [hints, setHint] = useState<any[]>([]);
-    const [hintNum, setHintNum] = useState(0);
-
-    // useEffect(() => {
-    //     getHintData();
-    // }, [])
-    
-    // const getHintData = async () => {
-    //     await axios.post('http://localhost:4000/feedback/get_feedback', {
-    //         //feedback api 완성되면 연결
-    //     })
-    //     .then((res) => {
-    //         console.log("getHintData success");
-    //         console.log(res.data);
-    //         setHint(res.data);
-    //         let cnt = 0;
-    //         const hint = Object.keys(res.data).map((line) => (
-    //             res.data[line].map((contents) => (
-    //                 Object.keys(contents).map((content) => (
-    //                     cnt++
-    //                 ))
-    //             ))
-    //         ));
-    //         setHintNum(cnt);
-    // })
-    //     .catch(error => {
-    //         console.log("getHintData failed");
-    //         console.log(error.response);
-    //     })
-    // }
 
     return(
         <>

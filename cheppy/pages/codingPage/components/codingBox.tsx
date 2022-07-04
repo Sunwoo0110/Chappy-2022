@@ -21,8 +21,8 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
         dispatch(codeActions.setCode(code));
     }, [dispatch]);
 
-    const hintValue = useSelector((state: RootState) => state.feedback);
-    const getHint = useCallback(async (code)=>{
+    const feedbackValue = useSelector((state: RootState) => state.feedback);
+    const getFeedback = useCallback(async (code)=>{
         await axios.post('http://localhost:4000/feedback/get_feedback', {
             //feedback api 완성되면 연결
             code
@@ -58,7 +58,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     }, [dispatch]);
 
     // console.log(codeValue);
-    console.log(hintValue);
+    console.log(feedbackValue);
 
     const [value, setValue] = useState('');
 
@@ -75,7 +75,8 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
 
     const gradingClick = async () => {
         await getCodeEvent(editorRef.current.getValue());
-        await getHint(editorRef.current.getValue());
+        //feedback api 연결 필요
+        await getFeedback(editorRef.current.getValue());
         modeChanger(0);
     }
 
@@ -99,7 +100,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const submitClick = async () => {
         await getCodeEvent(editorRef.current.getValue());
         // feedback api 연결 필요
-        await getHint(editorRef.current.getValue());
+        await getFeedback(editorRef.current.getValue());
         modeChanger(2);
     }
      
