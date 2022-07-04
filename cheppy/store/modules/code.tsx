@@ -1,5 +1,3 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
 export const SET_CODE = "code/SET_CODE";
 
 export const setCode = (payload: string) => {
@@ -28,17 +26,3 @@ export default function reducer(state=initialState, action: any){
             return state;
     }
 }
-
-
-// const initialState = {value: null};
-
-// const codeSlice = createSlice({
-//     name: 'code',
-//     initialState,
-//     reducers: {
-//         setCode: (state, action: PayloadAction<string>) => {state.value},
-//     },
-// })
-
-// export const {setCode} = codeSlice.actions;
-// export default codeSlice.reducer;

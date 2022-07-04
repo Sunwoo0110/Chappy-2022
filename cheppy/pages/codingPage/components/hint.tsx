@@ -9,39 +9,45 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import axios from 'axios';
-import getHint from './getHint';
+import { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from "../../../store/modules";
 
 const Hint = () =>{
+    const hintValue = useSelector((state: RootState) => state.feedback);
+    console.log("hinthint------------");
+    console.log(hintValue);
+
     const [hints, setHint] = useState<any[]>([]);
     const [hintNum, setHintNum] = useState(0);
 
-    useEffect(() => {
-        getHintData();
-    }, [])
+    // useEffect(() => {
+    //     getHintData();
+    // }, [])
     
-    const getHintData = async () => {
-        await axios.post('http://localhost:4000/feedback/get_feedback', {
-            //feedback api 완성되면 연결
-        })
-        .then((res) => {
-            console.log("getHintData success");
-            console.log(res.data);
-            setHint(res.data);
-            let cnt = 0;
-            const hint = Object.keys(res.data).map((line) => (
-                res.data[line].map((contents) => (
-                    Object.keys(contents).map((content) => (
-                        cnt++
-                    ))
-                ))
-            ));
-            setHintNum(cnt);
-    })
-        .catch(error => {
-            console.log("getHintData failed");
-            console.log(error.response);
-        })
-    }
+    // const getHintData = async () => {
+    //     await axios.post('http://localhost:4000/feedback/get_feedback', {
+    //         //feedback api 완성되면 연결
+    //     })
+    //     .then((res) => {
+    //         console.log("getHintData success");
+    //         console.log(res.data);
+    //         setHint(res.data);
+    //         let cnt = 0;
+    //         const hint = Object.keys(res.data).map((line) => (
+    //             res.data[line].map((contents) => (
+    //                 Object.keys(contents).map((content) => (
+    //                     cnt++
+    //                 ))
+    //             ))
+    //         ));
+    //         setHintNum(cnt);
+    // })
+    //     .catch(error => {
+    //         console.log("getHintData failed");
+    //         console.log(error.response);
+    //     })
+    // }
 
     return(
         <>
@@ -53,19 +59,23 @@ const Hint = () =>{
                         </Grid>
                         <Grid item width="8%">
                             <Box sx={{ backgroundColor: "#FFD600", borderRadius: 2}}>
-                                <Typography fontWeight='bold' fontSize={13}  align="center">+{hintNum}</Typography>
+                                <Typography fontWeight='bold' fontSize={13}  align="center">+{hintValue.num}</Typography>
                             </Box>
                         </Grid>
                     </Grid>
                 </Box>
 
-                {hints.length == 0 &&
+                {hintValue.res == null &&
                     <div>Loading ... </div>
                 }
 
-                {hints.length != 0 &&
-                    Object.keys(hints).map((line) => (
-                        hints[line].map((contents) => (
+                {hintValue.res == "Server Error" &&
+                    <div>{hintValue.res} </div>
+                }
+
+                {hintValue.res != null && hintValue.res != "Server Error" && 
+                    Object.keys(hintValue.res).map((line) => (
+                        hintValue.res[line].map((contents) => (
                             Object.keys(contents).map((content) => (
                                 <List key={line.toString()+content.toString()} disablePadding>
                                     <ListItem>

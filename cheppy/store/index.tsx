@@ -5,6 +5,8 @@ import logger from 'redux-logger';
 import reducer from "./modules";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { HYDRATE, createWrapper } from "next-redux-wrapper";
+import createSagaMiddleware from "redux-saga";
+import rootSaga from './modules/sagas';
 
 // const makeStore = (context) => configureStore({ 
 //     reducer,
@@ -25,7 +27,14 @@ const bindMiddleware = (middleware: any) => {
   };
   
 const initStore = () => {
-    return createStore(reducer, bindMiddleware([]));
+  // const sageMiddleware = createSagaMiddleware();
+
+  // const store = createStore(reducer, bindMiddleware([sageMiddleware]));
+  // store.sagaTask = sageMiddleware.run(rootSaga);
+
+  const store = createStore(reducer, bindMiddleware([]));
+
+  return store;
 };
   
 export const wrapper = createWrapper(initStore);
