@@ -14,8 +14,26 @@ import Solutions from "./components/solutions";
 import CompareAnswer from "./components/compareAnswer";
 import axios from "axios";
 import CodingBoxForSubmit from "./components/codingBoxForSubmit";
+import { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as counterActions from "../../store/modules/counter";
+// import * as codeActions from "../../store/modules/code"
+// import counter from "../../store/modules/code"
+import code from "../../store/modules/code";
+import { RootState } from "../../store/modules";
 
 const CodingPage: NextPage = () => {
+    const dispatch = useDispatch();
+    const value = useSelector((state: RootState) => state.counter);
+    console.log(value);
+    // const plus = useCallback(({ value }) => {
+    //     dispatch(counterActions.increment({ value}));
+    // }, [dispatch]);
+    // const codeValue = useSelector(({code}) => code.value);
+    // const setting = useCallback({codeValue}=>{
+    //     dispatchEvent(codeActions.setCode({codeValue}));
+    // }, [dispatch]);
+
     const [mode, setMode] = useState(0);
 
     const [execution_res, setExecution] = useState("");

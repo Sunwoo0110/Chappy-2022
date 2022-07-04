@@ -17,14 +17,6 @@ const Hint = () =>{
 
     useEffect(() => {
         getHintData();
-        // if(Object.keys(hints).length!=0){
-        //     for(let i=0; i<Object.keys(hints).length; i++){
-        //         for(let j=0; j<hints[Object.keys(hints)[i]].length; i++){
-        //             // console.log(res.data[Object.keys(res.data)[i]].length);
-        //             setHintNum(hintNum+1);
-        //         }
-        //     }
-        // }
     }, [])
     
     const getHintData = async () => {
