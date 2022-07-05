@@ -40,7 +40,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
             ));
             console.log(typeof res.data);
             let payload: FeedbackReduxState = {
-                res: Object(res.data),
+                content: Object(res.data),
                 num: cnt,
             };
             console.log(payload);        
@@ -50,7 +50,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
             console.log("postFeedback failed");
             console.log(error.response);
             let payload: FeedbackReduxState = {
-                res: "Server error",
+                content: "Server Error",
                 num: 0,
             };        
             dispatch(feedbackActions.getFeedback(payload));

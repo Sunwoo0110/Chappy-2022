@@ -3,7 +3,7 @@ import { GET_USER, GET_USER_BY_USERID } from '../../../database/constants'
 import { DataUsageTwoTone } from '@mui/icons-material';
 import Link from "next/link"
 import * as React from 'react';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../../store/modules";
 import * as feedbackActions from "../../../store/modules/feedback";
@@ -11,6 +11,9 @@ import * as feedbackActions from "../../../store/modules/feedback";
 const Solutions = () =>{
     const dispatch = useDispatch();
     const feedbackValue = useSelector((state: RootState) => state.feedback);
+    const codeValue = useSelector((state: RootState) => state.code);
+
+    const [curFeedback, setCur] = useState("");
 
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -35,7 +38,7 @@ const Solutions = () =>{
                         </Grid>
                         <Grid item width="8%">
                             <Box sx={{ backgroundColor: "#FFD600", borderRadius: 2}}>
-                                <Typography fontWeight='bold' fontSize={13}  align="center">11+</Typography>
+                                <Typography fontWeight='bold' fontSize={13}  align="center">+{feedbackValue.num}</Typography>
                             </Box>
                         </Grid>
                     </Grid>

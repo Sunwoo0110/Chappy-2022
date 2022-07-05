@@ -32,40 +32,42 @@ const Hint = () =>{
                     </Grid>
                 </Box>
 
-                {hintValue.res == null &&
-                    <div>Loading ... </div>
-                }
+                <Box sx={{width: '30vw', height: 100}}>
+                    {hintValue.content == null &&
+                        <div>Loading ... </div>
+                    }
 
-                {hintValue.res == "Server Error" &&
-                    <div>{hintValue.res} </div>
-                }
+                    {hintValue.content == "Server Error" &&
+                        <div>{hintValue.content} </div>
+                    }
 
-                {hintValue.res != null && hintValue.res != "Server Error" && 
-                    Object.keys(hintValue.res).map((line) => (
-                        hintValue.res[line].map((contents) => (
-                            Object.keys(contents).map((content) => (
-                                <List key={line.toString()+content.toString()} disablePadding>
-                                    <ListItem>
-                                        <Grid container sx={{ml:3, mt:2}}>
-                                            <Grid item width="15%">
-                                                <Box sx={{backgroundColor: "#FFD600", borderRadius: 1}}>
+                    {hintValue.content != null && hintValue.content != "Server Error" && 
+                        Object.keys(hintValue.content).map((line) => (
+                            hintValue.content[line].map((contents) => (
+                                Object.keys(contents).map((content) => (
+                                    <List key={line.toString()+content.toString()} disablePadding style={{maxHeight: '100%', overflow: 'auto'}}>
+                                        <ListItem>
+                                            <Grid container sx={{ml:3, mt:2}}>
+                                                <Grid item width="15%">
+                                                    <Box sx={{backgroundColor: "#FFD600", borderRadius: 1}}>
+                                                        <ListItemText>
+                                                            <Typography align="center" fontWeight='bold' fontSize={15}>line {line}</Typography>
+                                                        </ListItemText> 
+                                                    </Box>
+                                                </Grid>
+                                                <Grid item width="75%">
                                                     <ListItemText>
-                                                        <Typography align="center" fontWeight='bold' fontSize={15}>line {line}</Typography>
-                                                    </ListItemText> 
-                                                </Box>
+                                                        <Typography fontSize={13} style={{ marginLeft: "5%" }}>{content+" "+contents[content]}</Typography>
+                                                    </ListItemText>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item width="75%">
-                                                <ListItemText>
-                                                    <Typography fontSize={13} style={{ marginLeft: "5%" }}>{content+" "+contents[content]}</Typography>
-                                                </ListItemText>
-                                            </Grid>
-                                        </Grid>
-                                    </ListItem>
-                                    </List>                                
+                                        </ListItem>
+                                        </List>                                
+                                ))
                             ))
                         ))
-                    ))
-                }
+                    }
+                </Box>
 
                 {/* <Grid container sx={{ml:3, mt:2}}>
                     <Grid item width="15%">
