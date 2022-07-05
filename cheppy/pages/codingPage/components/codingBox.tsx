@@ -35,13 +35,15 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
             console.log("postFeedback success");
             let cnt = 0;
             let line_arr: string[] = [];
-            let content_arr: string[] = [];
+            let content_key_arr: string[] = [];
+            let content_val_arr: string[] = [];
             const hint = Object.keys(res.data).map((line) => (
                 res.data[line].map((contents) => (
                     Object.keys(contents).map((content) => (
                         cnt++,
                         line_arr.push(line),
-                        content_arr.push(content+" "+contents[content])
+                        content_key_arr.push(content),
+                        content_val_arr.push(contents[content])
                     ))
                 ))
             ));
@@ -55,10 +57,12 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
             
             let solution_payload: SolutionReduxState = {
                 all_lines: line_arr,
-                all_contents: content_arr,
+                all_contents_key: content_key_arr,
+                all_contents_val: content_val_arr,
                 cur_num: 0,
                 cur_line: line_arr[0],
-                cur_content: content_arr[0],
+                cur_content_key: content_key_arr[0],
+                cur_content_val: content_val_arr[0],
                 remain_num: cnt,
             }
             console.log(solution_payload);

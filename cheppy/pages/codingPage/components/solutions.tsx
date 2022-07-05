@@ -7,11 +7,17 @@ import { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../../store/modules";
 import * as solutionActions from "../../../store/modules/solution";
+import { codeActions } from '../../../store/modules/code';
 
 const Solutions = () =>{
     const dispatch = useDispatch();
     const codeValue = useSelector((state: RootState) => state.code);
     const solutionValue = useSelector((state: RootState) => state.solution);
+
+    console.log(codeValue);
+    // const setCode = useCallback((code) => {
+    //     dispatch(codeActions.setCode(code));
+    // }, [dispatch]);
 
     const setNextSolution = useCallback(()=>{
         dispatch(solutionActions.setCurSolution());
@@ -21,7 +27,7 @@ const Solutions = () =>{
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+        // setAnchorEl(event.currentTarget);
         setNextSolution();
     };
     
@@ -60,7 +66,7 @@ const Solutions = () =>{
                         {solutionValue.cur_line}번째 줄
                     </Typography>
                     <Button variant="outlined" style={{ marginLeft: "20%", marginTop: 10 }} onClick={handleClick}>
-                        {solutionValue.cur_content}
+                        {solutionValue.cur_content_key} {solutionValue.cur_content_val}
                     </Button>
                     <Popover id={id} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
                         <Typography sx={{ p: 2 }}>

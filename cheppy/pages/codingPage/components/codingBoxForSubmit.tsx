@@ -7,8 +7,12 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
 import router from 'next/router';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/modules';
 
 const CodingBoxForSubmit = () =>{
+    const codeValue = useSelector((state: RootState) => state.code);
+
     return(
         <>
             <Box sx={{height: '90vh', width: '50vw', border: 1, borderColor: '#bdbdbd' }} >
@@ -18,7 +22,9 @@ const CodingBoxForSubmit = () =>{
                     <Editor
                         height="70vh"
                         defaultLanguage="python"
-                        defaultValue="# some comment"/>
+                        defaultValue="# some comment"
+                        value={codeValue.content}
+                    />
                 </Box>
             </Box>
         </>
