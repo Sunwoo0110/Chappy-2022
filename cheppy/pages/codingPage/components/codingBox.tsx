@@ -12,39 +12,57 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../../store/modules";
 import * as codeActions from "../../../store/modules/code";
 import * as feedbackActions from "../../../store/modules/feedback";
+import * as solutionActions from "../../../store/modules/solution";
 import { FeedbackReduxState } from '../../../store/modules/feedback';
+import { SolutionReduxState } from '../../../store/modules/solution';
 
 const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const dispatch = useDispatch();
     const codeValue = useSelector((state: RootState) => state.code);
+    const feedbackValue = useSelector((state: RootState) => state.feedback);
+    const solutionValue = useSelector((state: RootState) => state.solution);
+
     const getCodeEvent = useCallback((code)=>{
         dispatch(codeActions.setCode(code));
     }, [dispatch]);
 
-    const feedbackValue = useSelector((state: RootState) => state.feedback);
-    const getFeedback = useCallback(async (code)=>{
+    const setFeedback = useCallback(async (code)=>{
         await axios.post('http://localhost:4000/feedback/get_feedback', {
             //feedback api 완성되면 연결
             code
         })
         .then((res) => {
             console.log("postFeedback success");
-            console.log(res.data);
             let cnt = 0;
+            let line_arr: string[] = [];
+            let content_arr: string[] = [];
             const hint = Object.keys(res.data).map((line) => (
                 res.data[line].map((contents) => (
                     Object.keys(contents).map((content) => (
-                        cnt++
+                        cnt++,
+                        line_arr.push(line),
+                        content_arr.push(content+" "+contents[content])
                     ))
                 ))
             ));
-            console.log(typeof res.data);
-            let payload: FeedbackReduxState = {
+
+            let feedback_payload: FeedbackReduxState = {
                 content: Object(res.data),
                 num: cnt,
             };
-            console.log(payload);        
-            dispatch(feedbackActions.getFeedback(payload));
+            console.log(feedback_payload);        
+            dispatch(feedbackActions.getFeedback(feedback_payload));
+            
+            let solution_payload: SolutionReduxState = {
+                all_lines: line_arr,
+                all_contents: content_arr,
+                cur_num: 0,
+                cur_line: line_arr[0],
+                cur_content: content_arr[0],
+                remain_num: cnt,
+            }
+            console.log(solution_payload);
+            dispatch(solutionActions.getAllSolution(solution_payload));
         })
         .catch(error => {
             console.log("postFeedback failed");
@@ -76,7 +94,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const gradingClick = async () => {
         await getCodeEvent(editorRef.current.getValue());
         //feedback api 연결 필요
-        await getFeedback(editorRef.current.getValue());
+        await setFeedback(editorRef.current.getValue());
         modeChanger(0);
     }
 
@@ -100,7 +118,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const submitClick = async () => {
         await getCodeEvent(editorRef.current.getValue());
         // feedback api 연결 필요
-        await getFeedback(editorRef.current.getValue());
+        await setFeedback(editorRef.current.getValue());
         modeChanger(2);
     }
      

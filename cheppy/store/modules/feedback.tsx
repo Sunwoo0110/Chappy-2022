@@ -1,6 +1,3 @@
-import axios from "axios";
-import internal from "stream";
-
 export const GET_FEEDBACK = "feedback/GET_FEEDBACK";
 
 export const getFeedback = (payload: any) => {
@@ -17,7 +14,6 @@ export interface FeedbackReduxState{
     num: number;
 }
 
-// const initialState: JSON|null = null;
 const initialState: FeedbackReduxState = {
     content: null,
     num: 0,
