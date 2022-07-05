@@ -8,10 +8,9 @@ export const getAllSolution = (payload: any) => {
     };
 }
 
-export const setCurSolution = (payload: any) => {
+export const setCurSolution = () => {
     return{
         type: SET_CUR_SOLUTION,
-        payload,
     };
 }
 
@@ -48,11 +47,18 @@ export default function reducer(state=initialState, action: any){
             }
         
         case SET_CUR_SOLUTION:
+            if(state.remain_num==1){
+                return {...state,
+                    remain_num: state.remain_num - 1,
+                }
+            }
+
+            const cur = state.cur_num + 1;
             return {...state,
-                cur_num: action.payload.cur_num,
-                cur_line: action.payload.cur_line,
-                cur_content: action.payload.cur_content,
-                remain_num: action.payload.remain_num
+                cur_num: cur,
+                cur_line: state.all_lines[cur],
+                cur_content: state.all_contents[cur],
+                remain_num: state.remain_num - 1,
             }    
 
         default:
