@@ -6,6 +6,6 @@ router.get("/", ctrl.get_root);
 // router.get("/add/:title", ctrl.get_add_title);
 // router.get("/click/:title", ctrl.get_click_title);
 router.post("/run", ctrl.post_run_code);
-router.put("/grade/:num", ctrl.post_run_code);
+router.put("/grade/:num", ctrl.put_grade_code);
 
 module.exports = router;

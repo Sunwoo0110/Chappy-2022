@@ -8,25 +8,22 @@ import axios from "axios";
 import Editor from "@monaco-editor/react";
 import router from 'next/router';
 
-const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
+const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result, tc_resultChanger}) =>{
 
     const [value, setValue] = useState('');
 
-    // const editorRef = useRef(null);
-
-    // function handleEditorDidMount(editor, monaco) {
-    //     editorRef.current = editor; 
-    // }
-
+    /* 작성된 코드 값 받아오기 */
     const handleEditorChange = (event) => {
         // console.log(event);
         setValue(event)
     }
 
+    /* 채점 버튼 */
     const gradingClick = async () => {
         modeChanger(0);
     }
 
+    /* 실행 버튼 */ 
     const executionClick = async () => {
         
         //showValue();
@@ -36,7 +33,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
             .then((res) => {
                 console.log("success");
                 console.log(res.data.result);
-                resultChanger(res.data.result);
+                exe_resultChanger(res.data.result);
             })
             .catch(error => {
                 console.log("failed");
@@ -45,6 +42,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
             modeChanger(1);
     }    
 
+    /* 제출 버튼 */
     const submitClick = () => {
         modeChanger(2);
     }
@@ -63,7 +61,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
                     <Editor
                         height="70vh"
                         defaultLanguage="python"
-                        defaultValue="# some comment"
+                        defaultValue="## code here"
                         onChange={handleEditorChange}/>
                 </Box>
 

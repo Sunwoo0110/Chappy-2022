@@ -18,8 +18,12 @@ import CodingBoxForSubmit from "./components/codingBoxForSubmit";
 const CodingPage: NextPage = () => {
     const [mode, setMode] = useState(0);
 
-    const [execution_res, setExecution] = useState("");
+    const [execution_res, setExecution_Res] = useState("");
+    const [testcase_res, setTestcase_Res] = useState([]);
 
+    /* mode: 0 채점 */
+    /* mode: 1 실행 */
+    /* mode: 2 제출 */
     return (
     <>
         <Header/>
@@ -36,7 +40,9 @@ const CodingPage: NextPage = () => {
                 </>
                 :
                     <>
-                    <CodingBox mode={mode} modeChanger={setMode} result={execution_res} resultChanger={setExecution}/>
+                    <CodingBox mode={mode} modeChanger={setMode} 
+                    exe_result={execution_res} exe_resultChanger={setExecution_Res} 
+                    tc_result={testcase_res} tc_resultChanger={setTestcase_Res} />
                     </>
             }
                 
