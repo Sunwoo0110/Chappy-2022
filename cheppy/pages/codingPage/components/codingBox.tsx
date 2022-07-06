@@ -2,47 +2,53 @@ import {Box, Button, Grid, InputAdornment, Stack, TextField, Typography} from '@
 import { GET_USER, GET_USER_BY_USERID } from '../../../database/constants'
 import { DataUsageTwoTone } from '@mui/icons-material';
 import Link from "next/link"
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
 import router from 'next/router';
 
-const CodingBox = () =>{
+const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
 
     const [value, setValue] = useState('');
+
+    const editorRef = useRef(null);
+
+    function handleEditorDidMount(editor, monaco) {
+        editorRef.current = editor; 
+    }
 
     const handleEditorChange = (event) => {
         // console.log(event);
         setValue(event)
     }
 
-    const executionClick = async () => {;
-        // router.push('../../codingExecution')
+    const gradingClick = async () => {
+        modeChanger(0);
+    }
 
+    const executionClick = async () => {
+        
+        //showValue();
         await axios.post('http://localhost:4000/runcode/run', {
-                code: "print(\"hello world\")"
+                code: editorRef.current.getValue()
             })
             .then((res) => {
+                console.log("success");
                 console.log(res.data.result);
+                resultChanger(res.data.result);
             })
             .catch(error => {
+                console.log("failed");
                 console.log(error.response)
             })
-
-    }
+            modeChanger(1);
+    }    
 
     const submitClick = () => {
-        router.push('../../codingSubmit')
+        modeChanger(2);
     }
-
-    
-    const editorRef = useRef(null);
-
-    function handleEditorDidMount(editor, monaco) {
-        editorRef.current = editor; 
-    }
-    
+     
     function showValue() {
         alert(editorRef.current.getValue());
     }
@@ -57,12 +63,12 @@ const CodingBox = () =>{
                     <Editor
                         height="70vh"
                         defaultLanguage="python"
-                        defaultValue="// some comment"
-                        onChange={handleEditorChange}/>
+                        defaultValue="# some comment"
+                        onMount={handleEditorDidMount}/>
                 </Box>
 
                 <Button variant="contained" style={{ marginLeft: '1%' }} onClick={executionClick}>실행</Button>
-                <Button variant="contained" style={{ marginLeft: '1%' }} >채점</Button>
+                <Button variant="contained" style={{ marginLeft: '1%' }} onClick={gradingClick}>채점</Button>
                 <Button variant="contained" color="error" style={{ marginLeft: "70%" }} onClick={submitClick}>제출</Button>
             </Box>
         </>
