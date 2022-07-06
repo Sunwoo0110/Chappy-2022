@@ -32,7 +32,8 @@ const Hint = () =>{
                     </Grid>
                 </Box>
 
-                <Box sx={{width: '30vw', height: 100}}>
+
+                <Box sx={{height:'40vh', overflow: 'scroll'}}>
                     {hintValue.content == null &&
                         <div>Loading ... </div>
                     }

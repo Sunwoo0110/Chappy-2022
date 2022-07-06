@@ -11,8 +11,10 @@ const ExecuteResult = ({result}) =>{
                     <Typography fontWeight='bold' fontSize={15} style={{ marginLeft: "3%", color: 'white'}}>실행결과</Typography>
                 </Box>
 
-                <Typography fontSize={13} style={{ marginLeft: "3%", marginTop:10}}>출력값:</Typography>
-                <Typography fontSize={13} style={{ marginLeft: "3%"}}>{result}</Typography>
+                <Box sx={{height:'85vh', overflow: 'scroll'}}>
+                    <Typography fontSize={13} style={{ marginLeft: "3%", marginTop:10}}>출력값:</Typography>
+                    <Typography fontSize={13} style={{ marginLeft: "3%"}}>{result}</Typography>
+                </Box>
             </Box>
         </>
     )

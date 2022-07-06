@@ -46,21 +46,23 @@ const Result = ({result}) => {
 
     return(
         <>
-            <Box sx={{width: '25vw', marginBottom:3}} >
+            <Box sx={{width: '25vw'}} >
                 <Box sx={{ height: 40, backgroundColor: "#414E5A", pt:1.2}}>
                     <Typography fontWeight='bold' fontSize={15} style={{ marginLeft: "3%", color: 'white'}}>채점 결과</Typography>
                 </Box>
 
-                <Typography fontSize={13} style={{ marginLeft: "3%", marginTop:10}}>{`bwj2800님의 채점 결과는 ${grade_res} 입니다.`}</Typography>
+                <Box sx={{ height:'40vh', overflow: 'scroll'}}>
+                    <Typography fontSize={13} style={{ marginLeft: "3%", marginTop:10}}>{`bwj2800님의 채점 결과는 ${grade_res} 입니다.`}</Typography>
 
-                <Typography fontSize={13} style={{ marginLeft: "3%", marginTop:10}}>{`총점: ${grade}`}</Typography>
+                    <Typography fontSize={13} style={{ marginLeft: "3%", marginTop:10}}>{`총점: ${grade}`}</Typography>
 
-                <List sx={{ width: '100', height: '100'}}>
-                        {result &&
-                            result.map((v, inx) => {
-                                return <Row key={inx} row={v} number={inx}/>
-                            })}
-                </List>
+                    <List sx={{ width: '100', height: '100'}}>
+                            {result &&
+                                result.map((v, inx) => {
+                                    return <Row key={inx} row={v} number={inx}/>
+                                })}
+                    </List>
+                </Box>
 
                 {/* <Typography fontWeight='bold' fontSize={13} style={{ marginLeft: "3%", marginTop:30, marginBottom:10, backgroundColor:"#fcf6d2" }}>테스트케이스 1번: Fail</Typography>
                 <Typography fontSize={13} style={{ marginLeft: "3%" }}>입력값: main([1, 1, 1, 2, 3])</Typography>

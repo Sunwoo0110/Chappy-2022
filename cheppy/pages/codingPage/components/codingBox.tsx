@@ -181,7 +181,7 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
                     <Editor
                         height="70vh"
                         defaultLanguage="python"
-                        defaultValue="## code here"
+                        defaultValue="def main(lst):"
                         onChange={handleEditorChange}/>
                 </Box>
 
