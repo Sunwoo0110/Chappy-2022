@@ -9,13 +9,13 @@ function runPython() {
     return new Promise((resolve) => {
         run.stdout.on('data',  function(data) {
             result = data.toString();
-            console.log("stdout: " + result);
+            // console.log("stdout: " + result);
             resolve(result);
         });
 
         run.stderr.on('data',  function(data) {
             result = data.toString();
-            console.log("stderr: " + result);
+            // console.log("stderr: " + result);
             resolve(result);
         });
         
