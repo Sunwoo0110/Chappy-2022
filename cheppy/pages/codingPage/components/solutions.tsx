@@ -27,8 +27,6 @@ const Solutions = () =>{
         dispatch(solutionActions.setCurSolution());
     }, [dispatch]);
 
-    const [curFeedback, setCur] = useState("");
-
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         // setAnchorEl(event.currentTarget);
@@ -58,6 +56,12 @@ const Solutions = () =>{
                         </Grid>
                     </Grid>
                 </Box>
+
+                {solutionValue.remain_num==-1 && 
+                    <Typography fontSize={14} fontWeight='bold' style={{ marginLeft: "20%", marginTop: 15 }}>
+                        Server Error
+                    </Typography>                
+                }
 
                 {solutionValue.remain_num==0 && 
                     <Typography fontSize={14} fontWeight='bold' style={{ marginLeft: "20%", marginTop: 15 }}>

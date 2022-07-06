@@ -19,12 +19,46 @@ import { SolutionReduxState } from '../../../store/modules/solution';
 const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const dispatch = useDispatch();
     const codeValue = useSelector((state: RootState) => state.code);
-    const feedbackValue = useSelector((state: RootState) => state.hint);
+    const hintValue = useSelector((state: RootState) => state.hint);
     const solutionValue = useSelector((state: RootState) => state.solution);
 
     const getCodeEvent = useCallback((code)=>{
         dispatch(codeActions.setCode(code));
     }, [dispatch]);
+
+    const setHint = useCallback(async (code)=>{
+        await axios.post('http://localhost:4000/hint/get_hint', {
+            //feedback api 완성되면 연결
+            code
+        })
+        .then((res) => {
+            console.log("postHint success");
+            let cnt = 0;
+            const hint = Object.keys(res.data).map((line) => (
+                res.data[line].map((contents) => (
+                    Object.keys(contents).map((content) => (
+                        cnt++
+                    ))
+                ))
+            ));
+
+            let payload: HintReduxState = {
+                content: Object(res.data),
+                num: cnt,
+            };
+            dispatch(hintActions.getHint(payload));
+        })
+        .catch(error => {
+            console.log("postHint failed");
+            console.log(error.response);
+            let payload: HintReduxState = {
+                content: "Server Error",
+                num: -1,
+            };        
+            dispatch(hintActions.getHint(payload));
+        })
+    }, [dispatch]);
+
 
     const setFeedback = useCallback(async (code)=>{
         await axios.post('http://localhost:4000/feedback/get_feedback', {
@@ -48,14 +82,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
                 ))
             ));
 
-            let hint_payload: HintReduxState = {
-                content: Object(res.data),
-                num: cnt,
-            };
-            console.log(hint_payload);        
-            dispatch(hintActions.getHint(hint_payload));
-            
-            let solution_payload: SolutionReduxState = {
+            let payload: SolutionReduxState = {
                 all_lines: line_arr,
                 all_contents_key: content_key_arr,
                 all_contents_val: content_val_arr,
@@ -64,23 +91,25 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
                 cur_content_key: content_key_arr[0],
                 cur_content_val: content_val_arr[0],
                 remain_num: cnt,
-            }
-            console.log(solution_payload);
-            dispatch(solutionActions.getAllSolution(solution_payload));
+            };
+            dispatch(solutionActions.getAllSolution(payload));
         })
         .catch(error => {
             console.log("postFeedback failed");
             console.log(error.response);
-            let payload: HintReduxState = {
-                content: "Server Error",
-                num: 0,
-            };        
-            dispatch(hintActions.getHint(payload));
+            let payload: SolutionReduxState = {
+                all_lines: [],
+                all_contents_key: [],
+                all_contents_val: [],
+                cur_num: -1,
+                cur_line: null,
+                cur_content_key: null,
+                cur_content_val: null,
+                remain_num: -1
+            };
+            dispatch(solutionActions.getAllSolution(payload));
         })
     }, [dispatch]);
-
-    // console.log(codeValue);
-    console.log(feedbackValue);
 
     const [value, setValue] = useState('');
 
@@ -98,7 +127,8 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const gradingClick = async () => {
         await getCodeEvent(editorRef.current.getValue());
         //feedback api 연결 필요
-        await setFeedback(editorRef.current.getValue());
+        await setHint(editorRef.current.getValue());
+        // await setFeedback(editorRef.current.getValue());
         modeChanger(0);
     }
 
@@ -122,6 +152,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const submitClick = async () => {
         await getCodeEvent(editorRef.current.getValue());
         // feedback api 연결 필요
+        // await setHint(editorRef.current.getValue());
         await setFeedback(editorRef.current.getValue());
         modeChanger(2);
     }

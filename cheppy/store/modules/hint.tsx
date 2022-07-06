@@ -22,7 +22,6 @@ const initialState: HintReduxState = {
 export default function reducer(state=initialState, action: any){
     switch(action.type){
         case GET_HINT:
-            console.log(action);
             return {...state, content: action.payload.content, num: action.payload.num}
 
         default:

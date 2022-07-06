@@ -37,10 +37,11 @@ const Hint = () =>{
                         <div>Loading ... </div>
                     }
 
-                    {hintValue.content == "Server Error" &&
+                    {hintValue.num == -1 &&
                         <div>{hintValue.content} </div>
                     }
 
+                    {/* scroll needed */}
                     {hintValue.content != null && hintValue.content != "Server Error" && 
                         Object.keys(hintValue.content).map((line) => (
                             hintValue.content[line].map((contents) => (

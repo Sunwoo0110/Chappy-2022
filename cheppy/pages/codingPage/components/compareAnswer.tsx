@@ -8,6 +8,7 @@ import { RootState } from '../../../store/modules';
 
 const CompareAnswer = () =>{
     const codeValue = useSelector((state: RootState) => state.code);
+    // style needs to be fixed
     const newStyles = {
         variables: {
           light: {
@@ -25,6 +26,7 @@ const CompareAnswer = () =>{
                 </Box>
             </Box>
 
+            {/* scroll needed */}
             <Box sx={{width: '25vw'}}>
                 <ReactDiffViewer
                     oldValue={codeValue.originStr}
