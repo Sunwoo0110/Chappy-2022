@@ -20,8 +20,33 @@ exports.post_test = async (req, res) => {
 // get feedback
 exports.get_feedback = async (req, res) => {
     try{
+        let dummyFeedback = {
+            "2":[
+                {
+                  "Delete":"this statement"
+                }, 
+                {	
+                  "Insert":"    if lst==[]"
+                }
+                ],
+            "3":[
+                {
+                  "Insert":"        return []"
+                }
+                ],
+            "4":[
+                {
+                    "Insert":"  else:"
+                }
+                ],    
+            "5":[
+                {
+                    "Insert":"      result=[lst[0]]"
+                }
+                ]        
+            };
         console.log(req.body);     
-        res.send("success");      
+        res.send(dummyFeedback);      
     } catch (err) {
         console.log("error!!");
         console.log(err);
@@ -29,15 +54,6 @@ exports.get_feedback = async (req, res) => {
     }
 }
 
-// get Insert
-exports.get_insert = async (req, res) => {
-    try{    
-        
-    } catch (err) {
-        console.log("error!!");
-        console.log(err);
-        res.send("error");
-    }
-}
+
 
 

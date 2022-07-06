@@ -7,10 +7,110 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
 import router from 'next/router';
+import { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from "../../../store/modules";
+import * as codeActions from "../../../store/modules/code";
+import * as hintActions from "../../../store/modules/hint";
+import * as feedbackActions from "../../../store/modules/feedback";
+import { HintReduxState } from '../../../store/modules/hint';
+import { FeedbackReduxState } from '../../../store/modules/feedback';
 
-const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result, tc_resultChanger}) =>{
-
+const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result, tc_resultChanger}) => {
+    const dispatch = useDispatch();
     const [value, setValue] = useState('');
+    const codeValue = useSelector((state: RootState) => state.code);
+    const hintValue = useSelector((state: RootState) => state.hint);
+    const feedbackValue = useSelector((state: RootState) => state.feedback);
+
+    const getCodeEvent = useCallback((code)=>{
+        dispatch(codeActions.setCode(code));
+    }, [dispatch]);
+
+    const setHint = useCallback(async (code)=>{
+        await axios.post('http://localhost:4000/hint/get_hint', {
+            //feedback api 완성되면 연결
+            code
+        })
+        .then((res) => {
+            console.log("postHint success");
+            let cnt = 0;
+            const hint = Object.keys(res.data).map((line) => (
+                res.data[line].map((contents) => (
+                    Object.keys(contents).map((content) => (
+                        cnt++
+                    ))
+                ))
+            ));
+
+            let payload: HintReduxState = {
+                content: Object(res.data),
+                num: cnt,
+            };
+            dispatch(hintActions.getHint(payload));
+        })
+        .catch(error => {
+            console.log("postHint failed");
+            console.log(error.response);
+            let payload: HintReduxState = {
+                content: "Server Error",
+                num: -1,
+            };        
+            dispatch(hintActions.getHint(payload));
+        })
+    }, [dispatch]);
+
+
+    const setFeedback = useCallback(async (code)=>{
+        await axios.post('http://localhost:4000/feedback/get_feedback', {
+            //feedback api 완성되면 연결
+            code
+        })
+        .then((res) => {
+            console.log("postFeedback success");
+            let cnt = 0;
+            let line_arr: string[] = [];
+            let content_key_arr: string[] = [];
+            let content_val_arr: string[] = [];
+            const hint = Object.keys(res.data).map((line) => (
+                res.data[line].map((contents) => (
+                    Object.keys(contents).map((content) => (
+                        cnt++,
+                        line_arr.push(line),
+                        content_key_arr.push(content),
+                        content_val_arr.push(contents[content])
+                    ))
+                ))
+            ));
+
+            let payload: FeedbackReduxState = {
+                all_lines: line_arr,
+                all_contents_key: content_key_arr,
+                all_contents_val: content_val_arr,
+                cur_num: 0,
+                cur_line: line_arr[0],
+                cur_content_key: content_key_arr[0],
+                cur_content_val: content_val_arr[0],
+                remain_num: cnt,
+            };
+            dispatch(feedbackActions.getAllFeedback(payload));
+        })
+        .catch(error => {
+            console.log("postFeedback failed");
+            console.log(error.response);
+            let payload: FeedbackReduxState = {
+                all_lines: [],
+                all_contents_key: [],
+                all_contents_val: [],
+                cur_num: -1,
+                cur_line: null,
+                cur_content_key: null,
+                cur_content_val: null,
+                remain_num: -1
+            };
+            dispatch(feedbackActions.getAllFeedback(payload));
+        })
+    }, [dispatch]);
 
     /* 작성된 코드 값 받아오기 */
     const handleEditorChange = (event) => {
@@ -20,12 +120,15 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
 
     /* 채점 버튼 */
     const gradingClick = async () => {
+        await getCodeEvent(value);
+        //feedback api 연결 필요
+        await setHint(value);
+        // await setFeedback(editorRef.current.getValue());
         modeChanger(0);
     }
 
     /* 실행 버튼 */ 
     const executionClick = async () => {
-        
         //showValue();
         await axios.post('http://localhost:4000/runcode/run', {
                 code: value
@@ -42,8 +145,11 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
             modeChanger(1);
     }    
 
-    /* 제출 버튼 */
-    const submitClick = () => {
+    const submitClick = async () => {
+        await getCodeEvent(value);
+        // feedback api 연결 필요
+        // await setHint(editorRef.current.getValue());
+        await setFeedback(value);
         modeChanger(2);
     }
     
