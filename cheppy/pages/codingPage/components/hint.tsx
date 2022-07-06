@@ -26,7 +26,7 @@ const Hint = () =>{
                         </Grid>
                         <Grid item width="8%">
                             <Box sx={{ backgroundColor: "#FFD600", borderRadius: 2}}>
-                                <Typography fontWeight='bold' fontSize={13}  align="center">+{hintValue.num}</Typography>
+                                <Typography fontWeight='bold' fontSize={13}  align="center">{hintValue.num}+</Typography>
                             </Box>
                         </Grid>
                     </Grid>

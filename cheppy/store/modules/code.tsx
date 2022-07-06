@@ -1,41 +1,69 @@
 export const SET_CODE = "code/SET_CODE";
 export const CHANGE_CODE = "code/CHANGE_CODE"
 
-export const setCode = (payload_set: any) => {
+export const setCode = (payload: any) => {
     return{
         type: SET_CODE,
-        payload_set,
+        payload,
     };
 };
 
-export const changeCode = (payload_change: any) => {
+export const changeCode = (payload: any) => {
     return{
-        type: SET_CODE,
-        payload_change,
+        type: CHANGE_CODE,
+        payload,
     };
 }
 
 export const codeActions = {setCode, changeCode};
 
 interface CodeReduxState{
-    content: string|null;
+    originStr: string|null;
+    curStr: string|null;
+    curArr: string[];
 }
 
 const initialState: CodeReduxState = {
-    content: null,
+    originStr: null,
+    curStr: null,
+    curArr: []
 };
 
 export default function reducer(state=initialState, action: any){
     switch(action.type){
         case SET_CODE:
-            const newState = {...state, content: action.payload_set};
+            let codeStr = action.payload;
+            let codeArr = codeStr.split("\r\n");
+
+            const newState = {...state, 
+                originStr: codeStr, 
+                curStr: codeStr,
+                curArr: codeArr, 
+            };
+
             return newState;
 
         case CHANGE_CODE:
-            let line: number = Number(action.payload_change.line);
-            let content: string = action.payload_change.content;
+            let line: number = Number(action.payload.line)-1;
+            let contentKey: string = action.payload.contentKey;
+            let contentVal: string = action.payload.contentVal;
+            let changedArr = state.curArr;
+            
+            if(contentKey.includes("Delete")){
+                changedArr[line]="";
+            }
+            else{
+                if(line>=changedArr.length)
+                    changedArr.push(contentVal);
+                else
+                    changedArr[line]=contentVal;
+            }
+            
+            let changedCode: string = changedArr.join("\r\n");
 
             return {...state,
+                curStr: changedCode,
+                curArr: changedArr,
             };
 
         default:

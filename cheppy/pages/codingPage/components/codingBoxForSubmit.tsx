@@ -23,7 +23,7 @@ const CodingBoxForSubmit = () =>{
                         height="70vh"
                         defaultLanguage="python"
                         defaultValue="# some comment"
-                        value={codeValue.content}
+                        value={codeValue.curStr}
                     />
                 </Box>
             </Box>

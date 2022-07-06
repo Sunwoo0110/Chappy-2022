@@ -14,10 +14,14 @@ const Solutions = () =>{
     const codeValue = useSelector((state: RootState) => state.code);
     const solutionValue = useSelector((state: RootState) => state.solution);
 
-    console.log(codeValue);
-    // const setCode = useCallback((code) => {
-    //     dispatch(codeActions.setCode(code));
-    // }, [dispatch]);
+    const applySolutionCode = useCallback(()=>{
+        let payload = {
+            line: solutionValue.cur_line,
+            contentKey: solutionValue.cur_content_key,
+            contentVal: solutionValue.cur_content_val,
+        };
+        dispatch(codeActions.changeCode(payload));
+    }, [dispatch, solutionValue.cur_content_key, solutionValue.cur_content_val, solutionValue.cur_line]);
 
     const setNextSolution = useCallback(()=>{
         dispatch(solutionActions.setCurSolution());
@@ -26,9 +30,10 @@ const Solutions = () =>{
     const [curFeedback, setCur] = useState("");
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         // setAnchorEl(event.currentTarget);
-        setNextSolution();
+        await applySolutionCode();
+        await setNextSolution();
     };
     
     const handleClose = () => {
@@ -48,7 +53,7 @@ const Solutions = () =>{
                         </Grid>
                         <Grid item width="8%">
                             <Box sx={{ backgroundColor: "#FFD600", borderRadius: 2}}>
-                                <Typography fontWeight='bold' fontSize={13}  align="center">+{solutionValue.remain_num}</Typography>
+                                <Typography fontWeight='bold' fontSize={13}  align="center">{solutionValue.remain_num}+</Typography>
                             </Box>
                         </Grid>
                     </Grid>
