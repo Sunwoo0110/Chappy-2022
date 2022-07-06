@@ -1,22 +1,22 @@
-export const GET_ALL_SOLUTION = "solution/GET_ALL_SOLUTION"
-export const SET_CUR_SOLUTION = "soution/GET_CUR_SOLUTION";
+export const GET_ALL_FEEDBACK = "feedback/GET_ALL_FEEDBACK"
+export const SET_CUR_FEEDBACK = "feedback/SET_CUR_FEEDBACK";
 
-export const getAllSolution = (payload: any) => {
+export const getAllFeedback = (payload: any) => {
     return{
-        type: GET_ALL_SOLUTION,
+        type: GET_ALL_FEEDBACK,
         payload,
     };
 }
 
-export const setCurSolution = () => {
+export const setCurFeedback = () => {
     return{
-        type: SET_CUR_SOLUTION,
+        type: SET_CUR_FEEDBACK,
     };
 }
 
-export const solutionActions = {getAllSolution, setCurSolution};
+export const solutionActions = {getAllFeedback, setCurFeedback};
 
-export interface SolutionReduxState{
+export interface FeedbackReduxState{
     all_lines: string[];
     all_contents_key: string[];
     all_contents_val: string[];
@@ -27,7 +27,7 @@ export interface SolutionReduxState{
     remain_num: number;
 }
 
-const initialState: SolutionReduxState = {
+const initialState: FeedbackReduxState = {
     all_lines: [],
     all_contents_key: [],
     all_contents_val: [],
@@ -40,7 +40,7 @@ const initialState: SolutionReduxState = {
 
 export default function reducer(state=initialState, action: any){
     switch(action.type){
-        case GET_ALL_SOLUTION:
+        case GET_ALL_FEEDBACK:
             return {...state,
                 all_lines: action.payload.all_lines, 
                 all_contents_key: action.payload.all_contents_key, 
@@ -52,7 +52,7 @@ export default function reducer(state=initialState, action: any){
                 remain_num: action.payload.remain_num
             }
         
-        case SET_CUR_SOLUTION:
+        case SET_CUR_FEEDBACK:
             if(state.remain_num==1){
                 return {...state,
                     remain_num: state.remain_num - 1,

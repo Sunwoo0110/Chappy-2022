@@ -12,15 +12,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../../store/modules";
 import * as codeActions from "../../../store/modules/code";
 import * as hintActions from "../../../store/modules/hint";
-import * as solutionActions from "../../../store/modules/solution";
+import * as feedbackActions from "../../../store/modules/feedback";
 import { HintReduxState } from '../../../store/modules/hint';
-import { SolutionReduxState } from '../../../store/modules/solution';
+import { FeedbackReduxState } from '../../../store/modules/feedback';
 
 const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const dispatch = useDispatch();
     const codeValue = useSelector((state: RootState) => state.code);
     const hintValue = useSelector((state: RootState) => state.hint);
-    const solutionValue = useSelector((state: RootState) => state.solution);
+    const feedbackValue = useSelector((state: RootState) => state.feedback);
 
     const getCodeEvent = useCallback((code)=>{
         dispatch(codeActions.setCode(code));
@@ -82,7 +82,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
                 ))
             ));
 
-            let payload: SolutionReduxState = {
+            let payload: FeedbackReduxState = {
                 all_lines: line_arr,
                 all_contents_key: content_key_arr,
                 all_contents_val: content_val_arr,
@@ -92,12 +92,12 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
                 cur_content_val: content_val_arr[0],
                 remain_num: cnt,
             };
-            dispatch(solutionActions.getAllSolution(payload));
+            dispatch(feedbackActions.getAllFeedback(payload));
         })
         .catch(error => {
             console.log("postFeedback failed");
             console.log(error.response);
-            let payload: SolutionReduxState = {
+            let payload: FeedbackReduxState = {
                 all_lines: [],
                 all_contents_key: [],
                 all_contents_val: [],
@@ -107,7 +107,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
                 cur_content_val: null,
                 remain_num: -1
             };
-            dispatch(solutionActions.getAllSolution(payload));
+            dispatch(feedbackActions.getAllFeedback(payload));
         })
     }, [dispatch]);
 

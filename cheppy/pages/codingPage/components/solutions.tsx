@@ -6,13 +6,13 @@ import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../../store/modules";
-import * as solutionActions from "../../../store/modules/solution";
+import * as feedbackActions from "../../../store/modules/feedback";
 import { codeActions } from '../../../store/modules/code';
 
 const Solutions = () =>{
     const dispatch = useDispatch();
     const codeValue = useSelector((state: RootState) => state.code);
-    const solutionValue = useSelector((state: RootState) => state.solution);
+    const solutionValue = useSelector((state: RootState) => state.feedback);
 
     const applySolutionCode = useCallback(()=>{
         let payload = {
@@ -23,15 +23,15 @@ const Solutions = () =>{
         dispatch(codeActions.changeCode(payload));
     }, [dispatch, solutionValue.cur_content_key, solutionValue.cur_content_val, solutionValue.cur_line]);
 
-    const setNextSolution = useCallback(()=>{
-        dispatch(solutionActions.setCurSolution());
+    const setNextFeedback = useCallback(()=>{
+        dispatch(feedbackActions.setCurFeedback());
     }, [dispatch]);
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         // setAnchorEl(event.currentTarget);
         await applySolutionCode();
-        await setNextSolution();
+        await setNextFeedback();
     };
     
     const handleClose = () => {

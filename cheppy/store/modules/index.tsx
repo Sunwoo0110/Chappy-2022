@@ -3,13 +3,13 @@ import { HYDRATE } from "next-redux-wrapper";
 import counter from "./counter";
 import code from "./code";
 import hint from "./hint";
-import solution from "./solution";
+import feedback from "./feedback";
 
 const rootReducer = combineReducers({
     counter,
     code,
     hint,
-    solution,
+    feedback,
 });
 
 const reducer = (state, action) => {
