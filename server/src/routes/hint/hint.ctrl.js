@@ -2,8 +2,8 @@
 const { Router } = require("express");
 const router = Router();
 
-// get hint
-exports.get_hint = async (req, res) => {
+// post hint
+exports.post_hint = async (req, res) => {
     try{
         let dummyHint = {
             "2":[

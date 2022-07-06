@@ -16,7 +16,7 @@ import axios from "axios";
 import CodingBoxForSubmit from "./components/codingBoxForSubmit";
 
 const CodingPage: NextPage = () => {
-    const [mode, setMode] = useState(0);
+    const [mode, setMode] = useState(1);
 
     const [execution_res, setExecution_Res] = useState("");
     const [testcase_res, setTestcase_Res] = useState([]);
@@ -51,7 +51,7 @@ const CodingPage: NextPage = () => {
             {
                 mode === 0 ?
                 <>
-                <Result/>
+                <Result result={testcase_res}/>
                 <Hint/> 
                 </>
                 : mode === 1 ?

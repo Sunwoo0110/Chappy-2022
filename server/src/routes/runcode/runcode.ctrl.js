@@ -45,9 +45,9 @@ exports.put_grade_code = async (req,res) => {
         for (var i = 0; i < testcase.input.length; ++i) {
             converter(req.body.code, testcase.input[i]);
             const tc_ouput = await runPython();
-            console.log(testcase.input[i]);
-            console.log(tc_ouput);
-            console.log(testcase.output[i]);
+            // console.log(testcase.input[i]);
+            // console.log(tc_ouput);
+            // console.log(testcase.output[i]);
 
             // tc_output 에 \n 가 존재함
             if (tc_ouput === (testcase.output[i]+'\n')) {

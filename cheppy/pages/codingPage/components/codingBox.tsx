@@ -28,7 +28,7 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
     }, [dispatch]);
 
     const setHint = useCallback(async (code)=>{
-        await axios.post('http://localhost:4000/hint/get_hint', {
+        await axios.post('http://localhost:4000/hint/post_hint', {
             //feedback api 완성되면 연결
             code
         })
@@ -47,7 +47,7 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
                 content: Object(res.data),
                 num: cnt,
             };
-            dispatch(hintActions.getHint(payload));
+            dispatch(hintActions.postHint(payload));
         })
         .catch(error => {
             console.log("postHint failed");
@@ -56,7 +56,7 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
                 content: "Server Error",
                 num: -1,
             };        
-            dispatch(hintActions.getHint(payload));
+            dispatch(hintActions.postHint(payload));
         })
     }, [dispatch]);
 
@@ -124,6 +124,20 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
         //feedback api 연결 필요
         await setHint(value);
         // await setFeedback(editorRef.current.getValue());
+
+        //  문제 번호 추가 필요
+        await axios.put('http://localhost:4000/runcode/grade/1', {
+                code: value
+            })
+            .then((res) => {
+                // console.log("success");
+                console.log(res.data.result);
+                tc_resultChanger(res.data.result);
+            })
+            .catch(error => {
+                console.log("failed");
+                console.log(error.response)
+            })
         modeChanger(0);
     }
 
@@ -134,15 +148,15 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
                 code: value
             })
             .then((res) => {
-                console.log("success");
-                console.log(res.data.result);
+                // console.log("success");
+                // console.log(res.data.result);
                 exe_resultChanger(res.data.result);
             })
             .catch(error => {
                 console.log("failed");
                 console.log(error.response)
             })
-            modeChanger(1);
+        modeChanger(1);
     }    
 
     const submitClick = async () => {

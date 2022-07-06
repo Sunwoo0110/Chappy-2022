@@ -2,6 +2,6 @@ const { Router } = require("express");
 const router = Router();
 const ctrl = require("./hint.ctrl");
 
-router.post("/get_hint", ctrl.get_hint);
+router.post("/post_hint", ctrl.post_hint);
 
 module.exports = router;

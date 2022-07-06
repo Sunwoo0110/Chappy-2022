@@ -1,13 +1,13 @@
-export const GET_HINT = "hint/GET_HINT";
+export const POST_HINT = "hint/POST_HINT";
 
-export const getHint = (payload: any) => {
+export const postHint = (payload: any) => {
     return{
-        type: GET_HINT,
+        type: POST_HINT,
         payload,
     };
 };
 
-export const hintActions = {getHint};
+export const hintActions = {postHint};
 
 export interface HintReduxState{
     content: JSON|null|string|object;
@@ -21,7 +21,7 @@ const initialState: HintReduxState = {
 
 export default function reducer(state=initialState, action: any){
     switch(action.type){
-        case GET_HINT:
+        case POST_HINT:
             return {...state, content: action.payload.content, num: action.payload.num}
 
         default:
