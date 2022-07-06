@@ -1,6 +1,6 @@
 import { all, call, fork } from 'redux-saga/effects';
-import sagaFeedback from './sagaFeedback';
+import sagaHint from './sagaHint';
 
 export default function* rootSaga(){
-    yield all([fork(sagaFeedback)])
+    yield all([fork(sagaHint)])
 }

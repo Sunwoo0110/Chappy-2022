@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../../store/modules";
 
 const Hint = () =>{
-    const hintValue = useSelector((state: RootState) => state.feedback);
+    const hintValue = useSelector((state: RootState) => state.hint);
 
     return(
         <>

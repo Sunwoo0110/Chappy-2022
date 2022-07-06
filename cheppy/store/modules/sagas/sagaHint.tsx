@@ -1,18 +1,18 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects'
 import axios, { AxiosResponse } from 'axios'
-import * as feedbackActions from "../feedback";
-import { FeedbackReduxState } from '../feedback';
+import * as hintActions from "../hint";
+import { HintReduxState } from '../hint';
 
-function* postFeedbackAPI(postData) {
+function* postHintAPI(postData) {
     return axios.post('http://localhost:4000/feedback/get_feedback', {
         //feedback api 완성되면 연결
         //postData
     });
 }
 
-function* loadFeedback(action){
+function* loadHint(action){
     try{
-        const result = yield call(postFeedbackAPI, action.data);
+        const result = yield call(postHintAPI, action.data);
         console.log("postFeedback success");
         console.log(result.data);
         let cnt = 0;
@@ -24,27 +24,27 @@ function* loadFeedback(action){
             ))
         ));
 
-        let payload: FeedbackReduxState = {
-            res: result.data,
+        let payload: HintReduxState = {
+            content: result.data,
             num: cnt,
         };
         yield put(
-            feedbackActions.getFeedback(payload)
+            hintActions.getHint(payload)
         );
     } catch(e){
         console.log(e);
-        let payload: FeedbackReduxState = {
-            res: "Server Error",
+        let payload: HintReduxState = {
+            content: "Server Error",
             num: 0,
         };
         yield put(
-            feedbackActions.getFeedback(payload)
+            hintActions.getHint(payload)
         );
     }
 }
 
-function* sagaFeedback(): Generator {
-    yield all([takeLatest(feedbackActions.GET_FEEDBACK, loadFeedback)]);
+function* sagaHint(): Generator {
+    yield all([takeLatest(hintActions.GET_HINT, loadHint)]);
 }
 
-export default sagaFeedback
+export default sagaHint

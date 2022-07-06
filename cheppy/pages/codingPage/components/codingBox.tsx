@@ -11,15 +11,15 @@ import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../../store/modules";
 import * as codeActions from "../../../store/modules/code";
-import * as feedbackActions from "../../../store/modules/feedback";
+import * as hintActions from "../../../store/modules/hint";
 import * as solutionActions from "../../../store/modules/solution";
-import { FeedbackReduxState } from '../../../store/modules/feedback';
+import { HintReduxState } from '../../../store/modules/hint';
 import { SolutionReduxState } from '../../../store/modules/solution';
 
 const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const dispatch = useDispatch();
     const codeValue = useSelector((state: RootState) => state.code);
-    const feedbackValue = useSelector((state: RootState) => state.feedback);
+    const feedbackValue = useSelector((state: RootState) => state.hint);
     const solutionValue = useSelector((state: RootState) => state.solution);
 
     const getCodeEvent = useCallback((code)=>{
@@ -48,12 +48,12 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
                 ))
             ));
 
-            let feedback_payload: FeedbackReduxState = {
+            let hint_payload: HintReduxState = {
                 content: Object(res.data),
                 num: cnt,
             };
-            console.log(feedback_payload);        
-            dispatch(feedbackActions.getFeedback(feedback_payload));
+            console.log(hint_payload);        
+            dispatch(hintActions.getHint(hint_payload));
             
             let solution_payload: SolutionReduxState = {
                 all_lines: line_arr,
@@ -71,11 +71,11 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
         .catch(error => {
             console.log("postFeedback failed");
             console.log(error.response);
-            let payload: FeedbackReduxState = {
+            let payload: HintReduxState = {
                 content: "Server Error",
                 num: 0,
             };        
-            dispatch(feedbackActions.getFeedback(payload));
+            dispatch(hintActions.getHint(payload));
         })
     }, [dispatch]);
 

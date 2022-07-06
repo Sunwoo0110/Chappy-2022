@@ -1,14 +1,14 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import code from "./code";
 import counter from "./counter";
-import feedback from "./feedback";
+import code from "./code";
+import hint from "./hint";
 import solution from "./solution";
 
 const rootReducer = combineReducers({
-    code,
     counter,
-    feedback,
+    code,
+    hint,
     solution,
 });
 
