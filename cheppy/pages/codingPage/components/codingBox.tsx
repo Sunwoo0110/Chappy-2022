@@ -12,11 +12,11 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
 
     const [value, setValue] = useState('');
 
-    const editorRef = useRef(null);
+    // const editorRef = useRef(null);
 
-    function handleEditorDidMount(editor, monaco) {
-        editorRef.current = editor; 
-    }
+    // function handleEditorDidMount(editor, monaco) {
+    //     editorRef.current = editor; 
+    // }
 
     const handleEditorChange = (event) => {
         // console.log(event);
@@ -31,7 +31,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
         
         //showValue();
         await axios.post('http://localhost:4000/runcode/run', {
-                code: editorRef.current.getValue()
+                code: value
             })
             .then((res) => {
                 console.log("success");
@@ -48,9 +48,9 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
     const submitClick = () => {
         modeChanger(2);
     }
-     
+    
     function showValue() {
-        alert(editorRef.current.getValue());
+        alert(value);
     }
 
     return(
@@ -64,7 +64,7 @@ const CodingBox = ({ mode, modeChanger, result, resultChanger}) =>{
                         height="70vh"
                         defaultLanguage="python"
                         defaultValue="# some comment"
-                        onMount={handleEditorDidMount}/>
+                        onChange={handleEditorChange}/>
                 </Box>
 
                 <Button variant="contained" style={{ marginLeft: '1%' }} onClick={executionClick}>실행</Button>
