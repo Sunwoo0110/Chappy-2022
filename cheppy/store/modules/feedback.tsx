@@ -1,9 +1,9 @@
-export const GET_ALL_FEEDBACK = "feedback/GET_ALL_FEEDBACK"
+export const SET_ALL_FEEDBACK = "feedback/SET_ALL_FEEDBACK"
 export const SET_CUR_FEEDBACK = "feedback/SET_CUR_FEEDBACK";
 
-export const getAllFeedback = (payload: any) => {
+export const setAllFeedback = (payload: any) => {
     return{
-        type: GET_ALL_FEEDBACK,
+        type: SET_ALL_FEEDBACK,
         payload,
     };
 }
@@ -14,7 +14,7 @@ export const setCurFeedback = () => {
     };
 }
 
-export const solutionActions = {getAllFeedback, setCurFeedback};
+export const solutionActions = {setAllFeedback, setCurFeedback};
 
 export interface FeedbackReduxState{
     all_lines: string[];
@@ -40,7 +40,7 @@ const initialState: FeedbackReduxState = {
 
 export default function reducer(state=initialState, action: any){
     switch(action.type){
-        case GET_ALL_FEEDBACK:
+        case SET_ALL_FEEDBACK:
             return {...state,
                 all_lines: action.payload.all_lines, 
                 all_contents_key: action.payload.all_contents_key, 

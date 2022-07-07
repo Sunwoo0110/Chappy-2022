@@ -14,7 +14,7 @@ const Solutions = () =>{
     const codeValue = useSelector((state: RootState) => state.code);
     const solutionValue = useSelector((state: RootState) => state.feedback);
 
-    const applySolutionCode = useCallback(()=>{
+    const applyFeedbackCode = useCallback(()=>{
         let payload = {
             line: solutionValue.cur_line,
             contentKey: solutionValue.cur_content_key,
@@ -30,7 +30,7 @@ const Solutions = () =>{
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
         // setAnchorEl(event.currentTarget);
-        await applySolutionCode();
+        await applyFeedbackCode();
         await setNextFeedback();
     };
     

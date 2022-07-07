@@ -47,7 +47,7 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
                 content: Object(res.data),
                 num: cnt,
             };
-            dispatch(hintActions.postHint(payload));
+            dispatch(hintActions.setHint(payload));
         })
         .catch(error => {
             console.log("postHint failed");
@@ -56,7 +56,7 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
                 content: "Server Error",
                 num: -1,
             };        
-            dispatch(hintActions.postHint(payload));
+            dispatch(hintActions.setHint(payload));
         })
     }, [dispatch]);
 
@@ -93,7 +93,7 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
                 cur_content_val: content_val_arr[0],
                 remain_num: cnt,
             };
-            dispatch(feedbackActions.getAllFeedback(payload));
+            dispatch(feedbackActions.setAllFeedback(payload));
         })
         .catch(error => {
             console.log("postFeedback failed");
@@ -108,7 +108,7 @@ const CodingBox = ({ mode, modeChanger, exe_result, exe_resultChanger, tc_result
                 cur_content_val: null,
                 remain_num: -1
             };
-            dispatch(feedbackActions.getAllFeedback(payload));
+            dispatch(feedbackActions.setAllFeedback(payload));
         })
     }, [dispatch]);
 

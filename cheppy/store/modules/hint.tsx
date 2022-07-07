@@ -1,13 +1,13 @@
-export const POST_HINT = "hint/POST_HINT";
+export const SET_HINT = "hint/SET_HINT";
 
-export const postHint = (payload: any) => {
+export const setHint = (payload: any) => {
     return{
-        type: POST_HINT,
+        type: SET_HINT,
         payload,
     };
 };
 
-export const hintActions = {postHint};
+export const hintActions = {setHint};
 
 export interface HintReduxState{
     content: JSON|null|string|object;
@@ -21,7 +21,7 @@ const initialState: HintReduxState = {
 
 export default function reducer(state=initialState, action: any){
     switch(action.type){
-        case POST_HINT:
+        case SET_HINT:
             return {...state, content: action.payload.content, num: action.payload.num}
 
         default:
