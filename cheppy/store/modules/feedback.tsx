@@ -8,13 +8,13 @@ export const setAllFeedback = (payload: any) => {
     };
 }
 
-export const setCurFeedback = () => {
+export const setNextFeedback = () => {
     return{
         type: SET_CUR_FEEDBACK,
     };
 }
 
-export const solutionActions = {setAllFeedback, setCurFeedback};
+export const solutionActions = {setAllFeedback, setNextFeedback};
 
 export interface FeedbackReduxState{
     all_lines: string[];

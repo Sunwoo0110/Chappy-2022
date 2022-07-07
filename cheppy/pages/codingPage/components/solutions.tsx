@@ -24,7 +24,7 @@ const Solutions = () =>{
     }, [dispatch, solutionValue]);
 
     const setNextFeedback = useCallback(()=>{
-        dispatch(feedbackActions.setCurFeedback());
+        dispatch(feedbackActions.setNextFeedback());
     }, [dispatch]);
 
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
