@@ -1,5 +1,5 @@
 export const SET_ALL_FEEDBACK = "feedback/SET_ALL_FEEDBACK"
-export const SET_CUR_FEEDBACK = "feedback/SET_CUR_FEEDBACK";
+export const SET_NEXT_FEEDBACK = "feedback/SET_NEXT_FEEDBACK";
 
 export const setAllFeedback = (payload: any) => {
     return{
@@ -10,7 +10,7 @@ export const setAllFeedback = (payload: any) => {
 
 export const setNextFeedback = () => {
     return{
-        type: SET_CUR_FEEDBACK,
+        type: SET_NEXT_FEEDBACK,
     };
 }
 
@@ -52,7 +52,7 @@ export default function reducer(state=initialState, action: any){
                 remain_num: action.payload.remain_num
             }
         
-        case SET_CUR_FEEDBACK:
+        case SET_NEXT_FEEDBACK:
             if(state.remain_num==1){
                 return {...state,
                     remain_num: state.remain_num - 1,
