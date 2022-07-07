@@ -21,7 +21,7 @@ const Solutions = () =>{
             contentVal: solutionValue.cur_content_val,
         };
         dispatch(codeActions.changeCode(payload));
-    }, [dispatch, solutionValue.cur_content_key, solutionValue.cur_content_val, solutionValue.cur_line]);
+    }, [dispatch, solutionValue]);
 
     const setNextFeedback = useCallback(()=>{
         dispatch(feedbackActions.setCurFeedback());
@@ -65,7 +65,7 @@ const Solutions = () =>{
 
                 {solutionValue.remain_num==0 && 
                     <Typography fontSize={14} fontWeight='bold' style={{ marginLeft: "20%", marginTop: 15 }}>
-                        No Solution Left
+                        No Feedback Left
                     </Typography>                
                 }
 
@@ -77,11 +77,11 @@ const Solutions = () =>{
                     <Button variant="outlined" style={{ marginLeft: "20%", marginTop: 10 }} onClick={handleClick}>
                         {solutionValue.cur_content_key} {solutionValue.cur_content_val}
                     </Button>
-                    <Popover id={id} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
+                    {/* <Popover id={id} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
                         <Typography sx={{ p: 2 }}>
                             The content of the Popover.
                         </Typography>
-                    </Popover>
+                    </Popover> */}
                     <Typography align="center" fontSize={13} style={{ marginLeft: "3%", marginTop: 5 }}>
                         버튼을 누르면 코드가 바뀝니다
                     </Typography>
