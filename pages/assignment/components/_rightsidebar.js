@@ -4,25 +4,31 @@ const styles = {
         flexDirection: 'column',
         width: '100%',
         height: '100%',
-        background: 'skyblue',
-        rowGap: '5px',
+        background: 'white',
+        rowGap: '10px',
     },
     outputs: {
         display: 'flex',
         flexDirection: 'column',
-        background: '#6495ED',
+        background: "white",
+        height: '50%',
     },
     feedback: {
         display: 'flex',
         flexDirection: 'column',
-        background: '#6495ED',
+        background: "white",
+        height: '50%',
     },
+    section_title:{
+        background: "#414E5A",
+        color: "white",
+    }
 }
 
 function Outputs({ output }) {
     return (
         <div style={styles.outputs}>
-            <h3>실행결과</h3>
+            <h3 style={styles.section_title}>실행결과</h3>
             <p style={{ whiteSpace: 'pre-wrap' }}>
                 {output}
             </p>
@@ -33,7 +39,7 @@ function Outputs({ output }) {
 function Feedback() {
     return (
         <div style={styles.feedback}>
-            <h3>피드백</h3>
+            <h3 style={styles.section_title}>피드백</h3>
         </div>
     )
 }

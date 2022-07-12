@@ -6,6 +6,8 @@ import LeftSideBar from "./components/_leftsidebar"
 import CodingBox from "./components/_codingbox"
 import RightSideBar from "./components/_rightsidebar"
 
+import {HouseDoorFill, ListTask} from 'react-bootstrap-icons'
+
 const styles = {
     container: {
         width: '100vw',
@@ -13,15 +15,17 @@ const styles = {
     },
     navbar: {
         width: '100%',
-        height: '10%',
+        height: '8%',
+        background: '#60656e',
+        color: 'white',
     },
     main: {
         width: '100%',
-        height: '90%',
+        height: '92%',
         display: 'flex',
         flexDirection: 'row',
-        background: 'green',
-        columnGap: '5px',
+        background: '#bdbdbd',
+        columnGap: '3px',
     },
     leftsidebar: {
         display: 'flex',
@@ -44,17 +48,31 @@ const styles = {
         order: 3,
         width: '25%',
     },
+    title: {
+        background: '#f0f0f0',
+        color: "black",
+        width:"60%",
+        borderRadius: 5,
+    }
 }
 
 const NavBar = ({ title }) => {
     return <nav style={styles.navbar}>
-        <Link href="/">
-            <a>Home</a>
-        </Link>
-        <Link href="/assignment">
-            <a>Assignments</a>
-        </Link>
-        <h1>Assignment: {title}</h1>
+        <div class="container">
+            <div class="row row-cols-auto">
+                <div class="col">
+                    <Link href="/">
+                        <HouseDoorFill size={40}/>
+                    </Link>
+                    <Link href="/assignment">
+                        <ListTask size={40}/>
+                    </Link>
+                </div>
+                <div class="col" style={styles.title}>
+                    <p style={{}}>Assignment: {title}</p>
+                </div>
+            </div>
+        </div>
     </nav>
 }
 
@@ -115,7 +133,7 @@ export default function CodingPage() {
             <NavBar
                 title={assignment.title} />
             <div style={styles.main}>
-                <div style={styles.leftsidebar}>leftsidebar
+                <div style={styles.leftsidebar}>
                     <LeftSideBar
                         assignment={assignment}
                         testcase={testcase} />
@@ -125,7 +143,7 @@ export default function CodingPage() {
                         assignment={assignment}
                         onClickCheckPoint={handleCheckPoint} />
                 </div>
-                <div style={styles.rightsidebar}>leftsidebar
+                <div style={styles.rightsidebar}>
                     <RightSideBar
                         output={output} />
                 </div>

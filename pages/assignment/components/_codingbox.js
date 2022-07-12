@@ -8,7 +8,7 @@ const styles = {
         width: '100%',
         // height: '95%',
         flexGrow: 1,
-        background: '#F0F8FF',
+        background: 'white',
         rowGap: '5px',
     },
     buttons: {
@@ -16,8 +16,11 @@ const styles = {
         flexDirection: 'row',
         width: '100%',
         height: '10%',
-        columnGap: '5px',
         justifyContent: 'space-between',
+    },
+    btn: {
+        marginLeft:"5px",
+        marginRight:"5px",
     },
 }
 
@@ -52,11 +55,11 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
 
             <div style={styles.buttons}>
                 <div>
-                    <button onClick={() => checkPoint('run')}>실행</button>
-                    <button onClick={() => checkPoint('test')}>채점</button>
+                    <button style={styles.btn} type="button" class="btn btn-primary" onClick={() => checkPoint('run')}>실행</button>
+                    <button style={styles.btn} type="button" class="btn btn-primary" onClick={() => checkPoint('test')}>채점</button>
                 </div>
                 <div>
-                    <button onClick={() => checkPoint('submit')}>제출</button>
+                    <button style={styles.btn} type="button" class="btn btn-danger" onClick={() => checkPoint('submit')}>제출</button>
                 </div>
             </div>
         </div>

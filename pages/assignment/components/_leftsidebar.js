@@ -5,28 +5,37 @@ const styles = {
         flexDirection: 'column',
         width: '100%',
         height: '100%',
-        background: 'tomato',
-        rowGap: '5px',
+        background: 'white',
+        rowGap: '10px',
     },
     problem: {
         display: 'flex',
         flexDirection: 'column',
-        background: 'pink',
+        background: "white",
+        height: '50%',
     },
     testcase: {
         display: 'flex',
         flexDirection: 'column',
-        background: 'pink',
+        background: "white",
+        height: '50%',
     },
+    section_title:{
+        background: "#414E5A",
+        color: "white",
+    }
 }
 
 function Problem(props) {
     return (
         <div style={props.style}>
-            <h3>문제</h3>
+            <h3 style={styles.section_title}>문제와 제한사항</h3>
+            
+            <p style={{background: "#bdbdbd",}}>문제</p>
             <p>{props.data.description}</p>
-            <p>{props.data.example}</p>
+            <p style={{background: "#bdbdbd",}}>제한사항</p>
             <p>{props.data.constraint}</p>
+            {/* <p>{props.data.example}</p> */}
         </div>
     )
 }
@@ -36,7 +45,7 @@ function Testcase(props) {
 
     return (
         <div style={props.style}>
-            <h3>테스트케이스</h3>
+            <h3  style={styles.section_title}>테스트케이스</h3>
             <ul>
                 {testcases.map((tc) => {
                     if (!tc.is_open) return
@@ -44,7 +53,9 @@ function Testcase(props) {
                         <li key={testcases.indexOf(tc)}>
                             <div>
                                 {tc.inputs}: {tc.expected_output}
-                                <button onClick={() => navigator.clipboard.writeText(`main(${tc.inputs})`)}>Copy</button>
+                                {/* <button onClick={() => navigator.clipboard.writeText(`main(${tc.inputs})`)}>Copy</button> */}
+                                <button type="button" class="btn btn-outline-primary" 
+                                onClick={() => navigator.clipboard.writeText(`main(${tc.inputs})`)}>Copy</button>
                             </div>
                         </li>
                     )
