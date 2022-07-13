@@ -18,6 +18,19 @@ const styles = {
         height: '8%',
         background: '#60656e',
         color: 'white',
+        paddingTop: "7px",
+    },
+    navbar_content: {
+        
+    },
+    navbar_title: {
+        margin:"auto",
+        padding: "10px",
+        background: '#f0f0f0',
+        color: "black",
+        width:"50vw",
+        borderRadius: 5,
+        textAlign: "center"
     },
     main: {
         width: '100%',
@@ -47,20 +60,14 @@ const styles = {
         background: 'blue',
         order: 3,
         width: '25%',
-    },
-    title: {
-        background: '#f0f0f0',
-        color: "black",
-        width:"60%",
-        borderRadius: 5,
     }
 }
 
 const NavBar = ({ title }) => {
     return <nav style={styles.navbar}>
         <div class="container">
-            <div class="row row-cols-auto">
-                <div class="col">
+            <div class="row">
+                <div class="col-1" style={styles.navbar_content}>
                     <Link href="/">
                         <HouseDoorFill size={40}/>
                     </Link>
@@ -68,8 +75,8 @@ const NavBar = ({ title }) => {
                         <ListTask size={40}/>
                     </Link>
                 </div>
-                <div class="col" style={styles.title}>
-                    <p style={{}}>Assignment: {title}</p>
+                <div class="col-11" style={styles.navbar_content}>
+                    <p style={styles.navbar_title}>Assignment: {title}</p>
                 </div>
             </div>
         </div>
@@ -110,9 +117,20 @@ export default function CodingPage() {
     )
     const [code, setCode] = useState('')
     const [output, setOutput] = useState('')
+    const [mode, setMode] = useState(0)
+    /* mode: 0 채점 */
+    /* mode: 1 실행 */
+    /* mode: 2 제출 */
 
     const handleCheckPoint = async (code, action) => {
         setCode(code)
+        if(action==="test")
+            setMode(0)
+        else if(action==="run")
+            setMode(1)
+        else
+            setMode(2)
+
         console.log('code@CodingPage: ', action, code);
         const res = await fetch('/api/runCode', {
             method: "POST",
@@ -127,6 +145,7 @@ export default function CodingPage() {
         else
             setOutput(_output)//.replace('\n', '<br>'))
     }
+
 
     return (
         <div style={styles.container}>
@@ -145,6 +164,7 @@ export default function CodingPage() {
                 </div>
                 <div style={styles.rightsidebar}>
                     <RightSideBar
+                        mode={mode}
                         output={output} />
                 </div>
             </div>
