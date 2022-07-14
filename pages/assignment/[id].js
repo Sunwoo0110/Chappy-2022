@@ -12,21 +12,22 @@ import styles from "../../styles/CodingPage.module.css"
 
 const NavBar = ({ title }) => {
     return <nav className={styles.navbar}>
-        <div class="container">
-            <div class="row">
-                <div class="col-1">
-                    <Link href="/">
-                        <HouseDoorFill size={30}/>
-                    </Link>
-                    <Link href="/assignment">
-                        <ListTask size={30}/>
-                    </Link>
-                </div>
-                <div class="col-11">
-                    <p className={styles.navbar_title}>Assignment: {title}</p>
-                </div>
+        <div className={styles.navbar_side}>
+            <div >
+                <Link href="/">
+                    <HouseDoorFill size={30}/>
+                </Link>
+            </div>
+            <div >
+                <Link href="/assignment">
+                    <ListTask size={30}/>
+                </Link>
             </div>
         </div>
+        <div className={styles.navbar_center}>
+            <div className={styles.navbar_title}>Assignment: {title}</div>
+        </div>
+        <div className={styles.navbar_side}/>
     </nav>
 }
 
@@ -116,8 +117,7 @@ export default function CodingPage() {
 
     return (
         <div className={styles.container}>
-            <NavBar
-                title={assignment.title} />
+            <NavBar title={assignment.title} />
             <div className={styles.main}>
                 <div className={styles.leftsidebar}>
                     <LeftSideBar
