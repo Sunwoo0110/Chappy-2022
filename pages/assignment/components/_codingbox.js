@@ -6,18 +6,30 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
-        // height: '95%',
+        height: '100%',
         flexGrow: 1,
-        background: '#F0F8FF',
+        background: 'white',
         rowGap: '5px',
+    },
+    border: {
+        margin:"auto",
+        marginTop:"1%",
+        marginBottom:"1%",
+        width: '95%',
+        height: '90%',
+        border: "2px solid #bdbdbd"
     },
     buttons: {
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
         height: '10%',
-        columnGap: '5px',
         justifyContent: 'space-between',
+        paddingLeft:"2.5%",
+        paddingRight:"2.5%"
+    },
+    btn: {
+        marginLeft:"5px",
     },
 }
 
@@ -44,19 +56,20 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
 
     return (
         <div style={styles.codingbox}>
-            <Editor
-                language="python"
-                onValidate={handleEditorValidation}
-                onMount={handleEditorDidMount}
-                value={baseCode} />
-
+            <div style={styles.border}>
+                <Editor
+                    language="python"
+                    onValidate={handleEditorValidation}
+                    onMount={handleEditorDidMount}
+                    value={baseCode} />
+            </div>
             <div style={styles.buttons}>
                 <div>
-                    <button onClick={() => checkPoint('run')}>실행</button>
-                    <button onClick={() => checkPoint('test')}>채점</button>
+                    <button type="button" class="btn btn-primary" onClick={() => checkPoint('run')}>실행</button>
+                    <button style={styles.btn} type="button" class="btn btn-primary" onClick={() => checkPoint('test')}>채점</button>
                 </div>
                 <div>
-                    <button onClick={() => checkPoint('submit')}>제출</button>
+                    <button type="button" class="btn btn-danger" onClick={() => checkPoint('submit')}>제출</button>
                 </div>
             </div>
         </div>

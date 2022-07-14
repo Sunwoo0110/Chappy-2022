@@ -6,6 +6,8 @@ import LeftSideBar from "./components/_leftsidebar"
 import CodingBox from "./components/_codingbox"
 import RightSideBar from "./components/_rightsidebar"
 
+import {HouseDoorFill, ListTask} from 'react-bootstrap-icons'
+
 const styles = {
     container: {
         width: '100vw',
@@ -13,15 +15,30 @@ const styles = {
     },
     navbar: {
         width: '100%',
-        height: '10%',
+        height: '8%',
+        background: '#60656e',
+        color: 'white',
+        paddingTop: "7px",
+    },
+    navbar_content: {
+        
+    },
+    navbar_title: {
+        margin:"auto",
+        padding: "10px",
+        background: '#f0f0f0',
+        color: "black",
+        width:"50vw",
+        borderRadius: 5,
+        textAlign: "center"
     },
     main: {
         width: '100%',
-        height: '90%',
+        height: '92%',
         display: 'flex',
         flexDirection: 'row',
-        background: 'green',
-        columnGap: '5px',
+        background: '#bdbdbd',
+        columnGap: '3px',
     },
     leftsidebar: {
         display: 'flex',
@@ -43,18 +60,26 @@ const styles = {
         background: 'blue',
         order: 3,
         width: '25%',
-    },
+    }
 }
 
 const NavBar = ({ title }) => {
     return <nav style={styles.navbar}>
-        <Link href="/">
-            <a>Home</a>
-        </Link>
-        <Link href="/assignment">
-            <a>Assignments</a>
-        </Link>
-        <h1>Assignment: {title}</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-1" style={styles.navbar_content}>
+                    <Link href="/">
+                        <HouseDoorFill size={40}/>
+                    </Link>
+                    <Link href="/assignment">
+                        <ListTask size={40}/>
+                    </Link>
+                </div>
+                <div class="col-11" style={styles.navbar_content}>
+                    <p style={styles.navbar_title}>Assignment: {title}</p>
+                </div>
+            </div>
+        </div>
     </nav>
 }
 
@@ -91,10 +116,21 @@ export default function CodingPage() {
         ]
     )
     const [code, setCode] = useState('')
-    const [result, setResult] = useState('')
+    const [output, setOutput] = useState('')
+    const [mode, setMode] = useState(0)
+    /* mode: 0 채점 */
+    /* mode: 1 실행 */
+    /* mode: 2 제출 */
 
     const handleCheckPoint = async (code, action) => {
         setCode(code)
+        if(action==="test")
+            setMode(0)
+        else if(action==="run")
+            setMode(1)
+        else
+            setMode(2)
+
         console.log('code@CodingPage: ', action, code);
         const res = await fetch('/api/runCode', {
             method: "POST",
@@ -110,12 +146,13 @@ export default function CodingPage() {
             setResult(_result)//.replace('\n', '<br>'))
     }
 
+
     return (
         <div style={styles.container}>
             <NavBar
                 title={assignment.title} />
             <div style={styles.main}>
-                <div style={styles.leftsidebar}>leftsidebar
+                <div style={styles.leftsidebar}>
                     <LeftSideBar
                         assignment={assignment}
                         testcase={testcase} />
@@ -125,9 +162,10 @@ export default function CodingPage() {
                         assignment={assignment}
                         onClickCheckPoint={handleCheckPoint} />
                 </div>
-                <div style={styles.rightsidebar}>leftsidebar
+                <div style={styles.rightsidebar}>
                     <RightSideBar
-                        result={result} />
+                        mode={mode}
+                        output={output} />
                 </div>
             </div>
         </div>

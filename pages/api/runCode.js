@@ -40,21 +40,21 @@ export default async function handler(req, res) {
             if (!code) res.json({ output: 'running code failed' });
 
             const testcase = await TestCase.findOne({testnumber: req.params.num});
-        var result = [];
-        for (var i = 0; i < testcase.input.length; ++i) {
-            converter(req.body.code, testcase.input[i]);
-            const tc_ouput = await runPython();
-            // console.log(testcase.input[i]);
-            // console.log(tc_ouput);
-            // console.log(testcase.output[i]);
+            var result = [];
+            for (var i = 0; i < testcase.input.length; ++i) {
+                converter(req.body.code, testcase.input[i]);
+                const tc_ouput = await runPython();
+                // console.log(testcase.input[i]);
+                // console.log(tc_ouput);
+                // console.log(testcase.output[i]);
 
-            // tc_output 에 \n 가 존재함
-            if (tc_ouput === (testcase.output[i]+'\n')) {
-                result.push({input: testcase.input[i], output: tc_ouput, success: true})
-            } else {
-                result.push({input: testcase.input[i], output: tc_ouput, success: false})
+                // tc_output 에 \n 가 존재함
+                if (tc_ouput === (testcase.output[i]+'\n')) {
+                    result.push({input: testcase.input[i], output: tc_ouput, success: true})
+                } else {
+                    result.push({input: testcase.input[i], output: tc_ouput, success: false})
+                }
             }
-        }
 
         res.send({ result: result });
 

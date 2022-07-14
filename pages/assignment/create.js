@@ -19,12 +19,12 @@ export default function CreateAssignment() {
     async function onSave(event) {
         event.preventDefault()
         let assignment = {
-            title: "배열의 첫번째 항목 출력",
-            description: "배열과 인덱스가 주어졌을 때, 주어진 배열의 주어진 인덱스의 항목을 출력하세요.",
-            example: "main([1,2,3,4], 2) => 3",
-            constraint: "주어진 배열에서 가능한 인덱스 범위를 벗어나는 값이 인덱스로 입력되었을 경우에는 '범위 밖의 인덱스입니다.'를 출력하세요.",
-            base_code: "def main(lst, n):\n    return\n",
-            reference_code: "def main(lst, n):\n    if 0 > n and n >= len(lst):\n        print(\"범위 밖의 인덱스입니다.\")\n    print(lst[n])\n",
+            title: document.getElementById('title').value,
+            description: document.getElementById('description').value,
+            example: document.getElementById('example').value,
+            constraint: document.getElementById('constraint').value,
+            base_code: document.getElementById('base_code').value,
+            reference_code: document.getElementById('reference_code').value,
         }
         await fetch('/api/assignment', {
             method: 'POST',
@@ -38,6 +38,31 @@ export default function CreateAssignment() {
     return (
         <div>
             <NavBar />
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">title</span>
+                <input type="text" class="form-control" id="title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">description</span>
+                <input type="text" class="form-control" id="description" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">example</span>
+                <input type="text" class="form-control" id="example" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">constraint</span>
+                <input type="text" class="form-control" id="constraint" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">base_code</span>
+                <input type="text" class="form-control" id="base_code" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">reference_code</span>
+                <input type="text" class="form-control" id="reference_code" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+            </div>
+
             <button onClick={onSave}>저장</button>
         </div>
     )
