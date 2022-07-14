@@ -1,0 +1,55 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.navbar {
+    width: 100%;
+    height: 8%;
+    background: #60656e;
+    color: white;
+    padding-top: 7px;
+}
+
+.navbar_title {
+    margin: auto;
+    padding: 10px;
+    background: #f0f0f0;
+    color: black;
+    width: 50vw;
+    border-radius: 5;
+    text-align: center;
+}
+
+.main {
+    width: 100%;
+    height: 92%;
+    display: flex;
+    flex-direction: row;
+    background: #bdbdbd;
+    column-gap: 3px;
+}
+
+.leftsidebar {
+    display: flex;
+    flex-direction: column;
+    background: red;
+    order: 1;
+    width: 25%;
+}
+
+.codingbox {
+    display: flex;
+    background: yellow;
+    flex-direction: column;
+    order: 2;
+    width: 50%;
+}
+
+.rightsidebar {
+    display: flex;
+    flex-direction: column;
+    background: blue;
+    order: 3;
+    width: 25%;
+}
