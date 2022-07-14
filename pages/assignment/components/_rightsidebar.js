@@ -7,7 +7,7 @@ const styles = {
         background: 'skyblue',
         rowGap: '5px',
     },
-    outputs: {
+    results: {
         display: 'flex',
         flexDirection: 'column',
         background: '#6495ED',
@@ -19,12 +19,12 @@ const styles = {
     },
 }
 
-function Outputs({ output }) {
+function Results({ result }) {
     return (
-        <div style={styles.outputs}>
+        <div style={styles.results}>
             <h3>실행결과</h3>
             <p style={{ whiteSpace: 'pre-wrap' }}>
-                {output}
+                {result}
             </p>
         </div >
     )
@@ -38,10 +38,10 @@ function Feedback() {
     )
 }
 
-export default function RightSideBar({ output }) {
+export default function RightSideBar({ result }) {
     return (
         <div style={styles.rightsidebar}>
-            <Outputs output={output} />
+            <Outputs result={result} />
             <Feedback />
         </div>
     )

@@ -91,7 +91,7 @@ export default function CodingPage() {
         ]
     )
     const [code, setCode] = useState('')
-    const [output, setOutput] = useState('')
+    const [result, setResult] = useState('')
 
     const handleCheckPoint = async (code, action) => {
         setCode(code)
@@ -103,11 +103,11 @@ export default function CodingPage() {
             },
             body: code,
         })
-        const _output = (await res.json())?.output
-        if (_output === '')
-            setOutput('별도의 출력이 없습니다.\n코드를 확인해주세요 :)')
+        const _result = (await res.json())?.result
+        if (_result === '')
+            setResult('별도의 출력이 없습니다.\n코드를 확인해주세요 :)')
         else
-            setOutput(_output)//.replace('\n', '<br>'))
+            setResult(_result)//.replace('\n', '<br>'))
     }
 
     return (
@@ -127,7 +127,7 @@ export default function CodingPage() {
                 </div>
                 <div style={styles.rightsidebar}>leftsidebar
                     <RightSideBar
-                        output={output} />
+                        result={result} />
                 </div>
             </div>
         </div>
