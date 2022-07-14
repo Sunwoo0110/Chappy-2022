@@ -56,7 +56,7 @@ function Solutions(props) {
                         <li key={testcases.indexOf(tc)}>
                             <div className={styles.content}>
                                 {tc.inputs}: {tc.expected_output}
-                                <button type="button" class="btn btn-outline-primary" 
+                                <button style={{marginLeft:"15px"}} type="button" class="btn btn-outline-primary" 
                                 onClick={() => navigator.clipboard.writeText(`main(${tc.inputs})`)}>Copy</button>
                             </div>
                         </li>
