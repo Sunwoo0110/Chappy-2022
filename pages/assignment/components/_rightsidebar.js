@@ -26,7 +26,7 @@ function Result() {
 
 function Hint() {
     const hintVal = useSelector(state => state.hint);
-    console.log(hintVal);
+
     return (
         //힌트 개수 쓰려면 아래 값 고고
         // {hintVal.num}
