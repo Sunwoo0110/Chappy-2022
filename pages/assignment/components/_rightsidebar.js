@@ -69,7 +69,7 @@ function Grade() {
 //해결방안 일단은 testcase와 같은 내용으로 채움
 //onclick 함수도 testcase 내용 클립보드에 복사하는 함수임
 //해결방안 바뀐거 어떻게 해야할지 아직 안정해져서 일단 냅둠
-function Feedbacks(props) {
+function Solutions(props) {
     const testcases = props.data;
     const feedbackVal = useSelector(state => state.feedback);
 
@@ -145,7 +145,7 @@ export default function RightSideBar({ mode, output, solutions }) {
                     :
                     <>
                     <Grade/>
-                    <Feedbacks data={solutions}/>     
+                    <Solutions data={solutions}/>     
                     <CompareAnswer/> 
                     </>
             }            
