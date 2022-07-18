@@ -5,8 +5,8 @@ import logger from 'redux-logger';
 import reducer from "./modules";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { HYDRATE, createWrapper } from "next-redux-wrapper";
-import createSagaMiddleware from "redux-saga";
-import rootSaga from './modules/sagas';
+// import createSagaMiddleware from "redux-saga";
+// import rootSaga from './modules/sagas';
 
 const bindMiddleware = (middleware) => {
     if (process.env.NODE_ENV !== "production") {
