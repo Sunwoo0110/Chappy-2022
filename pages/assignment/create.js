@@ -1,6 +1,9 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
 
+import Editor from "@monaco-editor/react";
+import { useRef, useState } from "react";
+
 const NavBar = () => {
     return <nav style={{ width: '100%', height: '10%' }}>
         <Link href="/">
@@ -14,6 +17,20 @@ const NavBar = () => {
 }
 
 export default function CreateAssignment() {
+    const editorRef1 = useRef(null)
+    const editorRef2 = useRef(null)
+    function handleEditorDidMount1(editor, monaco) {
+        editorRef1.current = editor
+    }
+    function handleEditorDidMount2(editor, monaco) {
+        editorRef2.current = editor
+    }
+
+    function handleEditorValidation(markers) {
+        markers.forEach(marker => console.log("onValidate:", marker.message))
+
+    }
+
     const router = useRouter()
 
     async function onSave(event) {
@@ -23,8 +40,8 @@ export default function CreateAssignment() {
             description: document.getElementById('description').value,
             example: document.getElementById('example').value,
             constraint: document.getElementById('constraint').value,
-            base_code: document.getElementById('base_code').value,
-            reference_code: document.getElementById('reference_code').value,
+            base_code: editorRef1.current.getValue(),
+            reference_code: editorRef2.current.getValue(),
         }
         await fetch('/api/assignment', {
             method: 'POST',
@@ -35,6 +52,7 @@ export default function CreateAssignment() {
         })
         router.push('/assignment')
     }
+
     return (
         <div>
             <NavBar />
@@ -54,13 +72,14 @@ export default function CreateAssignment() {
                 <span class="input-group-text" id="inputGroup-sizing-sm">constraint</span>
                 <input type="text" class="form-control" id="constraint" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
             </div>
-            <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-sm">base_code</span>
-                <input type="text" class="form-control" id="base_code" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+            
+            <div style={{width: "90vw", height: "20vh"}}>
+                <Editor language="python" onValidate={handleEditorValidation}
+                    onMount={handleEditorDidMount1} value={"#write base code"} />
             </div>
-            <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-sm">reference_code</span>
-                <input type="text" class="form-control" id="reference_code" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+            <div style={{width: "90vw", height: "20vh"}}>
+                <Editor language="python" onValidate={handleEditorValidation}
+                    onMount={handleEditorDidMount2} value={"#write reference code"} />
             </div>
 
             <button onClick={onSave}>저장</button>
