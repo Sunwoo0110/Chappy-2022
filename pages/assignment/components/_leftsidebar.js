@@ -17,22 +17,22 @@ function Problem(props) {
     )
 }
 
-function Testcase(props) {
-    const testcases = props.data
+function Example(props) {
+    const examples = props.data
 
     return (
         <div className={styles.testcase}>
             <div className={styles.section_title}>테스트케이스</div>
             <div style={{overflowY: "scroll", height:"100%"}}>
             <ul>
-                {testcases.map((tc) => {
-                    if (!tc.is_open) return
+                {examples.map((ex) => {
+                    if (!ex.is_open) return
                     return (
-                        <li key={testcases.indexOf(tc)}>
+                        <li key={examples.indexOf(ex)}>
                             <div className={styles.content}>
-                                입력값: main({tc.inputs}) 출력값: {tc.expected_output}
+                                입력값: main({ex.inputs}) 출력값: {ex.expected_output}
                                 <button style={{marginLeft:"15px"}}type="button" class="btn btn-outline-primary" 
-                                onClick={() => navigator.clipboard.writeText(`main(${tc.inputs})`)}>Copy</button>
+                                onClick={() => navigator.clipboard.writeText(`main(${ex.inputs})`)}>Copy</button>
                             </div>
                         </li>
                     )
@@ -44,12 +44,12 @@ function Testcase(props) {
     )
 }
 
-export default function LeftSideBar({ assignment, testcase }) {
+export default function LeftSideBar({ assignment, example }) {
     return (
         // <div style={styles.leftsidebar}>
         <div className={styles.sidebar}>
             <Problem data={assignment} />
-            <Testcase data={testcase} />
+            <Example data={example} />
         </div>
     )
 }

@@ -1,44 +1,66 @@
 import styles from "../../../styles/_sidebar.module.css";
 import { useSelector, useDispatch } from 'react-redux';
+import { List } from "react-bootstrap-icons";
 // import { RootState } from "../../../store/modules";
 
-function Results({ result }) {
-    return (
-        <div className={styles.outputs}>
-            <div className={styles.section_title}>실행결과</div>
-            <div style={{overflowY: "scroll", height:"100%"}}>
-            <p style={{ whiteSpace: 'pre-wrap' }}>
-                {result}
-            </p>
-            </div>
-        </div >
-    )
-}
-
+/**  실행 결과 **/
 function Run() {
 
     const runValue = useSelector((state) => state.run);
-    console.log(runValue.result);
+    // console.log(runValue.result);
 
     return (
         <div className={styles.feedback}>
             <h3 className={styles.section_title}>실행결과</h3>
             <div style={{overflowY: "scroll", height:"100%"}}>
-                {runValue.result}
+            <p style={{ whiteSpace: 'pre-wrap' }}>
+                { runValue.result }
+            </p>
             </div>
         </div>
     )
 }
 
-function Result() {
+/**  채점 결과 **/
+function Grade() {
+
+    const runValue = useSelector((state) => state.run);
+    const results = runValue.all_result;
+    // console.log(results);
+    const user = "백우정"; // 추후에 redux 로 user 관리
+
+    var result = "Wrong";
+    var number = 0;
+    
+    if (runValue.score === 100)  result = "Success";
+
     return (
         <div className={styles.feedback}>
             <h3 className={styles.section_title}>채점결과</h3>
-            <div style={{overflowY: "scroll", height:"100%"}}></div>
+            <h4>{`${user}님의 채점 결과는 ${result}입니다`}</h4>
+            <h4>{`총점: ${runValue.score}`}</h4>
+            <div style={{overflowY: "scroll", height:"100%"}}>
+            <ul>
+                {results.map((rt) => {
+                    ++number;
+                    return (
+                        <li key={results.indexOf(rt)}>
+                            <div className={styles.content}>
+                                <h4>{`테스트케이스 ${number}번: ${rt.success}`}</h4>
+                                <h4>{`입력값:  ${rt.input}`}</h4>
+                                <h4>{`출력값:  ${rt.output}`}</h4>
+                            </div>
+                        </li>
+                    )
+                }
+                )}
+            </ul>
+            </div>
         </div>
     )
 }
 
+/** 제출 힌트 **/
 function Hint() {
     return (
         <div className={styles.feedback}>
@@ -48,7 +70,8 @@ function Hint() {
     )
 }
 
-function Grade() {
+/** 제출 성적 **/
+function Final() {
     return (
         <div className={styles.feedback}>
             <h3 className={styles.section_title}>성적</h3>
@@ -57,9 +80,10 @@ function Grade() {
     )
 }
 
-//해결방안 일단은 testcase와 같은 내용으로 채움
-//onclick 함수도 testcase 내용 클립보드에 복사하는 함수임
+/**  제출 해결 방안 **/
 function Solutions(props) {
+    //해결방안 일단은 testcase와 같은 내용으로 채움
+    //onclick 함수도 testcase 내용 클립보드에 복사하는 함수임
     const testcases = props.data
 
     return (
@@ -86,6 +110,7 @@ function Solutions(props) {
     )
 }
 
+/** 제출 답안 비교 **/
 function CompareAnswer() {
     return (
         <div className={styles.feedback}>
@@ -98,20 +123,20 @@ function CompareAnswer() {
 /* mode: 0 채점 */
 /* mode: 1 실행 */
 /* mode: 2 제출 */
-export default function RightSideBar({ mode, output, solutions }) {
+export default function RightSideBar({ mode, solutions }) {
     return (
         <div className={styles.sidebar}>
             {
                 mode === 0 ?
                 <>
-                <Result />
+                <Grade/>
                 <Hint/>
                 </>
                 : mode === 1 ?
                 <Run/>
                     :
                     <>
-                    <Grade/>
+                    <Final/>
                     <Solutions data={solutions}/>     
                     <CompareAnswer/> 
                     </>

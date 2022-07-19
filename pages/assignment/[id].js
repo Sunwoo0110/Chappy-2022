@@ -45,13 +45,12 @@ async function get_assignment(assignmentId) {
     return (await res.json()).data;
 }
 
-
 export default function CodingPage() {
     const router = useRouter();
     const dispatch = useDispatch();
 
     const [assignment, setAssignment] = useState(JSON.parse(router.query?.data));
-    const [testcase, setTestcase] = useState(
+    const [example, setExample] = useState(
         [
             {
                 inputs: '[1,2,3,4], 2',
@@ -91,18 +90,17 @@ export default function CodingPage() {
         ]
     );
     const [code, setCode] = useState('');
-    const [output, setOutput] = useState('');
     
     /* mode: 0 채점 */
     /* mode: 1 실행 */
     /* mode: 2 제출 */
-    const [mode, setMode] = useState(0)
+    const [mode, setMode] = useState(1);
 
     const handleCheckPoint = async (code, action) => {
         setCode(code); 
         
-        /* 채점 버튼 */
-        // setGrade(code);
+        /* 채점, 제출 버튼 */
+        setTC(code);
 
         /* 실행 버튼 */
         setRun(code);
@@ -119,34 +117,24 @@ export default function CodingPage() {
             setMode(2);
 
         console.log('code@CodingPage: ', action, code);
-        // const res = await fetch('/api/runCode', {
-        //     method: "POST",
-        //     header: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: code,
-        // })
-        // const _result = (await res.json())?.result
-        // if (_result === '')
-        //     setResult('별도의 출력이 없습니다.\n코드를 확인해주세요 :)')
-        // else
-        //     setResult(_result)//.replace('\n', '<br>'))
     }
 
     const setRun = useCallback(async (code)=> {
-        
         await axios.post('/api/assignment/runcode', {
             "code": code,
         })
         .then((res) => {
-            // console.log("success");
-            // console.log(res.data.result);
-            // tc_resultChanger(res.data.result);
-            let payload = {
-                result: res.data.result,
-            };
-            dispatch(runActions.setRun(payload));
-            
+            if (res.data.result === null) {
+                let payload = {
+                    result: "실행 결과가 없습니다",
+                };
+                dispatch(runActions.setRun(payload));
+            } else {
+                let payload = {
+                    result: res.data.result,
+                };
+                dispatch(runActions.setRun(payload));
+            }
         })
         .catch(error => {
             console.log("failed");
@@ -158,21 +146,30 @@ export default function CodingPage() {
         })
     }, [dispatch]);
 
-    // const setGrade = useCallback(async (code)=> {
-    //     await axios.put('/api/assignment/runcode/1', {
-    //         "code": code,
-    //     })
-    //     .then((res) => {
-    //         // console.log("success");
-    //         // console.log(res.data.result);
-    //         // tc_resultChanger(res.data.result);
-    //     })
-    //     .catch(error => {
-    //         console.log("failed");
-    //         console.log(error.response)
+    const setTC = useCallback(async (code)=> {
+        // 문제 번호 필요
+        const num = 1;
+        await axios.post(`/api/assignment/runcode/${num}`, {
+            "code": code,
+        })
+        .then((res) => {
+            console.log(res.data)
+            let payload = {
+                all_result: res.data.result,
+                score: res.data.score
+            };
+            dispatch(runActions.setTC(payload));
+        })
+        .catch(error => {
+            console.log("failed");
+            console.log(error.response);
+            let payload = {
+                result: "Server Error"
+            };        
+            dispatch(runActions.setTC(payload));
             
-    //     });
-    // });
+        });
+    });
 
     const setHint = useCallback(async (code)=>{
         await axios.post('/api/assignment/hint', {
@@ -265,7 +262,7 @@ export default function CodingPage() {
                 <div className={styles.leftsidebar}>
                     <LeftSideBar
                         assignment={assignment}
-                        testcase={testcase} />
+                        example={example} />
                 </div>
                 <div className={styles.codingbox}>
                     <CodingBox
@@ -275,7 +272,6 @@ export default function CodingPage() {
                 <div className={styles.rightsidebar}>
                     <RightSideBar
                         mode={mode}
-                        output={output}
                         solutions={solutions} />
                 </div>
             </div>
