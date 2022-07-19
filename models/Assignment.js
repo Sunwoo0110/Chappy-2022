@@ -1,12 +1,30 @@
-import mongoose from 'mongoose'
+/** /models/Assignment.js **/
+const mongoose = require('mongoose');
 
-const AssignmentSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    example: String,
-    constraint: String,
-    base_code: String,
-    reference_code: String,
+const { Schema, Types } = mongoose;
+
+const AssignmentSchema = new Schema(
+{
+    title: {
+        type: String
+    },
+    description: {
+        type: String
+    },
+    example: {
+        type: String
+    },
+    constraint: {
+        type: String,
+    },
+    base_code: {
+        type: String,
+    },
+    reference_code: {
+        type: String,
+    }
 })
 
-module.exports = mongoose.models.Assignment || mongoose.model('Assignment', AssignmentSchema)
+const Assignment = mongoose.models.Assignment || mongoose.model('Assignment', AssignmentSchema);
+
+module.exports = Assignment;
