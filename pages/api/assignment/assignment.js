@@ -1,10 +1,11 @@
-import dbConnect from "../../lib/dbConnect"
-import Assignment from "../../models/Assignment"
+/** /pages/api/assignment/assignment.js **/
+import dbConnect from "../../../lib/dbConnect"
+import Assignment from "../../../models/Assignment"
 
 export default async function handler(req, res) {
-    const { method } = req
+    const { method } = req;
 
-    await dbConnect()
+    await dbConnect();
 
     switch (method) {
         case 'GET':

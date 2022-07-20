@@ -47,7 +47,7 @@ const Assignment = (props) => (
 
 const AssignmentList = () => {
     const { mutate } = useSWRConfig()
-    const { data, error } = useSWR('/api/assignment', fetcher)
+    const { data, error } = useSWR('/api/assignment/assignment', fetcher)
     if (error) return <div>Getting Assignments Failed</div>
     if (!data) return <div>Loading...</div>
 
