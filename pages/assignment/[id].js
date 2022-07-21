@@ -99,22 +99,26 @@ export default function CodingPage() {
     const handleCheckPoint = async (code, action) => {
         setCode(code); 
         
-        /* 채점, 제출 버튼 */
-        setTC(code);
-
-        /* 실행 버튼 */
-        setRun(code);
-        
         /* 제출 버튼 */
         setHint(code); 
         setFeedback(code); 
 
-        if(action==="test")
+        if(action==="test") {
+            /* 채점 버튼 */
             setMode(0);
-        else if(action==="run")
+            setTC(code);
+        }
+        else if(action==="run") {
+            /* 실행 버튼 */
             setMode(1);
-        else
+            setRun(code);
+        }
+        else {
+            /* 제출 버튼 */
             setMode(2);
+            setHint(code); 
+            setFeedback(code); 
+        }
 
         console.log('code@CodingPage: ', action, code);
     }
@@ -147,7 +151,6 @@ export default function CodingPage() {
     }, [dispatch]);
 
     const setTC = useCallback(async (code)=> {
-        // 문제 번호 필요
         const num = 1;
         await axios.post(`/api/assignment/runcode/${num}`, {
             "code": code,
@@ -169,7 +172,7 @@ export default function CodingPage() {
             dispatch(runActions.setTC(payload));
             
         });
-    });
+    }, [dispatch]);
 
     const setHint = useCallback(async (code)=>{
         await axios.post('/api/assignment/hint', {

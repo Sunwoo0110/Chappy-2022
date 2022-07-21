@@ -20,6 +20,7 @@ export default async function handler(req, res) {
         case 'POST':
             try {
                 code = req.body.code;
+                
                 if (!code) res.json({ output: 'running code failed' })
                 
                 const output = await runPython(code);

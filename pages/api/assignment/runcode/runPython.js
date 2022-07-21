@@ -6,6 +6,8 @@ import path from 'path';
 const runPython = async (code) => {
     const codeDirectory = path.join(process.cwd(), 'code');
     const codePath = codeDirectory + '/source.py';
+
+    // console.log("code: "+code);
     
     await fs.writeFile(codePath, code, 'utf8');
 
