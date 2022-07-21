@@ -43,7 +43,7 @@ export default function CreateAssignment() {
             base_code: editorRef1.current.getValue(),
             reference_code: editorRef2.current.getValue(),
         }
-        await fetch('/api/assignment', {
+        await fetch('/api/assignment/assignment', {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json',
