@@ -1,5 +1,5 @@
 
-export default function Task(){
+export default function Assignment(){
     return(
         <div>
             <div>

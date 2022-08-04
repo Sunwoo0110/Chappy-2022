@@ -2,8 +2,8 @@ import { useState } from "react";
 import Home from "./components/_home";
 import Learning from "./components/_learning";
 import Notice from "./components/_notice";
-import Task from "./components/_task";
-import Test from "./components/_test";
+import Assignment from "./components/_assignment";
+import Exam from "./components/_exam";
 
 export default function Index() {
     const [mode, setMode] = useState(0);    
@@ -47,11 +47,11 @@ export default function Index() {
                     </>
                     : mode === 3 ?
                     <>
-                    <Task/>
+                    <Assignment/>
                     </>
                         :
                         <>
-                        <Test/>
+                        <Exam/>
                         </>
                 }
             </div>
