@@ -17,28 +17,42 @@ export default async function handler(req, res) {
             }
             break;
 
-        // case 'POST':
-        //     try {
-        //         let assignment;
-        //         if (typeof req.body === 'object')
-        //             assignment = await Assignment.create(req.body)
-        //         else
-        //             assignment = await Assignment.find({ _id: req.body })
-        //         res.status(201).json({ success: true, data: assignment })
-        //     } catch (error) {
-        //         res.status(400).json({ success: false, error: error })
-        //     }
-        //     break
+        case 'PUT':
+            try {
+                // var type = req.body.type;
+                // console.log(type)
+                const lectures = await Lecture.find( { name : {$regex : req.body.name}});
+                res.status(200).json({ success: true, lectures: lectures });
+            } catch (error) {
+                res.status(400).json({ success: false, error: error });
+            }
+            break;
 
-        // case 'DELETE':
-        //     try {
-        //         console.log('delete:', req.body.id);
-        //         const result = await Assignment.findByIdAndDelete(req.body.id)
-        //         res.status(201).json({ success: true })
-        //     } catch (error) {
-        //         res.status(400).json({ success: false, error: error })
-        //     }
-        //     break
+        case 'POST':
+            try {
+                
+                Lecture.create({
+                    name: req.body.name,
+                    professor: req.body.professor,
+                    classnumber: req.body.classnumber,
+                    open: req.body.open
+                });
+
+                const lectures = await Lecture.find({});
+                res.status(200).json({ success: true, lectures: lectures });
+            } catch (error) {
+                res.status(400).json({ success: false, error: error })
+            }
+            break
+
+        case 'DELETE':
+            try {
+                const result = await Lecture.findByIdAndDelete(req.body.lecture_id)
+                res.status(201).json({ success: true })
+            } catch (error) {
+                res.status(400).json({ success: false, error: error })
+            }
+            break
 
         default:
             res.status(400).json({ success: false, data: [] });
