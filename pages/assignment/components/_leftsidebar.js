@@ -1,4 +1,4 @@
-import styles from "../../../styles/_sidebar.module.css"
+import styles from "../../../styles/assignment/_sidebar.module.css"
 
 function Problem(props) {
     return (
