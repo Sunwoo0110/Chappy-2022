@@ -9,6 +9,7 @@ import Header from "./components/_header";
 import Footer from "./components/_footer";
 import Menu from "./components/_menu";
 import Unit from "./components/_unit";
+import Lecture from "./components/_lecture";
 
 export default function Index() {
     const [mode, setMode] = useState(0);    
@@ -17,9 +18,7 @@ export default function Index() {
         <div className={styles.container}>
             <Header />
             <div className={styles.main}>
-                <div className={styles["lecture-info"]}>
-                    Helloddd
-                </div>
+                <Lecture/>
 
                 <div className={styles["content"]}>
                     <div className={styles["content-left"]}>
