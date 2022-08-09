@@ -9,22 +9,13 @@ const fetcher = (url) => {
 }
 
 const NoticeList = () => {
-    const { data, error } = useSWR('/api/lecture_detail/notice', fetcher);
+    const { data, error } = useSWR('/api/lectureDetail/notice', fetcher);
 
     if (error) return <div>Getting Notices Failed</div>
     if (!data) return <div>Loading...</div>
     
     return(
         <>
-        <div>
-            {data.data.map((notice) => (
-                <li key={notice._id}>
-                    <div>{notice.type}</div>
-                    <div>{notice.title}</div>
-                    <div>{notice.date}</div>
-                </li>                
-            ))}
-        </div>
         <div>
             <table>
                 <tbody>
@@ -43,16 +34,39 @@ const NoticeList = () => {
                 </tbody>
             </table>
         </div>
-
         </>
     );
 }
 
-export default function Notice(){
+const TaskList = () => {
+    const { data, error } = useSWR('/api/lectureDetail/task', fetcher)
+
+    if (error) return <div>Getting Tasks Failed</div>
+    if (!data) return <div>Loading...</div>
+
+    return(
+        <div>
+            {data.data.map((task) => (
+                <li key={task._id}>
+                    <div>{task.title}</div>
+                    <button>강의듣기</button>
+                </li>                
+            ))}
+        </div>
+    );
+}
+
+export default function Home(){
     return (
         <div>
-            <p>새로운 공지</p>
-            <NoticeList/>
+            <div>
+                <p>새로운 공지</p>
+                <NoticeList/>
+            </div>
+            <div>
+                <p>이번주 할일</p>
+                <TaskList/>
+            </div>
         </div>
     );
 }

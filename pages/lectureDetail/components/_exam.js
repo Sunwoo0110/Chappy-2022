@@ -9,7 +9,7 @@ const fetcher = (url) => {
 }
 
 const TodayExamList = () => {
-    const { data, error } = useSWR('/api/lecture_detail/exam/today', fetcher)
+    const { data, error } = useSWR('/api/lectureDetail/exam/today', fetcher)
     if (error) return <div>Getting Today Exams Failed</div>
     if (!data) return <div>Loading...</div>
     if (data.data==null) return <div>오늘은 예정된 시험이 없습니다</div>
@@ -28,7 +28,7 @@ const TodayExamList = () => {
 }
 
 const ScheduledExamList = () => {
-    const { data, error } = useSWR('/api/lecture_detail/exam/scheduled', fetcher)
+    const { data, error } = useSWR('/api/lectureDetail/exam/scheduled', fetcher)
     if (error) return <div>Getting Scheduled Exams Failed</div>
     if (!data) return <div>예정된 시험이 없습니다.</div>
 
