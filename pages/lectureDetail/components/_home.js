@@ -21,7 +21,7 @@ const NoticeList = () => {
         <div>
             {data?.data.map((notice) => (
                 <div className={noticeStyles["notice-item"]} key={notice._id}>
-                    <div className={noticeStyles["notice-item-type"]}>{notice.type}</div>
+                    <div className={noticeStyles["notice-item-type-new"]}>{notice.type}</div>
                     <div className={noticeStyles["notice-item-title"]}>{notice.title}</div>
                     <div className={noticeStyles["notice-item-date"]}>{notice.date}</div>
                 </div>

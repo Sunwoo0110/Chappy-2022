@@ -1,4 +1,6 @@
 import useSWR from "swr"
+import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
+import noticeStyles from "../../../styles/lectureDetail/_notice.module.css"
 
 const fetcher = (url) => {
     if (typeof url != 'string')
@@ -15,43 +17,22 @@ const NoticeList = () => {
     if (!data) return <div>Loading...</div>
     
     return(
-        <>
         <div>
-            {data.data.map((notice) => (
-                <li key={notice._id}>
-                    <div>{notice.type}</div>
-                    <div>{notice.title}</div>
-                    <div>{notice.date}</div>
-                </li>                
+            {data?.data.map((notice) => (
+                <div className={noticeStyles["notice-item"]} key={notice._id}>
+                    <div className={noticeStyles["notice-item-type-new"]}>{notice.type}</div>
+                    <div className={noticeStyles["notice-item-title"]}>{notice.title}</div>
+                    <div className={noticeStyles["notice-item-date"]}>{notice.date}</div>
+                </div>
             ))}
         </div>
-        <div>
-            <table>
-                <tbody>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    {data?.data.map((notice) => (
-                        <tr key={notice._id}>
-                            <td>{notice.type}</td>
-                            <td>{notice.title}</td>
-                            <td>{notice.date}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-
-        </>
     );
 }
 
 export default function Notice(){
     return (
-        <div>
-            <p>새로운 공지</p>
+        <div className={noticeStyles.notice}>
+            <div className={commonStyles.title}>새로운 공지</div>
             <NoticeList/>
         </div>
     );

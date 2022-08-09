@@ -19,7 +19,7 @@
     margin-right: 20px;
 }
 
-.notice-item-type {
+.notice-item-type-new {
     font-family: 'Apple SD Gothic Neo';
     font-style: normal;
     font-weight: 700;
@@ -29,6 +29,21 @@
     text-align: center;
     color: #114AFF;    
     border: 1px solid #0B51FF;
+    border-radius: 15px;
+    padding: 0.3% 0;
+    width: 10%;
+}
+
+.notice-item-type-basic {
+    font-family: 'Apple SD Gothic Neo';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;    
+    letter-spacing: 0.46em;
+    text-align: center;
+    color: #4C4C4C;
+    border: 1px solid #4C4C4C;
     border-radius: 15px;
     padding: 0.3% 0;
     width: 10%;
