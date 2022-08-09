@@ -24,6 +24,7 @@
     height: 15px;
     background: #0B51FF;    
     border: 1px solid #0B51FF;
+    border-radius: 15px;
 }
 
 .task-item-undone {   
