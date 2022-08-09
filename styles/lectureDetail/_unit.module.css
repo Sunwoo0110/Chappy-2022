@@ -1,0 +1,30 @@
+.title {
+    font-family: 'Apple SD Gothic Neo';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 24px;
+    color: #4C4C4C;    
+    margin-bottom: 20px;
+}
+
+.unit {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.unit-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 20%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}

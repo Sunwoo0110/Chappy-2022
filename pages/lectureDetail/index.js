@@ -8,6 +8,7 @@ import Exam from "./components/_exam";
 import Header from "./components/_header";
 import Footer from "./components/_footer";
 import Menu from "./components/_menu";
+import Unit from "./components/_unit";
 
 export default function Index() {
     const [mode, setMode] = useState(0);    
@@ -50,7 +51,7 @@ export default function Index() {
                     </div>
                     <div className={styles["vectorline"]}/>
                     <div className={styles["content-right"]}>
-                        <p>단원별 학습</p>
+                        <Unit/>
                     </div>
                 </div>
             </div>

@@ -1,12 +1,14 @@
+import useSWR from "swr"
+import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 
 export default function Assignment(){
     return(
         <div>
             <div>
-                <p>이번주 과제</p>
+                <div className={commonStyles.title}>이번주 과제</div>
             </div>
             <div>
-                <p>제출한 과제</p>
+                <div className={commonStyles.title}>제출한 과제</div>
             </div>
         </div>
     );
