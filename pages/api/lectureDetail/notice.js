@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
-                const notices = await Notice.find({})
+                const notices = await Notice.find({}).sort({"_id":-1})
                 res.status(200).json({success: true, data: notices})
             } catch (error) {
                 res.status(400).json({success: false, error: error})
@@ -18,9 +18,16 @@ export default async function handler(req, res) {
 
         case 'POST':
             try{
+                console.log(typeof req.body);
                 let notice;
                 if (typeof req.body === 'object'){
                     notice = await Notice.create(req.body);
+                }
+                else if (typeof req.body === 'string'){
+                    if(req.body=="clear"){
+                        await Notice.remove({});
+                        notice = "removed all data";
+                    }
                 }
                 else{
                     notice = await Notice.find({_id: req.body})

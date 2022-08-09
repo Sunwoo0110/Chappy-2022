@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import styles from "../../../styles/lectureDetail/lectureDetail.module.css";
+import styles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import {HouseDoorFill, PersonCircle} from 'react-bootstrap-icons';
 
 export default function Header() {
