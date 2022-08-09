@@ -245,7 +245,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    width: 40%;
+    width: 100%;
     margin-top: 10px;
     /* height: 100%; */
     padding: 15px;
@@ -266,14 +266,26 @@
 }
 
 .lecture_name_1 {
+    flex-grow: 2;
+    flex-basis: 1px;
+    /* background: skyblue; */
     color: black;
     font-weight: bold;
     font-size: medium;
 }
 
 .lecture_name_2 {
+    flex-grow: 1;
+    flex-basis: 1px;
+    /* background: pink; */
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-direction: row;
+}
+
+.lecture_open {
     font-size: small;
-    margin-left: 30%;
     padding-left: 5px;
     padding-right: 5px;
     border-style : solid;

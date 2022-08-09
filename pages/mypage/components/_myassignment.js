@@ -1,24 +1,69 @@
+import useSWR, { useSWRConfig } from "swr"
 import styles from "../../../styles/mypage/_main.module.css"
 
 import Title from "./_title"
 
+
+const fetcher = (url) => {
+    // console.log('URL:', url, typeof url)
+    if (typeof url != 'string') return { data: [] }
+    return fetch(url).then((res) => {
+        // console.log(res)
+        return res.json()
+    })
+}
+
 function SelectLecture(){
+    const { mutate } = useSWRConfig()
+    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
+
+    if (error) return <div>Getting Lectures Failed</div>
+    if (!data) return <div>Loading...</div>
+
+    // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
+    async function onDelete(_id) {
+
+        const newList =  await fetch(`/api/lecture/${user_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ lecture_id: _id }),
+        })
+
+        mutate(`/api/lecture/${user_id}`);
+        
+    }
+
     return(
         <div className={styles.section_bg}>
-            <div className={styles.section_title_bg}>
+            <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
                 <div className={styles.section_title}>과목선택</div>
-                <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:20, marginLeft:"50%"}} class="btn btn-secondary" type="button">이번학기 과목만 보기</button>
-                <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:20}} class="btn btn-outline-secondary" type="button">모든 과목 보기</button>
-            </div>
-            <div style={{width:"100%"}}>
-                <div className={styles.lecture}>
-                    <div className={styles.lecture_name}>
-                        <div className={styles.lecture_name_1}>알고리즘</div>
-                        <div className={styles.lecture_name_2}>2021년 1학기</div>
-                    </div>
-                    <div className={styles.lecture_prof}>홍길동 교수님</div>
-                    <div className={styles.lecture_id}>DES3004_01</div>
+                <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
+                <button style={{borderRadius:20}} class="btn btn-secondary btn-sm" type="button">이번 학기 과목만 보기</button>
+                <button style={{borderRadius:20}} class="btn btn-outline-secondary btn-sm" type="button">모든 과목 보기</button>
                 </div>
+            </div>
+            <div style={{width:"100%"}} class="row">
+                {
+                    data.lectures.map((lecture) => {
+                    return (
+                        <div class="col-6">
+                        <div className={styles.lecture}>
+                            <div className={styles.lecture_name}>
+                                <div className={styles.lecture_name_1}>{lecture.name}</div>
+                                <div className={styles.lecture_name_2}>
+                                <div className={styles.lecture_open}>{lecture.open}</div>
+                                </div>
+                            </div>
+                            <div className={styles.lecture_prof}>{lecture.professor}</div>
+                            <div className={styles.lecture_id}>{lecture.classnumber}</div>
+                        </div>
+                        </div>
+                    )
+                })
+                }
             </div>
         </div>
     )

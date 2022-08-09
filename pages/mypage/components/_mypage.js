@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import styles from "../../../styles/mypage/_main.module.css"
 
 import Title from "./_title";
@@ -10,41 +12,61 @@ import Title from "./_title";
 // _6 환경설정
 // _7 문의하기
 
+import useSWR, { useSWRConfig } from "swr"
+
+const fetcher = (url) => {
+    // console.log('URL:', url, typeof url)
+    if (typeof url != 'string') return { data: [] }
+    return fetch(url).then((res) => {
+        // console.log(res)
+        return res.json()
+    })
+}
+
 function StudentInfo() {
+    
+    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+
+    if (error) return <div>Getting Lectures Failed</div>
+    if (!data) return <div>Loading...</div>
+
     return (
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
                 <div className={styles.section_title}>학생정보</div>
+                <Link href="/mypage/myaccount">
                 <div className={styles.moving_page}>계정관리에서 수정하기 ></div>
+                </Link>
             </div>
             <div className={styles.studentinfo}>
                 <div className={styles.studentinfo_image}>사진</div>
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이름</div>
-                        <div className={styles.studentinfo_3}>백우정</div>
+                        <div className={styles.studentinfo_3}>{data.user.username}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학과</div>
-                        <div className={styles.studentinfo_3}>소프트웨어</div>
+                        <div className={styles.studentinfo_3}>{data.user.department}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학기수</div>
-                        <div className={styles.studentinfo_3}>5</div>
+                        <div className={styles.studentinfo_3}>{data.user.semester}</div>
                     </div>
                 </div>
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>아이디</div>
-                        <div className={styles.studentinfo_3}>bwj2800</div>
+                        <div className={styles.studentinfo_3}>{data.user.userid}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>연락처</div>
-                        <div className={styles.studentinfo_3}>0101111111</div>
+                        <div className={styles.studentinfo_3}>{data.user.cellnumber}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이메일</div>
-                        <div className={styles.studentinfo_3}>bbb@gmail.com</div>
+                        <div className={styles.studentinfo_3}>{data.user.email}</div>
                     </div>
                 </div>
             </div>
@@ -53,6 +75,29 @@ function StudentInfo() {
 }
 
 function LearningInfo() {
+
+    const { mutate } = useSWRConfig()
+    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
+
+    if (error) return <div>Getting Lectures Failed</div>
+    if (!data) return <div>Loading...</div>
+
+    // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
+    async function onDelete(_id) {
+
+        const newList =  await fetch(`/api/lecture/${user_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ lecture_id: _id }),
+        })
+
+        mutate(`/api/lecture/${user_id}`);
+        
+    }
+
     return (
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
@@ -85,14 +130,29 @@ function LearningInfo() {
                 </div>
                 <div className={styles.learninginfo}>
                     <div>이번학기 강의 관리</div>
-                    <div style={{width:"100%"}}>
-                    <div className={styles.lecture}>
-                        <div className={styles.lecture_name}>
-                            <div className={styles.lecture_name_1}>알고리즘</div>
-                            <div className={styles.lecture_name_2}>2021년 1학기</div>
-                            <button type="button" class="btn-close" dataToggle="modal fade" data-bs-target="#deleteChecker" aria-label="Close"></button>
+                    <div style={{width:"100%"}} class="row">
+                    {
+                        data.lectures.map((lecture) => {
+                        return (
+                            <div class="col-6">
+                            <div className={styles.lecture}>
+                                <div className={styles.lecture_name}>
+                                    <div className={styles.lecture_name_1}>{lecture.name}</div>
+                                    <div className={styles.lecture_name_2}>
+                                    <div className={styles.lecture_open}>{lecture.open}</div>
+                                    <button type="button" class="btn-close" aria-label="Close" onClick={()=>onDelete(lecture._id)}></button>
+                                    {/* dataToggle="modal fade" data-bs-target="#deleteChecker" */}
+                                    </div>
+                                </div>
+                                <div className={styles.lecture_prof}>{lecture.professor}</div>
+                                <div className={styles.lecture_id}>{lecture.classnumber}</div>
+                            </div>
+                            </div>
+                        )
+                    })
+                    }
 
-                            <div class="modal fade" id="deleteChecker" tabindex="-1" aria-labelledby="deleteCheckerLabel" aria-hidden="true">
+                            {/* <div class="modal fade" id="deleteChecker" tabindex="-1" aria-labelledby="deleteCheckerLabel" aria-hidden="true">
                                 <div id="deleteChecker" class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -108,12 +168,7 @@ function LearningInfo() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                        </div>
-                        <div className={styles.lecture_prof}>홍길동 교수님</div>
-                        <div className={styles.lecture_id}>DES3004_01</div>
-                    </div>
+                            </div> */}
                     </div>
                 </div>
             </div>
