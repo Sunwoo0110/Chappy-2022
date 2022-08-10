@@ -17,7 +17,7 @@ const LectureSchema = new Schema(
         type: String,
     },
     open: {
-        type: Number
+        type: String,
     }
 },
 )

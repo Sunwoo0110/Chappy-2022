@@ -2,6 +2,14 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import useSWR, { useSWRConfig } from "swr"
 
+import Header from "./components/_header";
+import Footer from "./components/_footer";
+
+import styles from "../../styles/lecture/Lecture.module.css";
+
+import LectureList from "./components/_lecturelist";
+import Deadline from "./components/_deadline";
+
 // import LectureList from "./components/_lecturelist";
 
 const fetcher = (url) => {
@@ -13,154 +21,154 @@ const fetcher = (url) => {
     })
 }
 
-const MyLecture = (props) => {
-    // console.log(props.lecture);
-    return(
-        <tr key={props.lecture._id}>
-            <td>{`${props.lecture.name}`}</td>
-            <td>{`${props.lecture.professor}`}</td>
-            <td>{`${props.lecture.classnumber}`}</td>
-            <td>{`${props.lecture.open}`}</td>
-            <td>
-                <button onClick={() => props.deleteLecture(props.lecture._id)}>Delete</button>
-            </td>
-        </tr>
-    )
+// const MyLecture = (props) => {
+//     // console.log(props.lecture);
+//     return(
+//         <tr key={props.lecture._id}>
+//             <td>{`${props.lecture.name}`}</td>
+//             <td>{`${props.lecture.professor}`}</td>
+//             <td>{`${props.lecture.classnumber}`}</td>
+//             <td>{`${props.lecture.open}`}</td>
+//             <td>
+//                 <button onClick={() => props.deleteLecture(props.lecture._id)}>Delete</button>
+//             </td>
+//         </tr>
+//     )
     
-}
+// }
 
-const Lecture = (props) => {
+// const Lecture = (props) => {
 
-    return(
-        <tr key={props.lecture._id}>
-            <td>{`${props.lecture.name}`}</td>
-            <td>{`${props.lecture.professor}`}</td>
-            <td>{`${props.lecture.classnumber}`}</td>
-            <td>{`${props.lecture.open}`}</td>
-            <td>
-                <button onClick={() => props.addLecture(props.lecture._id)}>Add</button>
-            </td>
-            <td>
-                {
-                    props.deleteLecture !== undefined ?
-                    <button onClick={() => props.deleteLecture(props.lecture._id)}>Delete</button>
-                    : null
-                }
-            </td>
-        </tr>
-    )
+//     return(
+//         <tr key={props.lecture._id}>
+//             <td>{`${props.lecture.name}`}</td>
+//             <td>{`${props.lecture.professor}`}</td>
+//             <td>{`${props.lecture.classnumber}`}</td>
+//             <td>{`${props.lecture.open}`}</td>
+//             <td>
+//                 <button onClick={() => props.addLecture(props.lecture._id)}>Add</button>
+//             </td>
+//             <td>
+//                 {
+//                     props.deleteLecture !== undefined ?
+//                     <button onClick={() => props.deleteLecture(props.lecture._id)}>Delete</button>
+//                     : null
+//                 }
+//             </td>
+//         </tr>
+//     )
     
-}
+// }
 
-const MyLectureList = () => {
+// const MyLectureList = () => {
 
-    const { mutate } = useSWRConfig()
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
-    const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
-    if (error) return <div>Getting Lectures Failed</div>
-    if (!data) return <div>Loading...</div>
+//     const { mutate } = useSWRConfig()
+//     const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+//     const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
+//     if (error) return <div>Getting Lectures Failed</div>
+//     if (!data) return <div>Loading...</div>
 
-    // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
-    async function onDelete(_id) {
+//     // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
+//     async function onDelete(_id) {
 
-        const newList =  await fetch(`/api/lecture/${user_id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ lecture_id: _id }),
-        })
+//         const newList =  await fetch(`/api/lecture/${user_id}`, {
+//             method: 'DELETE',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ lecture_id: _id }),
+//         })
 
-        mutate(`/api/lecture/${user_id}`);
+//         mutate(`/api/lecture/${user_id}`);
         
-    }
+//     }
 
-    return (
-        <div>
-            <table>
-                <tbody>
-                    <tr>
-                        <th>name</th>
-                        <th>professor</th>
-                        <th>classnumber</th>
-                        <th>open</th>
-                    </tr>
-                    {data?.lectures.map((lecture) => (
-                        <MyLecture
-                            lecture={lecture}
-                            key={lecture._id}
-                            deleteLecture={() => onDelete(lecture._id)} />
-                    ))}
-                </tbody>
-            </table>
-        </div >
-    )
-}
+//     return (
+//         <div>
+//             <table>
+//                 <tbody>
+//                     <tr>
+//                         <th>name</th>
+//                         <th>professor</th>
+//                         <th>classnumber</th>
+//                         <th>open</th>
+//                     </tr>
+//                     {data?.lectures.map((lecture) => (
+//                         <MyLecture
+//                             lecture={lecture}
+//                             key={lecture._id}
+//                             deleteLecture={() => onDelete(lecture._id)} />
+//                     ))}
+//                 </tbody>
+//             </table>
+//         </div >
+//     )
+// }
 
-const LectureList = () => {
+// const LectureList = () => {
 
-    const { mutate } = useSWRConfig()
-    const { data, error } = useSWR('/api/lecture/lecture', fetcher)
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
-    // const { data, error } = useSWR(`/api/lecture/${id}`, fetcher)
-    if (error) return <div>Getting Lectures Failed</div>
-    if (!data) return <div>Loading...</div>
+//     const { mutate } = useSWRConfig()
+//     const { data, error } = useSWR('/api/lecture/lecture', fetcher)
+//     const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+//     // const { data, error } = useSWR(`/api/lecture/${id}`, fetcher)
+//     if (error) return <div>Getting Lectures Failed</div>
+//     if (!data) return <div>Loading...</div>
 
-    // const [list, setList] = useState(data.lectures);
+//     // const [list, setList] = useState(data.lectures);
 
-    // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
-    async function onAdd(_id) {
-        // const newLecture = data.lectures.filter((item) => item._id === _id)
-        // mutate(`/api/lecture/${id}`, { lectures: newLectures }, false);
+//     // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
+//     async function onAdd(_id) {
+//         // const newLecture = data.lectures.filter((item) => item._id === _id)
+//         // mutate(`/api/lecture/${id}`, { lectures: newLectures }, false);
 
-        const newList =  await fetch(`/api/lecture/${user_id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ lecture_id: _id }),
-        })
+//         const newList =  await fetch(`/api/lecture/${user_id}`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ lecture_id: _id }),
+//         })
 
-        mutate(`/api/lecture/${user_id}`);
+//         mutate(`/api/lecture/${user_id}`);
 
-    }
+//     }
 
-    async function onDelete(_id) {
+//     async function onDelete(_id) {
 
-        const newList =  await fetch(`/api/lecture/lecture`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ lecture_id: _id }),
-        })
+//         const newList =  await fetch(`/api/lecture/lecture`, {
+//             method: 'DELETE',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ lecture_id: _id }),
+//         })
 
-        mutate(`/api/lecture/lecture`);
+//         mutate(`/api/lecture/lecture`);
         
-    }
+//     }
 
-    return (
-        <div>
-            <table>
-                <tbody>
-                    <tr>
-                        <th>name</th>
-                        <th>professor</th>
-                        <th>classnumber</th>
-                        <th>open</th>
-                    </tr>
-                    {data?.lectures.map((lecture) => (
-                        <Lecture
-                            lecture={lecture}
-                            key={lecture._id}
-                            addLecture={() => onAdd(lecture._id)}
-                            deleteLecture={() => onDelete(lecture._id)}/>
-                    ))}
-                </tbody>
-            </table>
-        </div >
-    )
-}
+//     return (
+//         <div>
+//             <table>
+//                 <tbody>
+//                     <tr>
+//                         <th>name</th>
+//                         <th>professor</th>
+//                         <th>classnumber</th>
+//                         <th>open</th>
+//                     </tr>
+//                     {data?.lectures.map((lecture) => (
+//                         <Lecture
+//                             lecture={lecture}
+//                             key={lecture._id}
+//                             addLecture={() => onAdd(lecture._id)}
+//                             deleteLecture={() => onDelete(lecture._id)}/>
+//                     ))}
+//                 </tbody>
+//             </table>
+//         </div >
+//     )
+// }
 
 const AddLecture = () => {
 
@@ -302,18 +310,34 @@ export default function Index() {
     const [mode, setMode] = useState(0);
 
     return (
-        <div>
-            <h2>강의 목록</h2>
-            {/* <button onClick={clickHandler}>전체 과목</button>
-            <button onClick={clickHandler}>내 과목</button> */}
-            <h3>나의 강의 목록</h3>
-            <MyLectureList />
-            <h3>전체 강의 목록</h3>
-            <LectureList />
-            <h3>강의 추가하기</h3>
-            <AddLecture />
-            <h3>강의 검색하기</h3>
-            <FindLecture />
+        <div className={styles.container}>
+            <Header/>
+            <div className={styles.main}>
+                <div className={styles.content}>
+                    <div className={styles.greeting_box}>
+                        <div className={styles.greeting_name}>어서오세요 홍길동님!</div>
+                        <div className={styles.greeting_week}>지금은 4주차입니다</div>
+                    </div>
+                    <div style={{display:"flex", flexDirection:"row", columnGap:"5%"}}>
+                        <LectureList/>
+                        <Deadline/>
+                    </div>
+                </div>
+            </div>
+            <Footer/>
         </div>
+        // <div>
+        //     <h2>강의 목록</h2>
+        //     {/* <button onClick={clickHandler}>전체 과목</button>
+        //     <button onClick={clickHandler}>내 과목</button> */}
+        //     <h3>나의 강의 목록</h3>
+        //     <MyLectureList />
+        //     <h3>전체 강의 목록</h3>
+        //     <LectureList />
+        //     <h3>강의 추가하기</h3>
+        //     <AddLecture />
+        //     <h3>강의 검색하기</h3>
+        //     <FindLecture />
+        // </div>
     )
 }
