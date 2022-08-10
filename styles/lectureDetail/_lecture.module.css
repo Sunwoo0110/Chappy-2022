@@ -34,11 +34,7 @@
     align-content: center;
     width: 15%;
     height: 100%;
-}
-
-.test{
-    width: 240px;
-    height: 240px;
+    cursor: pointer;
 }
 
 .lecture-info-icon {
@@ -76,3 +72,14 @@
     margin-right: 5%;
     height: 10%;    
 }
+
+/* .icon-btn {
+    border: 0;
+    outline: 0;
+    background-color:transparent;
+    color: #FFFFFF;
+    margin: 0 auto;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+} */

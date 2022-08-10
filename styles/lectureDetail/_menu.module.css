@@ -21,6 +21,8 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 100%;
+    border: 0;
+    outline: 0;
 }
 
 .btn-selected {

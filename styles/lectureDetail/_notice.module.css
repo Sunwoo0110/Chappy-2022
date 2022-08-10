@@ -58,6 +58,7 @@
     text-align: start;
     color: #4C4C4C;
     width: 60%;    
+    cursor: pointer;
 }
 
 .notice-item-date {
