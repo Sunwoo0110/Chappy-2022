@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CardText, Circle, MegaphoneFill, Star } from "react-bootstrap-icons";
 import useSWR, { useSWRConfig } from "swr"
 import axios from "axios";
 
