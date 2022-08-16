@@ -70,6 +70,7 @@
     border-width: 1px;
     border-color: #bdbdbd;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .deadline_icon {

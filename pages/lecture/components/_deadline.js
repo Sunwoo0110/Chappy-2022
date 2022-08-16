@@ -26,7 +26,7 @@ function Deadlines() {
 
 export default function Deadline() {
     return (
-        <div style={{width:"30%"}}>
+        <div style={{width:"100%"}}>
             <div className={styles.title}>데드라인</div>
             <Deadlines/>
             <div className={styles.moving_page_bg}>

@@ -40,6 +40,7 @@
     width: 100%;
     background: #114AFF;
     height: 250px;
+    cursor: pointer;
 }
 
 
@@ -119,4 +120,12 @@
     color: grey;
     font-weight: normal;
     font-size: x-small;
+}
+
+.lecture_info_icon {
+    background: linear-gradient(90deg, #17D5FF 0%, #D88AFF 50%, #FF848B 100%);
+    border: 1px solid #FFFFFF;
+    width: 24px;
+    height: 24px;
+    border-radius: 15px;
 }

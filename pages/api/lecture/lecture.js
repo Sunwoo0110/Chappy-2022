@@ -33,9 +33,11 @@ export default async function handler(req, res) {
                 
                 Lecture.create({
                     name: req.body.name,
+                    englishname: req.body.englishname,
                     professor: req.body.professor,
                     classnumber: req.body.classnumber,
-                    open: req.body.open
+                    open: req.body.open,
+                    description: req.body.description,
                 });
 
                 const lectures = await Lecture.find({});

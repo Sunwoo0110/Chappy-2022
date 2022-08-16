@@ -10,6 +10,9 @@ const LectureSchema = new Schema(
         type: String,
         required: true,
     }, 
+    englishname: {
+        type: String,
+    }, 
     professor: {
         type: String,
     },
@@ -17,6 +20,9 @@ const LectureSchema = new Schema(
         type: String,
     },
     open: {
+        type: String,
+    },
+    description: {
         type: String,
     }
 },

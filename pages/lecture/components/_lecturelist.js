@@ -29,8 +29,8 @@ function MyLectureList() {
                 <div style={{marginBottom:"20px"}} class="col-6">
                 <div className={styles.lecture_bg}>
                     <div style={{justifyContent:"space-between", marginBottom: "60px", padding:"20px"}} className={styles.lecture_icon}>
-                        <Star size={30} color="white"/>
-                        <Circle size={30} color="white"/>
+                        <Star size="24px" color="white"/>
+                        <div className={styles.lecture_info_icon}/>
                     </div>
                     <div className={styles.lecture}>
                         <div className={styles.lecture_name}>
