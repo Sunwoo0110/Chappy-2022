@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr"
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import unitStyles from "../../../styles/lectureDetail/_unit.module.css";
 import { TiArrowSortedDown } from "react-icons/ti";
-import { AiFillHome, AiFillCheckCircle } from "react-icons/ai";
+import { AiFillCheckCircle } from "react-icons/ai";
 import { RiBookletFill, RiDraftLine } from "react-icons/ri"
-import { BsMegaphoneFill } from "react-icons/bs"
 
-const UnitList = () => {
+const UnitList = ({ dropdown, setDropdown }) => {
     //unit DB schema 정의
 
     const unitData = [
@@ -23,19 +22,19 @@ const UnitList = () => {
             _id: 3,
             title: "dfs",
         },
-    ];    
-
-    const [pick, setPick] = useState([]);
+    ];
 
     const handleClickEvent = (target) => {
-        let idx = pick.indexOf(target);
-        if(idx==-1)
-        pick.push(target);
-        else
-        pick.splice(idx, 1);
-        setPick(pick);
-        console.log(pick.includes(target));
-        console.log(pick);
+        let idx = dropdown.indexOf(target);
+
+        if(idx==-1){
+            let newVal = target;
+            setDropdown([newVal, dropdown]);
+        }
+        else{
+            dropdown.splice(idx, 1);
+            setDropdown([...dropdown]);
+        }
     };
 
     return (
@@ -48,44 +47,38 @@ const UnitList = () => {
                             <TiArrowSortedDown />
                         </button>
                         <div>
-                            { pick.includes(unit._id)===true &&
-                                (<div className={unitStyles["unit-item-dropdown"]}>
-                                    <button className={unitStyles["unit-item-dropdown-btn"]}>
-                                        <RiBookletFill color="#0B51FF" size="30px" />
-                                        학습
-                                    </button>
-                                    <button className={unitStyles["unit-item-dropdown-btn"]}>
-                                        <AiFillCheckCircle color="#0B51FF" size="30px" />
-                                        과제
-                                    </button>
-                                    <button className={unitStyles["unit-item-dropdown-btn"]}>
-                                        <RiDraftLine color="#0B51FF" size="30px" />
-                                        프로그래밍 실습
-                                    </button>
-                                </div>)
+                            { dropdown.includes(unit._id)===true &&
+                                <div className={unitStyles["unit-item-dropdown"]}>
+                                    <div className={unitStyles["unit-item-dropdown-btn"]}>
+                                        <RiBookletFill className={unitStyles["unit-item-dropdown-btn-icon"]}/>
+                                        <div className={unitStyles["unit-item-dropdown-btn-title"]}>학습</div>
+                                    </div>
+                                    <div className={unitStyles["unit-item-dropdown-btn"]}>
+                                        <AiFillCheckCircle className={unitStyles["unit-item-dropdown-btn-icon"]}/>
+                                        <div className={unitStyles["unit-item-dropdown-btn-title"]}>과제</div>
+                                    </div>
+                                    <div className={unitStyles["unit-item-dropdown-btn"]}>
+                                        <RiDraftLine className={unitStyles["unit-item-dropdown-btn-icon"]}/>
+                                        <div className={unitStyles["unit-item-dropdown-btn-title"]}>프로그래밍 실습</div>
+                                    </div>
+                                </div>
                             }
                         </div>
                     </div>
                 );
             })}
-
-            {/* <button className={unitStyles["unit-item"]} onClick={() => handleClickEvent()}>
-                recursion
-                <TiArrowSortedDown/>
-            </button>
-            <button className={unitStyles["unit-item"]}>
-                recursion
-                <TiArrowSortedDown/>
-            </button> */}
         </div>
     );
 }
 
-export default function Unit(){
+export default function Unit({ dropdown, setDropdown }){
+    console.log("export default=====");
+    console.log(typeof dropdown);
+    console.log(dropdown);
     return (
         <div className={unitStyles.units}>
             <div className={unitStyles.title}>단원별 학습</div>
-            <UnitList/>
+            <UnitList dropdown={dropdown} setDropdown={setDropdown}/>
         </div>
     );
 }

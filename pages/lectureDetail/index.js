@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/lectureDetail/LectureDetail.module.css";
 import Home from "./components/_home";
 import Learning from "./components/_learning";
@@ -13,6 +13,7 @@ import Lecture from "./components/_lecture";
 
 export default function Index() {
     const [mode, setMode] = useState(0);    
+    const [dropdown, setDropdown] = useState([]);
 
     return(
         <div className={styles.container}>
@@ -50,7 +51,8 @@ export default function Index() {
                     </div>
                     <div className={styles["vectorline"]}/>
                     <div className={styles["content-right"]}>
-                        <Unit/>
+                        <Unit dropdown={dropdown} setDropdown={setDropdown}/>
+                        <p>{dropdown}</p>
                     </div>
                 </div>
             </div>
