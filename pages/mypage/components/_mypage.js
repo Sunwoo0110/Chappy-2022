@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import styles from "../../../styles/mypage/_main.module.css"
+import styles from "../../../styles/mypage/_mypage.module.css"
 
 import Title from "./_title";
 
@@ -78,6 +78,7 @@ function LearningInfo() {
 
     const { mutate } = useSWRConfig()
     const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const semester = "2022년 1학기" // user _id
     const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
@@ -133,42 +134,44 @@ function LearningInfo() {
                     <div style={{width:"100%"}} class="row">
                     {
                         data.lectures.map((lecture) => {
-                        return (
-                            <div class="col-6">
-                            <div className={styles.lecture}>
-                                <div className={styles.lecture_name}>
-                                    <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                    <div className={styles.lecture_name_2}>
-                                    <div className={styles.lecture_open}>{lecture.open}</div>
-                                    <button type="button" class="btn-close" aria-label="Close" onClick={()=>onDelete(lecture._id)}></button>
-                                    {/* dataToggle="modal fade" data-bs-target="#deleteChecker" */}
+                            if (lecture.open===semester){
+                                return (
+                                    <div class="col-6">
+                                    <div className={styles.lecture}>
+                                        <div className={styles.lecture_name}>
+                                            <div className={styles.lecture_name_1}>{lecture.name}</div>
+                                            <div className={styles.lecture_name_2}>
+                                            <div className={styles.lecture_open}>{lecture.open}</div>
+                                            <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal" data-bs-target="#deleteChecker"></button>
+                                            <div class="modal fade" id="deleteChecker" tabindex="-1" aria-labelledby="deleteCheckerLabel" aria-hidden="true">
+
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                                                        <div className={styles.deletecheck}>정말 목록에서 지울까요?</div>
+                                                        <div className={styles.deletecheck_exp}>목록에서 지우면 해당 강의가 강의목록에서 지워지며,</div>
+                                                        <div className={styles.deletecheck_exp}>알림도 오지 않습니다. 수강 취소는 학교 사이트를 이용해주세요.</div>
+                                                        <div className={styles.buttons}>
+                                                            <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">취소</button>
+                                                            <button type="button" class="btn btn-primary" style={{flexGrow: "1", flexBasis: "1px", background: "#FF0000"}} onClick={()=>onDelete(lecture._id)} data-bs-dismiss="modal">네, 지울게요</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            </div>
+                                        </div>
+                                        <div className={styles.lecture_prof}>{lecture.professor}</div>
+                                        <div className={styles.lecture_id}>{lecture.classnumber}</div>
                                     </div>
-                                </div>
-                                <div className={styles.lecture_prof}>{lecture.professor}</div>
-                                <div className={styles.lecture_id}>{lecture.classnumber}</div>
-                            </div>
-                            </div>
-                        )
+                                    </div>
+                                )
+                            }
+                            else{
+                                return;
+                            }
                     })
                     }
-
-                            {/* <div class="modal fade" id="deleteChecker" tabindex="-1" aria-labelledby="deleteCheckerLabel" aria-hidden="true">
-                                <div id="deleteChecker" class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteCheckerLabel">Modal title</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ...
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
                     </div>
                 </div>
             </div>

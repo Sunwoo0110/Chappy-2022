@@ -7,7 +7,7 @@ function Menu({ mode }) {
         {
             mode === 1 ?
             <Link href="/mypage">
-                <div className={styles.menu} style={{color:"blue"}}>마이페이지</div>
+                <div className={styles.menu} style={{color:"#0B51FF"}}>마이페이지</div>
             </Link>
             :
             <Link href="/mypage">
@@ -17,7 +17,7 @@ function Menu({ mode }) {
         {
             mode === 2 ?
             <Link href="/mypage/mygrade">
-                <div className={styles.menu} style={{color:"blue"}}>내 성적 관리</div>
+                <div className={styles.menu} style={{color:"#0B51FF"}}>내 성적 관리</div>
             </Link>
             :
             <Link href="/mypage/mygrade">
@@ -27,7 +27,7 @@ function Menu({ mode }) {
         {
             mode === 3 ?
             <Link href="/mypage/myfeedback">
-                <div className={styles.menu} style={{color:"blue"}}>나의 피드백</div>
+                <div className={styles.menu} style={{color:"#0B51FF"}}>나의 피드백</div>
             </Link>
             :
             <Link href="/mypage/myfeedback">
@@ -37,7 +37,7 @@ function Menu({ mode }) {
         {
             mode === 4 ?
             <Link href="/mypage/myassignment">
-                <div className={styles.menu} style={{color:"blue"}}>내 과제관리</div>
+                <div className={styles.menu} style={{color:"#0B51FF"}}>내 과제관리</div>
             </Link>
             :
             <Link href="/mypage/myassignment">
@@ -47,7 +47,7 @@ function Menu({ mode }) {
         {
             mode === 5 ?
             <Link href="/mypage/myaccount">  
-                <div className={styles.menu} style={{color:"blue"}}>계정관리</div>
+                <div className={styles.menu} style={{color:"#0B51FF"}}>계정관리</div>
             </Link>
             :
             <Link href="/mypage/myaccount">  

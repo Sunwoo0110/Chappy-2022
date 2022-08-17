@@ -1,10 +1,12 @@
 import useSWR, { useSWRConfig } from "swr"
 import { useRouter } from "next/router"
 
-import styles from "../../../styles/mypage/_main.module.css"
+import styles from "../../../styles/mypage/_myaccount.module.css"
 
 import Title from "./_title"
 
+// import 'bootstrap';
+// import Modal from "bootstrap/js/dist/modal";
 
 
 const fetcher = (url) => {
@@ -176,18 +178,14 @@ function ChangePassword() {
                 <div className={styles.changepw_2}>
                     <input type="text" id="curpw" class="form-control" placeholder="현재 비밀번호를 입력해주세요" aria-label="Username" aria-describedby="basic-addon1"/>
                 </div>
-                <div className={styles.changepw_3}>
-                    <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:20}} class="btn btn-outline-secondary" type="button">확인</button>
-                </div>
+                <div className={styles.changepw_3}/>
             </div>
             <div className={styles.changepw}>
                 <div className={styles.changepw_1}>새 비밀번호</div>
                 <div className={styles.changepw_2}>
                     <input type="text" id="newpw" class="form-control" placeholder="새로운 비밀번호를 입력해주세요" aria-label="Username" aria-describedby="basic-addon1"/>
                 </div>
-                <div className={styles.changepw_3}>
-                    <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:20}} class="btn btn-outline-secondary" type="button">확인</button>
-                </div>
+                <div className={styles.changepw_3}/>
             </div>
             <div className={styles.changepw}>
                 <div className={styles.changepw_1}>새 비밀번호 확인</div>
@@ -232,6 +230,7 @@ function DeleteAccount() {
         router.push('/')
     }
 
+
     return (
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
@@ -243,7 +242,23 @@ function DeleteAccount() {
                     <div>또, 탈퇴 이후 일주일동안은 다시 회원가입하실 수 없으니 주의해주세요.</div>
                 </div>
                 <div className={styles.deleteaccount_2}>
-                    <button style={{fontSize:"small", display:"flex", justifyContent:"center", alignItems:"center", width:"100%", height:"100%", borderRadius:20}} class="btn btn-outline-danger" type="button" onClick={()=>onDelete(user_id)}>탈퇴하기</button>
+                    <button style={{fontSize:"small", display:"flex", justifyContent:"center", alignItems:"center", width:"100%", height:"100%", borderRadius:20}} class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteChecker">탈퇴하기</button>
+
+                    <div class="modal fade" id="deleteChecker" tabindex="-1" aria-labelledby="deleteCheckerLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                                    <div className={styles.deletecheck}>정말 탈퇴하시겠습니까?</div>
+                                    <div className={styles.deletecheck_exp}>한번 탈퇴하면 같은 아이디로 재가입 할 수 없습니다.</div>
+                                    <div className={styles.deletecheck_exp}>또, 탈퇴 이후 일주일동안은 다시 회원가입하실 수 없으니 주의해주세요.</div>
+                                    <div className={styles.buttons}>
+                                        <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">취소</button>
+                                        <button type="button" class="btn btn-primary" style={{flexGrow: "1", flexBasis: "1px", background: "#FF0000"}} onClick={()=>onDelete(user_id)} data-bs-dismiss="modal">탈퇴하기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

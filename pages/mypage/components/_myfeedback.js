@@ -1,14 +1,6 @@
 import styles from "../../../styles/mypage/_myfeedback.module.css"
+import Title from "./_title"
 
-
-function Title({ mode }) {
-    return (
-        <div className={styles.title_bg}>
-            <div className={styles.title} style={{color:"blue"}}>나의 피드백</div>
-            <div className={styles.title_exp}>내 성적 통계를 모아보세요</div>
-        </div>
-    )
-}
 
 function TotalFeedback(){
     return(
@@ -112,7 +104,7 @@ function FeedbackList(){
 export default function Feedback() {
     return (
         <div className={styles.content}>
-            <Title/>
+            <Title mode={3}/>
             {/* <TotalFeedback/> */}
             <SubjectFeedback/>
             <FeedbackList/>
