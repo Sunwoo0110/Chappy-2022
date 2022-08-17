@@ -9,7 +9,7 @@ import CodingBox from "./components/_codingbox";
 import RightSideBar from "./components/_rightsidebar";
 
 import {HouseDoorFill, ListTask} from 'react-bootstrap-icons';
-import styles from "../../styles/CodingPage.module.css";
+import styles from "../../styles/assignment/CodingPage.module.css";
 
 import * as hintActions from "../../store/modules/hint";
 import * as feedbackActions from "../../store/modules/feedback";
