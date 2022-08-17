@@ -98,10 +98,6 @@ export default function CodingPage() {
 
     const handleCheckPoint = async (code, action) => {
         setCode(code); 
-        
-        /* 제출 버튼 */
-        setHint(code); 
-        setFeedback(code); 
 
         if(action==="test") {
             /* 채점 버튼 */
