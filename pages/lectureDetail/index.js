@@ -52,7 +52,6 @@ export default function Index() {
                     <div className={styles["vectorline"]}/>
                     <div className={styles["content-right"]}>
                         <Unit dropdown={dropdown} setDropdown={setDropdown}/>
-                        <p>{dropdown}</p>
                     </div>
                 </div>
             </div>

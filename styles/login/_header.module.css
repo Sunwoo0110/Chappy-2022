@@ -1,0 +1,28 @@
+.back-txt {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    padding-top: 2.5%;
+    padding-left: 4.5%;
+    /* padding-top: 40px;
+    padding-left: 70px; */
+    cursor: pointer;
+}
+
+.login-txt {
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 60px;
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-desc-txt {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;    
+    margin-top: 1.2%;
+    margin-left: auto;
+    margin-right: auto;
+}
