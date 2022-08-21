@@ -8,7 +8,8 @@ const LessonSchema = new mongoose.Schema({
     created_at: Date,
     open_at: Date,
     title: String,
-    type: Number,    
+    type: Number,
+    weeks: Number,    
 });
 
 const Lesson = db.models.Lesson || db.model('Lesson', LessonSchema, 'lessons');

@@ -31,11 +31,12 @@ const NoticeList = ({lecture_id}) => {
     );
 }
 
-const TaskList = () => {
-    const { data, error } = useSWR('/api/lectureDetail/task', fetcher)
+const TaskList = ({lecture_id}) => {
+    const { data, error } = useSWR(`/api/lectureDetail/lesson/${lecture_id}`, fetcher)
 
     if (error) return <div>Getting Tasks Failed</div>
     if (!data) return <div>Loading...</div>
+    if (data.data==-1) return <div>Task Not Existing</div>
 
     return(
         <div>
@@ -57,10 +58,10 @@ export default function Home({lecture_id}){
                 <div className={commonStyles.title}>새로운 공지</div>
                 <NoticeList lecture_id={lecture_id}/>
             </div>
-            {/* <div className={taskStyles.task}>
+            <div className={taskStyles.task}>
                 <div className={commonStyles.title}>이번주 할일</div>
-                <TaskList/>
-            </div> */}
+                <TaskList lecture_id={lecture_id}/>
+            </div>
         </div>
     );
 }
