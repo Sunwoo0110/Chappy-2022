@@ -1,5 +1,5 @@
-import dbConnect from "../../../lib/dbConnect";
-import Notice from "../../../models/lecture/Notice"
+import dbConnect from "../../../../lib/dbConnect";
+import Notice from "../../../../models/lecture/Notice"
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -9,9 +9,11 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
-                const notices = await Notice.find({}).sort({"_id":-1});
+                const notices = await Notice.find({"lecture_id":req.query.lecture_id}).sort({"_id":-1});
                 res.status(200).json({success: true, data: notices})
             } catch (error) {
+                if(error.name=="CastError")
+                    res.status(200).json({success: true, data: -1})            
                 res.status(400).json({success: false, error: error})
             }
             break

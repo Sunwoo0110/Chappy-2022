@@ -11,11 +11,12 @@ const fetcher = (url) => {
     })
 }
 
-const NoticeList = () => {
-    const { data, error } = useSWR('/api/lectureDetail/notice', fetcher);
+const NoticeList = ({lecture_id}) => {
+    const { data, error } = useSWR(`/api/lectureDetail/notice/${lecture_id}`, fetcher);
 
-    if (error) return <div>Getting Notices Failed</div>
+    if (error) return <div>Getting Notice Failed</div>
     if (!data) return <div>Loading...</div>
+    if (data.data==-1) return <div>Notice Not Existing</div>
     
     return(
         <div>
@@ -49,17 +50,17 @@ const TaskList = () => {
     );
 }
 
-export default function Home(){
+export default function Home({lecture_id}){
     return (
         <div>
             <div className={noticeStyles.notice}>
                 <div className={commonStyles.title}>새로운 공지</div>
-                <NoticeList/>
+                <NoticeList lecture_id={lecture_id}/>
             </div>
-            <div className={taskStyles.task}>
+            {/* <div className={taskStyles.task}>
                 <div className={commonStyles.title}>이번주 할일</div>
                 <TaskList/>
-            </div>
+            </div> */}
         </div>
     );
 }
