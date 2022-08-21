@@ -42,7 +42,7 @@ const ScheduledExamList = ({lecture_id}) => {
             {data?.data.map((exam) => (
                 <div className={examStyles["exam-scheduled-item"]} key={exam._id}>
                     <div className={examStyles["exam-scheduled-item-title"]}>{exam.title}</div>
-                    <div className={examStyles["exam-scheduled-item-date"]}>{exam.open_at}</div>
+                    <div className={examStyles["exam-scheduled-item-date"]}>{exam.open_at.toString().split('T')[0].replace(/-/g, '.')}</div>
                     {exam.is_opened==true && 
                         <div className={examStyles["exam-scheduled-item-public"]}>시험보기</div>
                     }

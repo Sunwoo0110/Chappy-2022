@@ -43,9 +43,14 @@ const TaskList = ({lecture_id}) => {
     return(
         <div>
             {data.data.map((task) => (
-                <div className={taskStyles["task-item"]} key={task._id}>
-                    <div className={taskStyles["task-item-undone"]}></div>
-                    <div className={taskStyles["task-item-title"]}>{task.title}</div>
+                <div className={taskStyles["task-item"]} key={task.lesson._id}>
+                    {task.attendance==1 && 
+                        <div className={taskStyles["task-item-done"]}/>                   
+                    }
+                    {task.attendance==0 && 
+                        <div className={taskStyles["task-item-undone"]}/>                   
+                    }
+                    <div className={taskStyles["task-item-title"]}>{task.lesson.title}</div>
                     <div className={taskStyles["task-item-btn"]}>강의듣기</div>
                 </div>                
             ))}

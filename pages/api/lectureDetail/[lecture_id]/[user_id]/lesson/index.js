@@ -1,5 +1,6 @@
 import dbConnect from "../../../../../../lib/dbConnect";
 import Lesson from "../../../../../../models/lecture/Lesson"
+import Attendance from "../../../../../../models/lecture/Attendance";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -9,8 +10,24 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
-                const lessons = await Lesson.find({"lecture_id":req.query.lecture_id, "type":0});
-                res.status(200).json({success: true, data: lessons})
+                let week = 1; //week어떻게 보여줄건지,,??
+
+                const lessons = await Lesson.find({
+                    "lecture_id":req.query.lecture_id, 
+                    "type":0,
+                    "weeks":week
+                });
+
+                const attendancInfoLessons = await Promise.all(lessons.map( async (lesson) => {
+                    let attendance = await Attendance.find({"lesson_id":lesson._id});
+                    let data = {};
+                    data["lesson"] = lesson;
+                    data["attendance"] = attendance[0].attendance[req.query.user_id];
+                    return data;
+                }));
+
+                res.status(200).json({success: true, data: attendancInfoLessons})
+
             } catch (error) {
                 if(error.name=="CastError")
                     res.status(200).json({success: true, data: -1})            
