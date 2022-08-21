@@ -1,5 +1,5 @@
-import dbConnect from "../../../../lib/dbConnect";
-import Lesson from "../../../../models/lecture/Lesson"
+import dbConnect from "../../../../../lib/dbConnect";
+import Notice from "../../../../../models/lecture/Notice"
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -9,8 +9,8 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
-                const lessons = await Lesson.find({"lecture_id":req.query.lecture_id, "type":0});
-                res.status(200).json({success: true, data: lessons})
+                const notices = await Notice.find({"lecture_id":req.query.lecture_id}).sort({"_id":-1});
+                res.status(200).json({success: true, data: notices})
             } catch (error) {
                 if(error.name=="CastError")
                     res.status(200).json({success: true, data: -1})            
@@ -21,20 +21,20 @@ export default async function handler(req, res) {
         case 'POST':
             try{
                 console.log(typeof req.body);
-                let lesson;
+                let notice;
                 if (typeof req.body === 'object'){
-                    lesson = await Lesson.create(req.body);
+                    notice = await Notice.create(req.body);
                 }
                 else if (typeof req.body === 'string'){
                     if(req.body=="clear"){
-                        await Lesson.remove({});
-                        lesson = "removed all data";
+                        await Notice.remove({});
+                        notice = "removed all data";
                     }
                 }
                 else{
-                    lesson = await Lesson.find({_id: req.body})
+                    notice = await Notice.find({_id: req.body})
                 }
-                res.status(200).json({success: true, data: lesson})
+                res.status(200).json({success: true, data: notice})
             } catch(error){
                 res.status(400).json({success: false, error: error})
             }
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
         case 'DELETE':
             try {
                 console.log('delete:', req.body.id);
-                const result = await Lesson.findByIdAndDelete(req.body.id)
+                const result = await Notice.findByIdAndDelete(req.body.id)
                 res.status(201).json({ success: true })
             } catch (error) {
                 res.status(400).json({ success: false, error: error })

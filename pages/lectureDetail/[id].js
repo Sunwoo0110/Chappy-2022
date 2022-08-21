@@ -24,6 +24,8 @@ export default function LectureDetailIDPage(props) {
     const [mode, setMode] = useState(0);    
     const [dropdown, setDropdown] = useState([]);
     const lecture_id = props.params.id;
+
+    const user_id = "62ff6f624b99ac8a2bcbd015"; //이후 redux로 넘겨받기
     console.log("heheheh=========", props.params.id);
 
     return(

@@ -12,7 +12,7 @@ const fetcher = (url) => {
 }
 
 const NoticeList = ({lecture_id}) => {
-    const { data, error } = useSWR(`/api/lectureDetail/notice/${lecture_id}`, fetcher);
+    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/notice`, fetcher);
 
     if (error) return <div>Getting Notice Failed</div>
     if (!data) return <div>Loading...</div>
@@ -32,7 +32,9 @@ const NoticeList = ({lecture_id}) => {
 }
 
 const TaskList = ({lecture_id}) => {
-    const { data, error } = useSWR(`/api/lectureDetail/lesson/${lecture_id}`, fetcher)
+    const user_id = "62ff6f624b99ac8a2bcbd015"; //redux처리 필요
+
+    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/lesson`, fetcher)
 
     if (error) return <div>Getting Tasks Failed</div>
     if (!data) return <div>Loading...</div>
