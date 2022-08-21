@@ -13,7 +13,9 @@
     font-family: 'Apple SD Gothic Neo';
     font-style: normal;
     width: 100%;
-    height:30%;
+    height: 30%;
+    /* height: 25%; */
+    /* height:200px; */
     /* height: 250px;    
     height: 35vh; */
 }
@@ -27,5 +29,6 @@
     font-style: normal;
     width: 100%;
     height: 70%;
+    /* height: 75%; */
     /* height: 65vh; */
 }
