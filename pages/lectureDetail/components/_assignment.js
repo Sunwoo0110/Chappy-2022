@@ -53,9 +53,7 @@ const SubmittedList = ({lecture_id}) => {
 }
 
 
-export default function Assignment(){
-    const lecture_id = "62ffbe814b99ac8a2bcbd018";
-
+export default function Assignment({lecture_id}){
     return(
         <div>
             <div>

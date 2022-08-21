@@ -53,11 +53,11 @@ export default function LectureDetailIDPage(props) {
                                 </>
                                 : mode === 3 ?
                                 <>
-                                <Assignment/>
+                                <Assignment lecture_id={lecture_id}/>
                                 </>
                                     :
                                     <>
-                                    <Exam/>
+                                    <Exam lecture_id={lecture_id}/>
                                     </>
                             }
                         </div>

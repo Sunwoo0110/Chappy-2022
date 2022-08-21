@@ -1,6 +1,6 @@
-import dbConnect from "../../../../../../../lib/dbConnect";
-import Assignment from "../../../../../../../models/lecture/Assignment"
-import Submission from "../../../../../../../models/submission/Submission";
+import dbConnect from "../../../../../../lib/dbConnect";
+import Assignment from "../../../../../../models/lecture/Assignment";
+import moment from 'moment';
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -10,25 +10,31 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
+                // const todayDate = new Date();
+                const todayDate = moment();
+                console.log("today---");
+                console.log(todayDate.format("YYYY-MM-DD"));
+                console.log(typeof(todayDate));
+
                 let week = 1; //week어떻게 보여줄건지,,??
-                const assignments = await Assignment.find({
-                    "temp": false,
-                    "type": 0,
-                    "weeks": week,
-                    "is_opened": true,
-                });
+                const exams = await Assignment.find({
+                    "type":1,
+                    "temp":false,
+                    // "open_at":
+                })
 
-                let thisWeekAssignments = await Promise.all(assignments.map( async (assignment ) => {
-                    let noneSubmitted = await Submission.find({
-                        "submission_state":1,
-                        "ref_id":assignment._id
-                    });
-                    if(noneSubmitted.length==0)
-                        return assignment;
+                let todayExams = await Promise.all(exams.map( async (exam) => {
+                    console.log(exam.open_at);
+                    let dateTime = exam.open_at.toISOString().split('T');
+                    if (todayDate.format("YYYY-MM-DD")==dateTime[0])
+                        return exam;
                 }));
-                console.log(thisWeekAssignments);
 
-                res.status(200).json({success: true, data: thisWeekAssignments})
+                if (todayExams[0]==undefined)
+                    todayExams=null;
+                // console.log(todayExams);
+                
+                res.status(200).json({success: true, data: todayExams})
 
             } catch (error) {
                 if(error.name=="CastError")

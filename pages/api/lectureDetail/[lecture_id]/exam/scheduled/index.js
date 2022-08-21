@@ -1,6 +1,5 @@
-import dbConnect from "../../../../../../../lib/dbConnect";
-import Assignment from "../../../../../../../models/lecture/Assignment"
-import Submission from "../../../../../../../models/submission/Submission";
+import dbConnect from "../../../../../../lib/dbConnect";
+import Assignment from "../../../../../../models/lecture/Assignment";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -11,24 +10,17 @@ export default async function handler(req, res) {
         case 'GET':
             try{
                 let week = 1; //week어떻게 보여줄건지,,??
-                const assignments = await Assignment.find({
-                    "temp": false,
-                    "type": 0,
-                    "weeks": week,
-                    "is_opened": true,
-                });
+                const exams = await Assignment.find({
+                    "type":1,
+                    "temp":false
+                })
 
-                let thisWeekAssignments = await Promise.all(assignments.map( async (assignment ) => {
-                    let noneSubmitted = await Submission.find({
-                        "submission_state":1,
-                        "ref_id":assignment._id
-                    });
-                    if(noneSubmitted.length==0)
-                        return assignment;
+                let scheduledExams = await Promise.all(exams.map( async (exam) => {
+                    if(exam.weeks >= week)
+                        return exam;
                 }));
-                console.log(thisWeekAssignments);
 
-                res.status(200).json({success: true, data: thisWeekAssignments})
+                res.status(200).json({success: true, data: scheduledExams})
 
             } catch (error) {
                 if(error.name=="CastError")
