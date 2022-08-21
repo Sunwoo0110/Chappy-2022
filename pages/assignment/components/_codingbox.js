@@ -1,15 +1,18 @@
 import Editor from "@monaco-editor/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "../../../styles/_codingbox.module.css"
-
 
 export default function CodingBox({ assignment, onClickCheckPoint }) {
     const editorRef = useRef(null)
 
     const baseCode = assignment?.reference_code
-    console.log(assignment);
-    console.log(baseCode);
+    // console.log(assignment);
+    // console.log(baseCode);
+
+    const validation = useSelector((state) => state.validation);
+
     function handleEditorDidMount(editor, monaco) {
         editorRef.current = editor
     }
@@ -17,7 +20,6 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
     function handleEditorValidation(markers) {
         markers.forEach(marker => console.log("onValidate:", marker.message))
     }
-
 
     function checkPoint(action) {
         if (editorRef.current === null) return
@@ -27,6 +29,16 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
 
     return (
         <div className={styles.codingbox}>
+            <div style={{flexDirection: "row"}}>
+                <div className={styles.section_title}>코드 입력</div>
+                {
+                    validation.click === true ?
+                    <div>
+                        <button type="button" class="btn btn-primary" onClick={() => checkPoint('hintAll')}>힌트 모두 적용</button>
+                    </div>   
+                    : null   
+                }   
+            </div>
             <div className={styles.border}>
                 <Editor
                     language="python"

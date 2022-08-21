@@ -1,7 +1,7 @@
 import styles from "../../../styles/_sidebar.module.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { List } from "react-bootstrap-icons";
-// import { RootState } from "../../../store/modules";
+import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
 
 /**  실행 결과 **/
 function Run() {
@@ -62,10 +62,34 @@ function Grade() {
 
 /** 제출 힌트 **/
 function Hint() {
+    const hintVal = useSelector(state => state.hint);
+
     return (
+        //힌트 개수 쓰려면 아래 값 고고
+        // {hintVal.num}
+
         <div className={styles.feedback}>
             <h3 className={styles.section_title}>힌트</h3>
-            <div style={{overflowY: "scroll", height:"100%"}}></div>
+            <div style={{overflowY: "scroll", height:"100%"}}>
+                {hintVal.content == null &&
+                    <div>Loading ... </div>
+                }
+
+                {hintVal.num == -1 &&
+                    <div>{hintVal.content} </div>
+                }
+
+                {hintVal.num!=-1 && hintVal.content!=null &&
+                    Object.keys(hintVal.content).map((line) => (
+                        hintVal.content[line].map((contents) => (
+                            Object.keys(contents).map((content) => (
+                                <li key={line.toString()+content.toString()}>
+                                    <div>line {line}</div>
+                                    <div>{content+" "+contents[content]}</div>
+                                </li>
+                    ))))))
+                }
+            </div>
         </div>
     )
 }
@@ -111,11 +135,33 @@ function Solutions(props) {
 }
 
 /** 제출 답안 비교 **/
+//여기서도 피드백이 어떻게 진행될지 정해지지 않아 임의의 값으로 비교
 function CompareAnswer() {
+    // style needs to be fixed
+    const diffStyle = {
+        variables: {
+            light: {
+                codeFoldGutterBackground: "#6F767E",
+                codeFoldBackground: "#E2E4E5"
+            }
+        }
+    };
+
     return (
         <div className={styles.feedback}>
             <h3 className={styles.section_title}>답안비교</h3>
-            <div style={{overflowY: "scroll", height:"100%"}}></div>
+            <div style={{overflowY: "scroll", height:"100%"}}>
+                <ReactDiffViewer
+                        oldValue="print('hello')"
+                        newValue="print('hihi)"
+                        splitView={false}
+                        compareMethod={DiffMethod.LINES}
+                        styles={diffStyle}
+                        // leftTitle="Version A"
+                        // rightTitle="Version B"
+                        // renderContent={highlightSyntax}
+                />
+            </div>
         </div>
     )
 }
