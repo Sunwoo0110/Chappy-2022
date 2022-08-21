@@ -1,4 +1,4 @@
-import styles from "../../../styles/_sidebar.module.css";
+import styles from "../../../styles/assignment/_sidebar.module.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { List } from "react-bootstrap-icons";
 import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
