@@ -53,7 +53,7 @@
     flex-direction: column;
     background: red;
     order: 1;
-    width: 25%;
+    width: 30%;
 }
 
 .codingbox {
@@ -61,7 +61,7 @@
     background: yellow;
     flex-direction: column;
     order: 2;
-    width: 50%;
+    width: 40%;
 }
 
 .rightsidebar {
@@ -69,5 +69,5 @@
     flex-direction: column;
     background: blue;
     order: 3;
-    width: 25%;
+    width: 30%;
 }

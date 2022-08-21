@@ -109,20 +109,20 @@ export default function CodingPage() {
             setMode(1);
             setRun(code);
         }
-        else if(action=="submit"){
+        else if(action==="submit"){
             /* 제출 버튼 */
             setMode(2);
             setHint(code); 
             setFeedback(code); 
         }
-        else if(action=="hintAll"){
-            /* 힌트 모두 적용 버튼*/
+        else if(action==="hint"){
+            /* 검증 버튼 */
             setMode(3);
-        }
-        else if(action=="hint"){
-            setMode(4);
-            setHint(code);
+            // setHint(code);
+            setRun(code);
             console.log("validation")
+
+        } else {
 
         }
 
@@ -271,8 +271,7 @@ export default function CodingPage() {
                 <div className={styles.leftsidebar}>
                     <LeftSideBar
                         assignment={assignment}
-                        example={example}
-                        onClickCheckPoint={handleCheckPoint} />
+                        example={example} />
                 </div>
                 <div className={styles.codingbox}>
                     <CodingBox

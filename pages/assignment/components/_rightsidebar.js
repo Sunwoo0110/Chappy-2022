@@ -1,7 +1,9 @@
 import styles from "../../../styles/assignment/_sidebar.module.css";
 import { useSelector, useDispatch } from 'react-redux';
-import { List } from "react-bootstrap-icons";
-import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
+import { List, MenuButton } from "react-bootstrap-icons";
+// import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
+import { ResponsivePie } from '@nivo/pie'
+import { useState } from 'react';
 
 /**  실행 결과 **/
 function Run() {
@@ -11,7 +13,7 @@ function Run() {
 
     return (
         <div className={styles.feedback}>
-            <h3 className={styles.section_title}>실행결과</h3>
+            <h3 className={styles.section_title}>실행 결과</h3>
             <div style={{overflowY: "scroll", height:"100%"}}>
             <p style={{ whiteSpace: 'pre-wrap' }}>
                 { runValue.result }
@@ -21,23 +23,105 @@ function Run() {
     )
 }
 
-/**  채점 결과 **/
-function Grade() {
+/**  검증 결과 **/
+function Validation() {
 
     const runValue = useSelector((state) => state.run);
-    const results = runValue.all_result;
-    // console.log(results);
-    const user = "백우정"; // 추후에 redux 로 user 관리
-
-    var result = "Wrong";
-    var number = 0;
-    
-    if (runValue.score === 100)  result = "Success";
+    // console.log(runValue.result);
 
     return (
         <div className={styles.feedback}>
-            <h3 className={styles.section_title}>채점결과</h3>
-            <h4>{`${user}님의 채점 결과는 ${result}입니다`}</h4>
+            <h3 className={styles.section_title}>검증 결과</h3>
+            <div style={{overflowY: "scroll", height:"100%"}}>
+            <p style={{ whiteSpace: 'pre-wrap' }}>
+                {`Your Output: ${runValue.result}`}
+            </p>
+            </div>
+        </div>
+    )
+}
+
+/**  채점 결과 **/
+function Grade() {
+
+    // const runValue = useSelector((state) => state.run);
+    // const results = runValue.all_result;
+    // // console.log(results);
+    // const user = "백우정"; // 추후에 redux 로 user 관리
+
+    // var result = "Wrong";
+    // var number = 0;
+    
+    // if (runValue.score === 100)  result = "Success";
+    const [type, setType] = useState(1);
+
+    const handle = {
+        padClick: (data) => {
+            console.log(data);
+        },
+    };
+
+
+    return (
+        <div className={styles.outputs}>
+            <h3 className={styles.section_title}>채점 결과</h3>
+            <div className={styles.problem}>
+                <h3>Overall Score</h3>
+                <div style={{ width: '100%', height: '75%'}}>
+                    <h5 style={{ top: "0px" }}>{"총점\n58"}</h5>
+                    <ResponsivePie
+                    data={[
+                        { id: '기능', value: 88 },
+                        { id: '효율', value: 58 },
+                        { id: '가독성', value: 32 },
+                    ]}
+                    margin={{ top: 0, right: 0, bottom: 10, left: 0 }}
+                    innerRadius={0.5}
+                    padAngle={1.0}
+                    cornerRadius={0}
+                    colors={['#00B0F0', '#92D050', '#FFC000', '#FFFFFF']}
+                    borderWidth={2}
+                    enableArcLinkLabels = {false}
+                    theme={{
+                        labels: {
+                            text: {
+                                fontSize: 12,
+                                fill: '#000000',
+                            },
+                        },
+                    }}
+                    onClick={handle.padClick}
+                    endAngle={270}
+                    fit={true}
+                    arcLabel={function(e) {return e.id+"\n"+e.value}}
+                    borderColor="white"
+                    activeOuterRadiusOffset={8}
+                    />
+                </div>
+            </div>
+            <div className={styles.buttons}>
+                <button className={styles.score_button} style={{backgroundColor: "#00B0F0"}} type="button" onClick={() => setType(1)}>기능 점수 확인</button>
+                <button className={styles.score_button} style={{backgroundColor: "#92D050"}} type="button" onClick={() => setType(2)}>효율 점수 확인</button>
+                <button className={styles.score_button} style={{backgroundColor: "#FFC000"}} type="button" onClick={() => setType(3)}>가독성 점수 확인</button>
+            </div>
+            <div className={styles.outputs}>
+                {
+                    type === 1 ?
+                    <div style = {{backgroundColor: "#00B0F0", height: "100%"}}>
+                        기능 점수
+                    </div>
+                    : type === 2 ?
+                    <div style = {{backgroundColor: "#92D050", height: "100%"}}>
+                        효율 점수
+                    </div>
+                    :
+                    <div style = {{backgroundColor: "#FFC000", height: "100%"}}> 
+                        가독성 점수
+                    </div>
+                }
+                
+            </div>
+            {/* <h4>{`${user}님의 채점 결과는 ${result}입니다`}</h4>
             <h4>{`총점: ${runValue.score}`}</h4>
             <div style={{overflowY: "scroll", height:"100%"}}>
             <ul>
@@ -55,43 +139,43 @@ function Grade() {
                 }
                 )}
             </ul>
-            </div>
+            </div> */}
         </div>
     )
 }
 
 /** 제출 힌트 **/
 function Hint() {
-    const hintVal = useSelector(state => state.hint);
+    // const hintVal = useSelector(state => state.hint);
 
-    return (
-        //힌트 개수 쓰려면 아래 값 고고
-        // {hintVal.num}
+    // return (
+    //     //힌트 개수 쓰려면 아래 값 고고
+    //     // {hintVal.num}
 
-        <div className={styles.feedback}>
-            <h3 className={styles.section_title}>힌트</h3>
-            <div style={{overflowY: "scroll", height:"100%"}}>
-                {hintVal.content == null &&
-                    <div>Loading ... </div>
-                }
+    //     <div className={styles.feedback}>
+    //         <h3 className={styles.section_title}>힌트</h3>
+    //         <div style={{overflowY: "scroll", height:"100%"}}>
+    //             {hintVal.content == null &&
+    //                 <div>Loading ... </div>
+    //             }
 
-                {hintVal.num == -1 &&
-                    <div>{hintVal.content} </div>
-                }
+    //             {hintVal.num == -1 &&
+    //                 <div>{hintVal.content} </div>
+    //             }
 
-                {hintVal.num!=-1 && hintVal.content!=null &&
-                    Object.keys(hintVal.content).map((line) => (
-                        hintVal.content[line].map((contents) => (
-                            Object.keys(contents).map((content) => (
-                                <li key={line.toString()+content.toString()}>
-                                    <div>line {line}</div>
-                                    <div>{content+" "+contents[content]}</div>
-                                </li>
-                    ))))))
-                }
-            </div>
-        </div>
-    )
+    //             {hintVal.num!=-1 && hintVal.content!=null &&
+    //                 Object.keys(hintVal.content).map((line) => (
+    //                     hintVal.content[line].map((contents) => (
+    //                         Object.keys(contents).map((content) => (
+    //                             <li key={line.toString()+content.toString()}>
+    //                                 <div>line {line}</div>
+    //                                 <div>{content+" "+contents[content]}</div>
+    //                             </li>
+    //                 ))))))
+    //             }
+    //         </div>
+    //     </div>
+    // )
 }
 
 /** 제출 성적 **/
@@ -138,37 +222,38 @@ function Solutions(props) {
 //여기서도 피드백이 어떻게 진행될지 정해지지 않아 임의의 값으로 비교
 function CompareAnswer() {
     // style needs to be fixed
-    const diffStyle = {
-        variables: {
-            light: {
-                codeFoldGutterBackground: "#6F767E",
-                codeFoldBackground: "#E2E4E5"
-            }
-        }
-    };
+    // const diffStyle = {
+    //     variables: {
+    //         light: {
+    //             codeFoldGutterBackground: "#6F767E",
+    //             codeFoldBackground: "#E2E4E5"
+    //         }
+    //     }
+    // };
 
-    return (
-        <div className={styles.feedback}>
-            <h3 className={styles.section_title}>답안비교</h3>
-            <div style={{overflowY: "scroll", height:"100%"}}>
-                <ReactDiffViewer
-                        oldValue="print('hello')"
-                        newValue="print('hihi)"
-                        splitView={false}
-                        compareMethod={DiffMethod.LINES}
-                        styles={diffStyle}
-                        // leftTitle="Version A"
-                        // rightTitle="Version B"
-                        // renderContent={highlightSyntax}
-                />
-            </div>
-        </div>
-    )
+    // return (
+    //     <div className={styles.feedback}>
+    //         <h3 className={styles.section_title}>답안비교</h3>
+    //         <div style={{overflowY: "scroll", height:"100%"}}>
+    //             <ReactDiffViewer
+    //                     oldValue="print('hello')"
+    //                     newValue="print('hihi)"
+    //                     splitView={false}
+    //                     compareMethod={DiffMethod.LINES}
+    //                     styles={diffStyle}
+    //                     // leftTitle="Version A"
+    //                     // rightTitle="Version B"
+    //                     // renderContent={highlightSyntax}
+    //             />
+    //         </div>
+    //     </div>
+    // )
 }
 
 /* mode: 0 채점 */
 /* mode: 1 실행 */
 /* mode: 2 제출 */
+/* mode: 3 검증 */
 export default function RightSideBar({ mode, solutions }) {
     return (
         <div className={styles.sidebar}>
@@ -176,16 +261,16 @@ export default function RightSideBar({ mode, solutions }) {
                 mode === 0 ?
                 <>
                 <Grade/>
-                <Hint/>
                 </>
                 : mode === 1 ?
                 <Run/>
-                    :
-                    <>
-                    <Final/>
-                    <Solutions data={solutions}/>     
-                    <CompareAnswer/> 
-                    </>
+                : mode === 2 ?
+                <>
+                <Grade/>
+                </>
+                : mode === 3 ?
+                <Validation />
+                : null
             }            
         </div>
     )
