@@ -3,35 +3,35 @@ export default async function handler(req, res) {
 
     switch (method) {
         case 'POST':
-            let dummyHint = {
+            let dummyFeedback = {
                 "2":[
                     {
                       "Delete":"this statement"
                     }, 
                     {	
-                      "Insert":"'If' statement"
+                      "Insert":"    if lst==[]"
                     }
                     ],
                 "3":[
                     {
-                      "Insert":"'Return' statement"
+                      "Insert":"        return []"
                     }
                     ],
                 "4":[
                     {
-                        "Insert":"'else' statement"
+                        "Insert":"  else:"
                     }
                     ],    
                 "5":[
                     {
-                        "Insert":"'Assignment' statement"
+                        "Insert":"      result=[lst[0]]"
                     }
                     ]        
-            };    
+                };
+    
+            // console.log(req.body);
 
-            console.log(req.body);
-
-            res.status(200).json(dummyHint);
+            res.status(200).json(dummyFeedback);
             break
 
         default:
