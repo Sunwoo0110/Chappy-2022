@@ -47,16 +47,16 @@ const Assignment = (props) => (
 
 const AssignmentList = () => {
     const { mutate } = useSWRConfig()
-    const { data, error } = useSWR('/api/assignment', fetcher)
+    const { data, error } = useSWR('/api/assignment/assignment', fetcher)
     if (error) return <div>Getting Assignments Failed</div>
     if (!data) return <div>Loading...</div>
 
     // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
     async function onDelete(id) {
         const newAssignments = data.data.filter((item) => item._id !== id)
-        mutate('/api/assignment', { data: newAssignments }, false)
+        mutate('/api/assignment/assignment', { data: newAssignments }, false)
 
-        await fetch('/api/assignment', {
+        await fetch('/api/assignment/assignment', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const AssignmentList = () => {
             body: JSON.stringify({ id: id }),
         })
 
-        mutate('/api/assignment', fetcher)
+        mutate('/api/assignment/assignment', fetcher)
     }
 
     return (

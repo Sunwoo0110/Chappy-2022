@@ -1,7 +1,7 @@
 import Editor from "@monaco-editor/react";
 import { useRef } from "react";
 
-import styles from "../../../styles/_codingbox.module.css"
+import styles from "../../../styles/assignment/_codingbox.module.css"
 
 
 export default function CodingBox({ assignment, onClickCheckPoint }) {

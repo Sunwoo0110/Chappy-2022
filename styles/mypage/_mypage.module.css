@@ -1,0 +1,266 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    /* row-gap: 30px; */
+    align-items: flex-start;
+    /* background: skyblue; */
+    width: 100%;
+    /* height: 100%; */
+}
+
+/* ================================================ */
+.section_title_bg {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 2%;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+.section_title {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 34px;
+    color: #4C4C4C;
+}
+
+.section_title_exp {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18px;
+    color: #4C4C4C;
+    opacity: 0.5;
+}
+
+.moving_page{
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+    color: #0B51FF;
+    cursor: pointer;
+}
+
+.section_bg {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    row-gap: 10px;
+    margin-left: 5%;
+    margin-bottom: 5%;
+    width: 80%;
+    /* height: 100%; */
+    /* background: darkkhaki; */
+}
+
+/* ================================================ */
+
+.studentinfo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 5%;
+    width: 100%;
+    /* height: 100%; */
+    /* background: rgb(137, 137, 165); */
+}
+
+.studentinfo_data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 5%;
+    width: 100%;
+    /* height: 30%; */
+    /* background: rgb(178, 178, 243); */
+}
+
+.studentinfo_image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+    /* column-gap: 1%; */
+    width: 20%;
+    height: 100%;
+}
+
+.studentinfo_1 {
+    flex-grow: 1;
+    flex-basis: 1px;
+    margin-bottom: 3%;
+}
+
+.studentinfo_3 {
+    color: grey;
+    flex-grow: 3;
+    flex-basis: 1px;
+    margin-bottom: 3%;
+}
+
+/* ================================================ */
+
+.learninginfo_bg {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    row-gap: 30px;
+    /* height: 100%; */
+    /* background: white; */
+}
+
+.learninginfo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    /* height: 100%; */
+    /* background: grey; */
+}
+
+.attendance {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    column-gap: 1%;
+    width: 100%;
+    /* height: 100%; */
+    /* background: rgb(137, 137, 165); */
+}
+
+.attendance_item {
+    display: flex;
+    flex-basis: 1px;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 5px;
+    /* width: 20%; */
+    /* margin-top: 10px; */
+    padding-right: 5%;
+    padding-left: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background: #F8F8F8;
+}
+
+.attendance_black {
+    color: black;
+}
+
+.attendance_blue {
+    color: blue;
+}
+
+.attendance_red {
+    color: red;
+}
+
+.lecture {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+    /* height: 100%; */
+    padding: 15px;
+    background: white;
+    border-style : solid;
+    border-width: 2px;
+    border-color: black;
+    border-radius: 5px;
+}
+
+.lecture_name {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    width: 100%;
+    /* height: 100%; */
+}
+
+.lecture_name_1 {
+    flex-grow: 2;
+    flex-basis: 1px;
+    /* background: skyblue; */
+    color: black;
+    font-weight: bold;
+    font-size: medium;
+}
+
+.lecture_name_2 {
+    flex-grow: 1;
+    flex-basis: 1px;
+    /* background: pink; */
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-direction: row;
+}
+
+.lecture_open {
+    font-size: small;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-style : solid;
+    border-width: 2px;
+    border-color: black;
+    border-radius: 20px;
+}
+
+.lecture_prof {
+    color: grey;
+    font-weight: normal;
+    font-size: small;
+}
+
+.lecture_id {
+    color: grey;
+    font-weight: normal;
+    font-size: x-small;
+}
+
+/* ================================================ */
+
+.deletecheck {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #114AFF;
+    margin-bottom: 15px;
+}
+
+.deletecheck_exp {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 150%;
+    text-align: center;
+    color: rgba(65, 78, 90, 0.5);
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 25px;
+    column-gap: 10%;
+    width: 100%;
+}
