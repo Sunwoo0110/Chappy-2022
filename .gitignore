@@ -110,3 +110,6 @@ dist
 
 # Submission codes
 code/*
+
+.env.local
+.swcs
