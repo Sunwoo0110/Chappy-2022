@@ -41,6 +41,8 @@ export default function LeftSideBar({ assignment, example }) {
                                     <button type="button" className={styles.val_button}  onClick={() => {
                                         dispatch(validationActions.setVal({num: examples.indexOf(ex), click: true}));
                                     }}>검증</button>
+                                    <button className={styles.val_button} type="button"
+                                    onClick={() => navigator.clipboard.writeText(`main(${ex.inputs})`)}>Copy</button>
                                 </div>
                                 <div className={styles.example_content}>
                                     <div className={styles.testcase_content}>

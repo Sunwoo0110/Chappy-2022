@@ -9,34 +9,50 @@
     flex-direction: row;
     width: 100%;
     height: 8%;
-    background: #60656e;
+    background: #414E5A;
     color: white;
 }
 
-.navbar_side {
+.navbar_left {
+    width: 30%;
     display: flex;
-    justify-content: space-around;
+    justify-content: left;
     align-items: center;
     flex-direction: row;
-    flex-grow: 1;
-    flex-basis: 100px;
-}
+    padding-inline-start: 2%;
+    /* flex-grow: 1;
+    flex-basis: 100px; */
+} 
+
+.navbar_right {
+    width: 30%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    flex-direction: row;
+    padding-inline-end: 1%;
+    /* flex-grow: 1;
+    flex-basis: 100px; */
+} 
 
 .navbar_center {
-    flex-grow: 15;
+    /* flex-grow: 15; */
+    width: 40%;
     display: flex;
     align-items: center;
+    /* flex-basis: 100px; */
     justify-content: center;
-    flex-basis: 100px;
 }
 
 .navbar_title {
     padding: 5px; 
-    width: 60%;
+    width: 100%;
+    margin: 5px;
     text-align: center;
-    background: #f0f0f0;
+    background: #FFFFFF;
     color: black;
     border-radius: 5px;
+    font-size: 10px;
 }
 
 .main {
@@ -44,8 +60,8 @@
     height: 92%;
     display: flex;
     flex-direction: row;
-    background: #bdbdbd;
-    column-gap: 3px;
+    background: black;
+    column-gap: 1px;
 }
 
 .leftsidebar {
@@ -70,4 +86,11 @@
     background: blue;
     order: 3;
     width: 30%;
+}
+
+.image_button {
+    width: 30px;
+    height: 30px;
+    filter: opacity(0.4) drop-shadow(0 0 0  0); 
+    background-color: #414E5A;
 }
