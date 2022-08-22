@@ -17,22 +17,28 @@ import * as runActions from "../../store/modules/run";
 
 const NavBar = ({ title }) => {
     return <nav className={styles.navbar}>
-        <div className={styles.navbar_side}>
+        <div className={styles.navbar_left}>
             <div >
                 <Link href="/">
                     <HouseDoorFill size={30}/>
                 </Link>
             </div>
-            <div >
+            {/* <div >
                 <Link href="/assignment">
                     <ListTask size={30}/>
                 </Link>
-            </div>
+            </div> */}
         </div>
         <div className={styles.navbar_center}>
-            <div className={styles.navbar_title}>Assignment: {title}</div>
+            <div className={styles.navbar_title}>JAVA Script 실습</div>
+            <div className={styles.navbar_title}>week 1: {title}</div>
         </div>
-        <div className={styles.navbar_side}/>
+        <div className={styles.navbar_right}>
+            <div className={styles.navbar_title}>2일 13분 30분 남았습니다</div>
+            <button type="button" style={{backgroundColor: "#414E5A", border: "none"}} >
+                <img src="/images/setting.png" className={styles.image_button} alt="file" onClick={() => {}}/>
+            </button>
+        </div>
     </nav>
 }
 
@@ -109,11 +115,21 @@ export default function CodingPage() {
             setMode(1);
             setRun(code);
         }
-        else {
+        else if(action==="submit"){
             /* 제출 버튼 */
             setMode(2);
             setHint(code); 
             setFeedback(code); 
+        }
+        else if(action==="hint"){
+            /* 검증 버튼 */
+            setMode(3);
+            // setHint(code);
+            setRun(code);
+            console.log("validation")
+
+        } else {
+
         }
 
         console.log('code@CodingPage: ', action, code);
