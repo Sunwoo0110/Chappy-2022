@@ -11,9 +11,22 @@ import Menu from "./components/_menu";
 import Unit from "./components/_unit";
 import Lecture from "./components/_lecture";
 
-export default function Index() {
+export function getServerSideProps({ params }) {
+    console.log("getssp", params);
+    return {
+      props: {
+        params,
+      },
+    };
+}
+
+export default function LectureDetailIDPage(props) {
     const [mode, setMode] = useState(0);    
     const [dropdown, setDropdown] = useState([]);
+    const lecture_id = props.params.id;
+
+    const user_id = "62ff6f624b99ac8a2bcbd015"; //이후 redux로 넘겨받기
+    console.log("heheheh=========", props.params.id);
 
     return(
         <div className={styles.container}>
@@ -28,11 +41,11 @@ export default function Index() {
                             {
                                 mode == 0 ?
                                 <>
-                                <Home/>
+                                <Home lecture_id={lecture_id}/>
                                 </>
                                 : mode === 1 ?
                                 <>
-                                <Notice/>
+                                <Notice lecture_id={lecture_id}/>
                                 </>
                                 : mode === 2 ?
                                 <>
@@ -40,11 +53,11 @@ export default function Index() {
                                 </>
                                 : mode === 3 ?
                                 <>
-                                <Assignment/>
+                                <Assignment lecture_id={lecture_id}/>
                                 </>
                                     :
                                     <>
-                                    <Exam/>
+                                    <Exam lecture_id={lecture_id}/>
                                     </>
                             }
                         </div>

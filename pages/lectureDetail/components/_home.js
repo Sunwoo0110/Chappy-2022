@@ -11,11 +11,12 @@ const fetcher = (url) => {
     })
 }
 
-const NoticeList = () => {
-    const { data, error } = useSWR('/api/lectureDetail/notice', fetcher);
+const NoticeList = ({lecture_id}) => {
+    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/notice`, fetcher);
 
-    if (error) return <div>Getting Notices Failed</div>
+    if (error) return <div>Getting Notice Failed</div>
     if (!data) return <div>Loading...</div>
+    if (data.data==-1) return <div>Notice Not Existing</div>
     
     return(
         <div>
@@ -30,18 +31,26 @@ const NoticeList = () => {
     );
 }
 
-const TaskList = () => {
-    const { data, error } = useSWR('/api/lectureDetail/task', fetcher)
+const TaskList = ({lecture_id}) => {
+    const user_id = "62ff6f624b99ac8a2bcbd015"; //redux처리 필요
+
+    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/lesson`, fetcher)
 
     if (error) return <div>Getting Tasks Failed</div>
     if (!data) return <div>Loading...</div>
+    if (data.data==-1) return <div>Task Not Existing</div>
 
     return(
         <div>
             {data.data.map((task) => (
-                <div className={taskStyles["task-item"]} key={task._id}>
-                    <div className={taskStyles["task-item-undone"]}></div>
-                    <div className={taskStyles["task-item-title"]}>{task.title}</div>
+                <div className={taskStyles["task-item"]} key={task.lesson._id}>
+                    {task.attendance==1 && 
+                        <div className={taskStyles["task-item-done"]}/>                   
+                    }
+                    {task.attendance==0 && 
+                        <div className={taskStyles["task-item-undone"]}/>                   
+                    }
+                    <div className={taskStyles["task-item-title"]}>{task.lesson.title}</div>
                     <div className={taskStyles["task-item-btn"]}>강의듣기</div>
                 </div>                
             ))}
@@ -49,16 +58,16 @@ const TaskList = () => {
     );
 }
 
-export default function Home(){
+export default function Home({lecture_id}){
     return (
         <div>
             <div className={noticeStyles.notice}>
                 <div className={commonStyles.title}>새로운 공지</div>
-                <NoticeList/>
+                <NoticeList lecture_id={lecture_id}/>
             </div>
             <div className={taskStyles.task}>
                 <div className={commonStyles.title}>이번주 할일</div>
-                <TaskList/>
+                <TaskList lecture_id={lecture_id}/>
             </div>
         </div>
     );
