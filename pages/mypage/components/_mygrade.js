@@ -65,9 +65,9 @@ function Grade(){
 }
 
 function SubjectGrade({setMode2}){
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const semester = "2022년 1학기" // user _id
-    const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
+    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
@@ -92,18 +92,18 @@ function SubjectGrade({setMode2}){
             <div style={{width:"100%"}} class="row">
                 {
                     data.lectures.map((lecture) => {
-                        if (lecture.open===semester){
+                        if (lecture.open_semester===semester){
                             return (
                                 <div class="col-6">
                                 <div className={styles.lecture}>
                                     <div className={styles.lecture_name}>
                                         <div className={styles.lecture_name_1}>{lecture.name}</div>
                                         <div className={styles.lecture_name_2}>
-                                        <div className={styles.lecture_open}>{lecture.open}</div>
+                                        <div className={styles.lecture_open}>{lecture.open_semester}</div>
                                         </div>
                                     </div>
                                     <div className={styles.lecture_prof}>{lecture.professor}</div>
-                                    <div className={styles.lecture_id}>{lecture.classnumber}</div>
+                                    <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                                 </div>
                                 </div>
                             )
@@ -120,8 +120,8 @@ function SubjectGrade({setMode2}){
 
 
 function AllSubjectGrade({setMode2}){
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
-    const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
@@ -152,11 +152,11 @@ function AllSubjectGrade({setMode2}){
                             <div className={styles.lecture_name}>
                                 <div className={styles.lecture_name_1}>{lecture.name}</div>
                                 <div className={styles.lecture_name_2}>
-                                <div className={styles.lecture_open}>{lecture.open}</div>
+                                <div className={styles.lecture_open}>{lecture.open_semester}</div>
                                 </div>
                             </div>
                             <div className={styles.lecture_prof}>{lecture.professor}</div>
-                            <div className={styles.lecture_id}>{lecture.classnumber}</div>
+                            <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                         </div>
                         </div>
                     )
