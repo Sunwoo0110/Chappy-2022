@@ -22,7 +22,7 @@ const fetcher = (url) => {
 function StudentInfo_edit() {
     
     const { mutate } = useSWRConfig()
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
@@ -45,19 +45,19 @@ function StudentInfo_edit() {
         document.getElementById('cellnumber').value = null; 
         document.getElementById('email').value = null; 
 
-        if(_username==='') _username=data.user.username;
+        if(_username==='') _username=data.user.name;
         if(_department==='') _department=data.user.department;
         if(_semester==='') _semester=data.user.semester;
-        if(_userid==='') _userid=data.user.userid;
-        if(_cellnumber==='') _cellnumber=data.user.cellnumber;
+        if(_userid==='') _userid=data.user.user_id;
+        if(_cellnumber==='') _cellnumber=data.user.cell_number;
         if(_email==='') _email=data.user.email;
 
         let user = {
-            username: _username,
+            name: _username,
             department: _department,
             semester: _semester,
-            userid: _userid,
-            cellnumber: _cellnumber,
+            user_id: _userid,
+            cell_number: _cellnumber,
             email: _email,
         }
 
@@ -84,7 +84,7 @@ function StudentInfo_edit() {
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이름</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="username" class="form-control" placeholder={data.user.username} aria-describedby="basic-addon1"/>
+                            <input type="text" id="username" class="form-control" placeholder={data.user.name} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                     <div className={styles.studentinfo_data}>
@@ -104,13 +104,13 @@ function StudentInfo_edit() {
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>아이디</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="userid" class="form-control" placeholder={data.user.userid} aria-describedby="basic-addon1"/>
+                            <input type="text" id="userid" class="form-control" placeholder={data.user.user_id} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>연락처</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="cellnumber" class="form-control" placeholder={data.user.cellnumber} aria-describedby="basic-addon1"/>
+                            <input type="text" id="cellnumber" class="form-control" placeholder={data.user.cell_number} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                     <div className={styles.studentinfo_data}>
@@ -128,7 +128,7 @@ function StudentInfo_edit() {
 function ChangePassword() {
     
     const { mutate } = useSWRConfig()
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
@@ -205,7 +205,7 @@ function DeleteAccount() {
     const router = useRouter()
     
     const { mutate } = useSWRConfig()
-    const user_id = "62ab7d4865ffc19129687a35" // user _id 일단 없는 아이디로 줌
+    const user_id = "62ff6f624b99ac8a2bcbd01" // user _id 일단 없는 아이디로 줌
     const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>

@@ -39,5 +39,5 @@ const ProfileSchema = new mongoose.Schema(
 },
 );
 
-const Profile = db.models.Profile || db.model('Profile', ProfileSchema, 'profile');
+const Profile = db.models.Profile || db.model('Profile', ProfileSchema, 'profiles');
 module.exports = Profile;

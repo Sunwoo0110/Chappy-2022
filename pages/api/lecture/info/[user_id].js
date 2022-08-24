@@ -1,23 +1,26 @@
 /** /pages/api/lecture/[id].js **/
-import dbConnect from "../../../lib/dbConnect"
-import Lecture from "../../../models/Lecture"
-import User from "../../../models/User"
+import dbConnect from "../../../../lib/dbConnect"
+import Info from "../../../../models/lecture/Info"
+import Profile from "../../../../models/user/Profile"
 
 export default async function handler(req, res) {
     const { method } = req;
 
     await dbConnect();
 
+    console.log("api lecture ");
+
     switch (method) {
         case 'GET':
             try {
-                const user = await User.findById(req.query.user_id);
-                var lecID = user.lectures;
+                
+                const user = await Profile.findById(req.query.user_id);
+                var lecID = user.lecture_list;
                 var lectures = [];
                 let lec;
                 
                 for (let id of lecID){
-                    lec = await Lecture.findById(id);
+                    lec = await Info.findById(id);
                     lectures.push(lec);
                 }
 
@@ -30,7 +33,7 @@ export default async function handler(req, res) {
         case 'POST':
             try {
                 console.log('add:', req.body.lecture_id);
-                const user = await User.findById(req.query.user_id);
+                const user = await Profile.findById(req.query.user_id);
                 var lecID = user.lectures;
 
                 let newID = lecID.filter((e) => e === req.body.lecture_id);
@@ -40,7 +43,7 @@ export default async function handler(req, res) {
                 } else {
                     lecID.push(req.body.lecture_id);
 
-                    const newUser = await User.findByIdAndUpdate(req.query.user_id, { "lectures": lecID }, {
+                    const newUser = await Profile.findByIdAndUpdate(req.query.user_id, { "lectures": lecID }, {
                         new: true, 
                     });
 
@@ -57,12 +60,12 @@ export default async function handler(req, res) {
             try {
                 console.log('delete:', req.body.lecture_id);
                 const id = req.body.lecture_id;
-                const user = await User.findById(req.query.user_id);
+                const user = await Profile.findById(req.query.user_id);
 
                 let lecID = user.lectures;
                 let newlectures = lecID.filter((e) => e !== id);
 
-                const newUser = await User.findByIdAndUpdate(req.query.user_id, { "lectures": newlectures }, {
+                const newUser = await Profile.findByIdAndUpdate(req.query.user_id, { "lectures": newlectures }, {
                     new: true, 
                 });
 

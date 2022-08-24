@@ -25,10 +25,10 @@ const fetcher = (url) => {
 
 function StudentInfo() {
     
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
 
-    if (error) return <div>Getting Lectures Failed</div>
+    if (error) return <div>Getting User Info Failed</div>
     if (!data) return <div>Loading...</div>
 
     return (
@@ -44,7 +44,7 @@ function StudentInfo() {
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이름</div>
-                        <div className={styles.studentinfo_3}>{data.user.username}</div>
+                        <div className={styles.studentinfo_3}>{data.user.name}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학과</div>
@@ -58,11 +58,11 @@ function StudentInfo() {
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>아이디</div>
-                        <div className={styles.studentinfo_3}>{data.user.userid}</div>
+                        <div className={styles.studentinfo_3}>{data.user.user_id}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>연락처</div>
-                        <div className={styles.studentinfo_3}>{data.user.cellnumber}</div>
+                        <div className={styles.studentinfo_3}>{data.user.cell_number}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이메일</div>
@@ -77,17 +77,19 @@ function StudentInfo() {
 function LearningInfo() {
 
     const { mutate } = useSWRConfig()
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const semester = "2022년 1학기" // user _id
-    const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
+    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
-    if (error) return <div>Getting Lectures Failed</div>
+    if (error) return <div>Getting Lecture Info Failed</div>
     if (!data) return <div>Loading...</div>
+    
+    console.log("lecture:: ",data);
 
     // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
     async function onDelete(_id) {
 
-        const newList =  await fetch(`/api/lecture/${user_id}`, {
+        const newList =  await fetch(`/api/lecture/info/${user_id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +97,7 @@ function LearningInfo() {
             body: JSON.stringify({ lecture_id: _id }),
         })
 
-        mutate(`/api/lecture/${user_id}`);
+        mutate(`/api/lecture/info/${user_id}`);
         
     }
 
@@ -134,14 +136,14 @@ function LearningInfo() {
                     <div style={{width:"100%"}} class="row">
                     {
                         data.lectures.map((lecture) => {
-                            if (lecture.open===semester){
+                            if (lecture.open_semester===semester){
                                 return (
                                     <div class="col-6">
                                     <div className={styles.lecture}>
                                         <div className={styles.lecture_name}>
                                             <div className={styles.lecture_name_1}>{lecture.name}</div>
                                             <div className={styles.lecture_name_2}>
-                                            <div className={styles.lecture_open}>{lecture.open}</div>
+                                            <div className={styles.lecture_open}>{lecture.open_semester}</div>
                                             <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal" data-bs-target="#deleteChecker"></button>
                                             <div class="modal fade" id="deleteChecker" tabindex="-1" aria-labelledby="deleteCheckerLabel" aria-hidden="true">
 
@@ -161,8 +163,8 @@ function LearningInfo() {
                                         </div>
                                             </div>
                                         </div>
-                                        <div className={styles.lecture_prof}>{lecture.professor}</div>
-                                        <div className={styles.lecture_id}>{lecture.classnumber}</div>
+                                        <div className={styles.lecture_prof}>{lecture.professor} 교수님</div>
+                                        <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                                     </div>
                                     </div>
                                 )
