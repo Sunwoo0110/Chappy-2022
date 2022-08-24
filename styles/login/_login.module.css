@@ -43,6 +43,8 @@
 
 .input {
     background: #FFFFFF;
+    color: #414E5A;
+    font-family: 'D2Coding';
     box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     border: none;    
@@ -51,6 +53,7 @@
     height: 50px;
     margin-left: auto;
     margin-right: auto;
+    padding: 5%;
 }
 
 .login-btn {
