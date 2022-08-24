@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react";
 import { CardText, Circle, MegaphoneFill, Star } from "react-bootstrap-icons";
 import useSWR, { useSWRConfig } from "swr"
@@ -14,18 +15,36 @@ const fetcher = (url) => {
 }
 
 function MyLectureList() {
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const semester="2022년 1학기"
-    const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
+    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
+
+    console.log("lecture:::: ", data)
+
+
+    const onClick = async (_id) => {
+        <Link
+            as={`/lectureDetail/${_id}`}
+            href={{
+                pathname: "/lectureDetail/[id]",
+                query: { data: JSON.stringify(_id) },
+            }}>
+        </Link>
+    }
 
     return (
         <div style={{width:"100%"}} class="row">
         {
             data?.lectures.map((lecture) => {
-                if (lecture.open===semester){
+                if (lecture.open_semester===semester){
                     return (
+                        <Link as={`/lectureDetail/${lecture._id}`}
+                            href={{
+                                pathname: "/lectureDetail/[id]",
+                                query: { data: JSON.stringify(lecture._id) },
+                            }}>
                         <div style={{marginBottom:"20px"}} class="col-6">
                         <div className={styles.lecture_bg}>
                             <div style={{justifyContent:"space-between", marginBottom: "60px", padding:"20px"}} className={styles.lecture_icon}>
@@ -36,11 +55,11 @@ function MyLectureList() {
                                 <div className={styles.lecture_name}>
                                     <div className={styles.lecture_name_1}>{lecture.name}</div>
                                     <div className={styles.lecture_name_2}>
-                                    <div className={styles.lecture_open}>{lecture.open}</div>
+                                    <div className={styles.lecture_open}>{lecture.open_semester}</div>
                                     </div>
                                 </div>
                                 <div className={styles.lecture_prof}>{lecture.professor}</div>
-                                <div className={styles.lecture_id}>{lecture.classnumber}</div>
+                                <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                                 <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
                                     <MegaphoneFill size={30}/>
                                     <CardText size={30}/>
@@ -48,6 +67,7 @@ function MyLectureList() {
                             </div>
                         </div>
                         </div>
+                        </Link>
                     )
                 }
                 else{
@@ -60,8 +80,8 @@ function MyLectureList() {
 }
 
 function AllLectureList() {
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
-    const { data, error } = useSWR(`/api/lecture/${user_id}`, fetcher)
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
 
@@ -80,11 +100,11 @@ function AllLectureList() {
                         <div className={styles.lecture_name}>
                             <div className={styles.lecture_name_1}>{lecture.name}</div>
                             <div className={styles.lecture_name_2}>
-                            <div className={styles.lecture_open}>{lecture.open}</div>
+                            <div className={styles.lecture_open}>{lecture.open_semester}</div>
                             </div>
                         </div>
                         <div className={styles.lecture_prof}>{lecture.professor}</div>
-                        <div className={styles.lecture_id}>{lecture.classnumber}</div>
+                        <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                         <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
                             <MegaphoneFill size={30}/>
                             <CardText size={30}/>
