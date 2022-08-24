@@ -23,17 +23,6 @@ function MyLectureList() {
 
     console.log("lecture:::: ", data)
 
-
-    const onClick = async (_id) => {
-        <Link
-            as={`/lectureDetail/${_id}`}
-            href={{
-                pathname: "/lectureDetail/[id]",
-                query: { data: JSON.stringify(_id) },
-            }}>
-        </Link>
-    }
-
     return (
         <div style={{width:"100%"}} class="row">
         {
@@ -90,6 +79,11 @@ function AllLectureList() {
         {
             data?.lectures.map((lecture) => {
             return (
+                <Link as={`/lectureDetail/${lecture._id}`}
+                    href={{
+                        pathname: "/lectureDetail/[id]",
+                        query: { data: JSON.stringify(lecture._id) },
+                    }}>
                 <div style={{marginBottom:"20px"}} class="col-6">
                 <div className={styles.lecture_bg}>
                     <div style={{justifyContent:"space-between", marginBottom: "60px", padding:"20px"}} className={styles.lecture_icon}>
@@ -112,6 +106,7 @@ function AllLectureList() {
                     </div>
                 </div>
                 </div>
+                </Link>
             )
         })
         }
