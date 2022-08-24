@@ -6,4 +6,4 @@ const ExamSchema = new mongoose.Schema({
     date: String,
 })
 
-module.exports = mongoose.models.Exam || mongoose.model('Exam', ExamSchema)
+module.exports = mongoose.models.exam

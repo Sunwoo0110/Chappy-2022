@@ -1,56 +1,62 @@
-import { useCallback, useState } from "react"
-import { useRouter } from "next/router"
-import Link from "next/link"
+import { useCallback, useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import { useSelector, useDispatch } from 'react-redux';
 import axios from "axios";
 
-import LeftSideBar from "./components/_leftsidebar"
-import CodingBox from "./components/_codingbox"
-import RightSideBar from "./components/_rightsidebar"
+import LeftSideBar from "./components/_leftsidebar";
+import CodingBox from "./components/_codingbox";
+import RightSideBar from "./components/_rightsidebar";
 
-import {HouseDoorFill, ListTask} from 'react-bootstrap-icons'
-import styles from "../../styles/CodingPage.module.css"
+import {HouseDoorFill, ListTask} from 'react-bootstrap-icons';
+import styles from "../../styles/assignment/CodingPage.module.css";
 
 import * as hintActions from "../../store/modules/hint";
 import * as feedbackActions from "../../store/modules/feedback";
+import * as runActions from "../../store/modules/run";
 
 const NavBar = ({ title }) => {
     return <nav className={styles.navbar}>
-        <div className={styles.navbar_side}>
+        <div className={styles.navbar_left}>
             <div >
                 <Link href="/">
                     <HouseDoorFill size={30}/>
                 </Link>
             </div>
-            <div >
+            {/* <div >
                 <Link href="/assignment">
                     <ListTask size={30}/>
                 </Link>
-            </div>
+            </div> */}
         </div>
         <div className={styles.navbar_center}>
-            <div className={styles.navbar_title}>Assignment: {title}</div>
+            <div className={styles.navbar_title}>JAVA Script 실습</div>
+            <div className={styles.navbar_title}>week 1: {title}</div>
         </div>
-        <div className={styles.navbar_side}/>
+        <div className={styles.navbar_right}>
+            <div className={styles.navbar_title}>2일 13분 30분 남았습니다</div>
+            <button type="button" style={{backgroundColor: "#414E5A", border: "none"}} >
+                <img src="/images/setting.png" className={styles.image_button} alt="file" onClick={() => {}}/>
+            </button>
+        </div>
     </nav>
 }
 
 async function get_assignment(assignmentId) {
-    const res = await fetch('/api/assignment', {
+    const res = await fetch('/api/assignment/assignment', {
         method: 'POST',
         body: assignmentId,
     })
 
-    return (await res.json()).data
+    return (await res.json()).data;
 }
-
 
 export default function CodingPage() {
     const router = useRouter();
     const dispatch = useDispatch();
 
     const [assignment, setAssignment] = useState(JSON.parse(router.query?.data));
-    const [testcase, setTestcase] = useState(
+    const [example, setExample] = useState(
         [
             {
                 inputs: '[1,2,3,4], 2',
@@ -68,7 +74,7 @@ export default function CodingPage() {
                 is_open: false,
             },
         ]
-    )
+    );
 
     const [solutions, setSolutions] = useState(
         [
@@ -88,44 +94,100 @@ export default function CodingPage() {
                 is_open: false,
             },
         ]
-    )
-    const [code, setCode] = useState('')
-    const [output, setOutput] = useState('')
-    const [mode, setMode] = useState(0)
+    );
+    const [code, setCode] = useState('');
+    
     /* mode: 0 채점 */
     /* mode: 1 실행 */
     /* mode: 2 제출 */
+    const [mode, setMode] = useState(1);
 
     const handleCheckPoint = async (code, action) => {
-        setCode(code)
-        setHint(code);
-        setFeedback(code);
+        setCode(code); 
 
-        if(action==="test")
-            setMode(0)
-        else if(action==="run")
-            setMode(1)
-        else
-            setMode(2)
+        if(action==="test") {
+            /* 채점 버튼 */
+            setMode(0);
+            setTC(code);
+        }
+        else if(action==="run") {
+            /* 실행 버튼 */
+            setMode(1);
+            setRun(code);
+        }
+        else if(action==="submit"){
+            /* 제출 버튼 */
+            setMode(2);
+            setHint(code); 
+            setFeedback(code); 
+        }
+        else if(action==="hint"){
+            /* 검증 버튼 */
+            setMode(3);
+            // setHint(code);
+            setRun(code);
+            console.log("validation")
+
+        } else {
+
+        }
 
         console.log('code@CodingPage: ', action, code);
-        // const res = await fetch('/api/runCode', {
-        //     method: "POST",
-        //     header: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: code,
-        // })
-        // const _output = (await res.json())?.output
-        // if (_output === '')
-        //     setOutput('별도의 출력이 없습니다.\n코드를 확인해주세요 :)')
-        // else{
-        //     setOutput(_output)//.replace('\n', '<br>'))
-        // }
     }
 
+    const setRun = useCallback(async (code)=> {
+        await axios.post('/api/assignment/runcode', {
+            "code": code,
+        })
+        .then((res) => {
+            if (res.data.result === null) {
+                let payload = {
+                    result: "실행 결과가 없습니다",
+                };
+                dispatch(runActions.setRun(payload));
+            } else {
+                let payload = {
+                    result: res.data.result,
+                };
+                dispatch(runActions.setRun(payload));
+            }
+        })
+        .catch(error => {
+            console.log("failed");
+            console.log(error.response);
+            let payload = {
+                result: "Server Error"
+            };        
+            dispatch(runActions.setRun(payload));
+        })
+    }, [dispatch]);
+
+    const setTC = useCallback(async (code)=> {
+        const num = 1;
+        await axios.post(`/api/assignment/runcode/${num}`, {
+            "code": code,
+        })
+        .then((res) => {
+            console.log(res.data)
+            let payload = {
+                all_result: res.data.result,
+                score: res.data.score
+            };
+            dispatch(runActions.setTC(payload));
+        })
+        .catch(error => {
+            console.log("failed");
+            console.log(error.response);
+            let payload = {
+                result: "Server Error"
+            };        
+            dispatch(runActions.setTC(payload));
+            
+        });
+    }, [dispatch]);
+
     const setHint = useCallback(async (code)=>{
-        await axios.post('/api/hint', {
+        await axios.post('/api/assignment/hint', {
             //feedback api 완성되면 연결
             "code": code,
         })
@@ -154,11 +216,11 @@ export default function CodingPage() {
                 num: -1,
             };        
             dispatch(hintActions.setHint(payload));
-        })
+        });
     }, [dispatch]);    
 
     const setFeedback = useCallback(async (code)=>{
-        await axios.post('/api/feedback', {
+        await axios.post('/api/assignment/feedback', {
             //feedback api 완성되면 연결
             "code": code,
         })
@@ -215,7 +277,7 @@ export default function CodingPage() {
                 <div className={styles.leftsidebar}>
                     <LeftSideBar
                         assignment={assignment}
-                        testcase={testcase} />
+                        example={example} />
                 </div>
                 <div className={styles.codingbox}>
                     <CodingBox
@@ -225,7 +287,6 @@ export default function CodingPage() {
                 <div className={styles.rightsidebar}>
                     <RightSideBar
                         mode={mode}
-                        output={output}
                         solutions={solutions} />
                 </div>
             </div>

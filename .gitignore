@@ -112,4 +112,4 @@ dist
 code/*
 
 .env.local
-.swcs
+.swc

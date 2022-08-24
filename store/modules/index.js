@@ -4,12 +4,16 @@ import counter from "./counter";
 import code from "./code";
 import hint from "./hint";
 import feedback from "./feedback";
+import run from "./run";
+import validation from "./validation";
 
 const rootReducer = combineReducers({
     counter,
     code,
     hint,
     feedback,
+    run,
+    validation,
 });
 
 const reducer = (state, action) => {
