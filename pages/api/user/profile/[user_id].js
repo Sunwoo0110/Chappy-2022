@@ -8,8 +8,6 @@ export default async function handler(req, res) {
     console.log("user api");
     await dbConnect();
 
-    console.log("user api");
-
     switch (method) {
         case 'GET':
             try {
