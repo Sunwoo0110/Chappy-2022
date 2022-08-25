@@ -14,7 +14,7 @@ const fetcher = (url) => {
     })
 }
 
-function SelectLecture({setMode}){
+function SelectLecture({setMode, setID}){
     const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const semester="2022년 1학기"
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
@@ -68,7 +68,7 @@ function SelectLecture({setMode}){
     )
 }
 
-function AllSelectLecture({setMode}){
+function AllSelectLecture({setMode, setID}){
     const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
@@ -81,6 +81,10 @@ function AllSelectLecture({setMode}){
 
     const toMode2 = async () => {
         setMode(2);
+    }
+
+    const onClick = async (_id) => {
+        setID(_id);
     }
 
     return(
@@ -97,7 +101,7 @@ function AllSelectLecture({setMode}){
                     data.lectures.map((lecture) => {
                     return (
                         <div class="col-6">
-                        <div className={styles.lecture}>
+                        <div className={styles.lecture} onClick={()=>onClick(lecture._id)}>
                             <div className={styles.lecture_name}>
                                 <div className={styles.lecture_name_1}>{lecture.name}</div>
                                 <div className={styles.lecture_name_2}>
@@ -116,7 +120,7 @@ function AllSelectLecture({setMode}){
     )
 }
 
-function Objection(){
+function Objection( {lecture_id} ){
     return (
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
@@ -169,6 +173,7 @@ export default function MyAssignment() {
     //mode 1: 이번 학기 과목만
     //mode 2: 모든 과목
     const [mode, setMode] = useState(1);
+    const [id, setID] = useState(1);
 
     return (
         <div className={styles.content}>
@@ -177,11 +182,11 @@ export default function MyAssignment() {
             
             {
                 mode === 1 ?
-                <SelectLecture setMode={setMode}/>
+                <SelectLecture setMode={setMode} setID={setID}/>
                 :
-                <AllSelectLecture setMode={setMode}/>
+                <AllSelectLecture setMode={setMode} setID={setID}/>
             }
-            <Objection/>
+            <Objection lecture_id={id}/>
             
         </div>
     )

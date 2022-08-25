@@ -21,8 +21,6 @@ function MyLectureList() {
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
 
-    console.log("lecture:::: ", data)
-
     return (
         <div style={{width:"100%"}} class="row">
         {
