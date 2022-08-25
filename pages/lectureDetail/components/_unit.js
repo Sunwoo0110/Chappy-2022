@@ -5,9 +5,11 @@ import unitStyles from "../../../styles/lectureDetail/_unit.module.css";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { RiBookletFill, RiDraftLine } from "react-icons/ri"
+import { useSelector, useDispatch } from 'react-redux';
 
 const UnitList = ({ dropdown, setDropdown }) => {
     //unit DB schema 정의
+    const user_id = useSelector(state => state.user);
 
     const unitData = [
         {

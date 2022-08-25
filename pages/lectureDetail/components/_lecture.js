@@ -1,6 +1,7 @@
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import lectureStyles from "../../../styles/lectureDetail/_lecture.module.css";
 import { AiOutlineMail, AiOutlineStar } from "react-icons/ai";
+import { useSelector, useDispatch } from 'react-redux';
 
 const percentage = "90%"
 
@@ -10,7 +11,10 @@ const progressbar_inner = {
     width: percentage,
 }
 
+
 export default function Lecture() {
+    const user_id = useSelector(state => state.user);
+    
     return (
         <div className={lectureStyles.lecture}>
             <div className={lectureStyles["lecture-info"]}>

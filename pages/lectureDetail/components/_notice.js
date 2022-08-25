@@ -1,6 +1,7 @@
 import useSWR from "swr"
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import noticeStyles from "../../../styles/lectureDetail/_notice.module.css"
+import { useSelector, useDispatch } from 'react-redux';
 
 const fetcher = (url) => {
     if (typeof url != 'string')

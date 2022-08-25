@@ -1,4 +1,5 @@
 import useSWR from "swr"
+import { useSelector, useDispatch } from 'react-redux';
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import taskStyles from "../../../styles/lectureDetail/_task.module.css"
 
@@ -9,6 +10,8 @@ const fetcher = (url) => {
         return res.json()
     })
 }
+
+// const user_id = useSelector(state => state.user);
 
 // const TaskList = () => {
 //     const { data, error } = useSWR('/api/lectureDetail/task', fetcher)
