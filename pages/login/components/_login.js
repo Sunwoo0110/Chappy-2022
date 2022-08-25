@@ -23,12 +23,12 @@ export default function Login() {
        });
     };
 
-    const setUserId = useCallback( () => {
+    const setUserId = useCallback( (user_id) => {
         let payload = {
-            id: id,
+            id: user_id,
         };
         dispatch(userActions.setUser(payload));
-    }, [dispatch, id]);
+    }, [dispatch]);
 
     // const setUserId = useCallback( async () => {
     //     let payload = {
@@ -65,10 +65,10 @@ export default function Login() {
         })
         .then(response => response.json())
         .then(response => {
-            console.log(response);
+            // console.log(response);
             //로그인 성공
-            if(response.data==0){
-                setUserId();
+            if(response.data!=-1){
+                setUserId(response.data);
                 window.location.href = "/lecture";
             }
         })        
