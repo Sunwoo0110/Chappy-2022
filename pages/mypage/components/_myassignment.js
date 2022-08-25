@@ -30,6 +30,11 @@ function SelectLecture({setMode, setID}){
         setMode(2);
     }
 
+    const onClick = async (_id) => {
+        setID(_id);
+        console.log("id changed to ",_id)
+    }
+
     return(
         <div className={styles.section_bg}>
             <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
@@ -45,7 +50,7 @@ function SelectLecture({setMode, setID}){
                         if (lecture.open_semester===semester){
                             return (
                                 <div class="col-6">
-                                <div className={styles.lecture}>
+                                <div className={styles.lecture} onClick={()=>onClick(lecture._id)}>
                                     <div className={styles.lecture_name}>
                                         <div className={styles.lecture_name_1}>{lecture.name}</div>
                                         <div className={styles.lecture_name_2}>
@@ -85,6 +90,7 @@ function AllSelectLecture({setMode, setID}){
 
     const onClick = async (_id) => {
         setID(_id);
+        console.log("id changed to ",_id)
     }
 
     return(
@@ -121,6 +127,15 @@ function AllSelectLecture({setMode, setID}){
 }
 
 function Objection( {lecture_id} ){
+
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const { data, error } = useSWR(`/api/submission/objection/${user_id}/${lecture_id}`, fetcher)
+
+    if (error) return <div>Getting Lectures Failed</div>
+    if (!data) return <div>Loading...</div>
+
+    console.log("objections::: ",data)
+
     return (
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
@@ -138,7 +153,27 @@ function Objection( {lecture_id} ){
             </div>
 
             <div style={{width:"100%"}}>
-            <div className={styles.objection}>
+            {
+                    data.objections.map((objection) => {
+                    return (
+                        <div className={styles.objection}>
+                            <div className={styles.objection_1}>알고리즘 주차과제: 9주차</div>
+                            <div className={styles.objection_2}>{objection.date}</div>
+                            <div className={styles.objection_3}>홍길동</div>
+                            {
+                                objection.check===true ?
+                                <div className={styles.objection_2}>확인</div>
+                                :
+                                <div className={styles.objection_2}>미확인</div>
+                            }
+                            <div className={styles.objection_2}>
+                                <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:5}} class="btn btn-primary" type="button">답변보기</button>
+                            </div>
+                        </div>
+                    )
+                })
+            }
+            {/* <div className={styles.objection}>
                 <div className={styles.objection_1}>알고리즘 주차과제: 9주차</div>
                 <div className={styles.objection_2}>2021.04.18</div>
                 <div className={styles.objection_3}>홍길동</div>
@@ -146,16 +181,7 @@ function Objection( {lecture_id} ){
                 <div className={styles.objection_2}>
                     <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:5}} class="btn btn-primary" type="button">답변보기</button>
                 </div>
-            </div>
-            <div className={styles.objection}>
-                <div className={styles.objection_1}>알고리즘 주차과제: 9주차</div>
-                <div className={styles.objection_2}>2021.04.18</div>
-                <div className={styles.objection_3}>홍길동</div>
-                <div className={styles.objection_2}>확인</div>
-                <div className={styles.objection_2}>
-                    <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:5}} class="btn btn-primary" type="button">답변보기</button>
-                </div>
-            </div>
+            </div>*/}
             </div>
         </div>
     )
@@ -172,8 +198,9 @@ function Objection( {lecture_id} ){
 export default function MyAssignment() {
     //mode 1: 이번 학기 과목만
     //mode 2: 모든 과목
+    
     const [mode, setMode] = useState(1);
-    const [id, setID] = useState(1);
+    const [id, setID] = useState("62ffbe814b99ac8a2bcbd018");
 
     return (
         <div className={styles.content}>
@@ -187,7 +214,6 @@ export default function MyAssignment() {
                 <AllSelectLecture setMode={setMode} setID={setID}/>
             }
             <Objection lecture_id={id}/>
-            
         </div>
     )
 }

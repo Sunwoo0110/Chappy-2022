@@ -67,6 +67,7 @@
     border-width: 2px;
     border-color: black;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .lecture_name {
