@@ -10,11 +10,11 @@ const fetcher = (url) => {
     })
 }
 
-const TodayExamList = () => {
-    const { data, error } = useSWR('/api/lectureDetail/exam/today', fetcher)
+const TodayExamList = ({lecture_id}) => {
+    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/exam/today`, fetcher)
     if (error) return <div>Getting Today Exams Failed</div>
     if (!data) return <div>Loading...</div>
-    if (data.data==null) 
+    if (data.data==null || data.data[0]==undefined) 
         return <div className={examStyles["exam-today"]}>
                 <div className={examStyles["exam-today-none"]}>
                     오늘은 예정된 시험이 없습니다
@@ -32,8 +32,8 @@ const TodayExamList = () => {
     );
 }
 
-const ScheduledExamList = () => {
-    const { data, error } = useSWR('/api/lectureDetail/exam/scheduled', fetcher)
+const ScheduledExamList = ({lecture_id}) => {
+    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/exam/scheduled`, fetcher)
     if (error) return <div>Getting Scheduled Exams Failed</div>
     if (!data) return <div>예정된 시험이 없습니다.</div>
 
@@ -42,11 +42,11 @@ const ScheduledExamList = () => {
             {data?.data.map((exam) => (
                 <div className={examStyles["exam-scheduled-item"]} key={exam._id}>
                     <div className={examStyles["exam-scheduled-item-title"]}>{exam.title}</div>
-                    <div className={examStyles["exam-scheduled-item-date"]}>{exam.date}</div>
-                    {exam.public==true && 
+                    <div className={examStyles["exam-scheduled-item-date"]}>{exam.open_at.toString().split('T')[0].replace(/-/g, '.')}</div>
+                    {exam.is_opened==true && 
                         <div className={examStyles["exam-scheduled-item-public"]}>시험보기</div>
                     }
-                    {exam.public==false && 
+                    {exam.is_opened==false && 
                         <div className={examStyles["exam-scheduled-item-private"]}>미공개</div>
                     }
                 </div>
@@ -55,16 +55,16 @@ const ScheduledExamList = () => {
     );
 }
 
-export default function Exam(){
+export default function Exam({lecture_id}){
     return(
         <div>
             <div className={examStyles.exam}>
                 <div className={commonStyles.title}>오늘의 시험</div>
-                <TodayExamList/>
+                <TodayExamList lecture_id={lecture_id}/>
             </div>
             <div className={examStyles.exam}>
                 <div className={commonStyles.title}>예정된 시험</div>
-                <ScheduledExamList/>
+                <ScheduledExamList lecture_id={lecture_id}/>
             </div>
         </div>
     );

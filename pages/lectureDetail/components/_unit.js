@@ -72,9 +72,6 @@ const UnitList = ({ dropdown, setDropdown }) => {
 }
 
 export default function Unit({ dropdown, setDropdown }){
-    console.log("export default=====");
-    console.log(typeof dropdown);
-    console.log(dropdown);
     return (
         <div className={unitStyles.units}>
             <div className={unitStyles.title}>단원별 학습</div>
