@@ -33,7 +33,8 @@ const ThisWeekList = ({lecture_id}) => {
 }
 
 const SubmittedList = ({lecture_id}) => {
-    const user_id = useSelector(state => state.user);
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
 
     const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/submitted`, fetcher);
 

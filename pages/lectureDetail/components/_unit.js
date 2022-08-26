@@ -9,7 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const UnitList = ({ dropdown, setDropdown }) => {
     //unit DB schema 정의
-    const user_id = useSelector(state => state.user);
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
 
     const unitData = [
         {

@@ -11,7 +11,8 @@ const fetcher = (url) => {
     })
 }
 
-// const user_id = useSelector(state => state.user);
+// const user = useSelector(state => state.user);
+// const user_id = user.id;
 
 // const TaskList = () => {
 //     const { data, error } = useSWR('/api/lectureDetail/task', fetcher)

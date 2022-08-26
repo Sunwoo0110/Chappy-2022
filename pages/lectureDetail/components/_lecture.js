@@ -13,7 +13,8 @@ const progressbar_inner = {
 
 
 export default function Lecture() {
-    const user_id = useSelector(state => state.user);
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     
     return (
         <div className={lectureStyles.lecture}>
