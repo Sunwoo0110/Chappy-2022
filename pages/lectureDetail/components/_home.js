@@ -1,4 +1,5 @@
 import useSWR from "swr"
+import { useSelector, useDispatch } from 'react-redux';
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import noticeStyles from "../../../styles/lectureDetail/_notice.module.css"
 import taskStyles from "../../../styles/lectureDetail/_task.module.css"
@@ -32,7 +33,7 @@ const NoticeList = ({lecture_id}) => {
 }
 
 const TaskList = ({lecture_id}) => {
-    const user_id = "62ff6f624b99ac8a2bcbd015"; //redux처리 필요
+    const user_id = useSelector(state => state.user);
 
     const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/lesson`, fetcher)
 
