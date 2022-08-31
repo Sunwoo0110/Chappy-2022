@@ -1,6 +1,7 @@
 import useSWR, { useSWRConfig } from "swr"
 import { useState } from "react";
 import styles from "../../../styles/mypage/_myassignment.module.css"
+import { useSelector, useDispatch } from 'react-redux';
 
 import Title from "./_title"
 
@@ -15,7 +16,9 @@ const fetcher = (url) => {
 }
 
 function SelectLecture({setMode, setID}){
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const semester="2022년 1학기"
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
@@ -74,7 +77,9 @@ function SelectLecture({setMode, setID}){
 }
 
 function AllSelectLecture({setMode, setID}){
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
@@ -127,8 +132,9 @@ function AllSelectLecture({setMode, setID}){
 }
 
 function Objection( {lecture_id} ){
-
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const { data, error } = useSWR(`/api/submission/objection/${user_id}/${lecture_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>

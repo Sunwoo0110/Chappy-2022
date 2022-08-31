@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "../../../styles/mypage/_mypage.module.css"
 
@@ -25,7 +26,9 @@ const fetcher = (url) => {
 
 function StudentInfo() {
     
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
 
     if (error) return <div>Getting User Info Failed</div>
@@ -77,7 +80,9 @@ function StudentInfo() {
 function LearningInfo() {
 
     const { mutate } = useSWRConfig()
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const semester = "2022년 1학기"
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 

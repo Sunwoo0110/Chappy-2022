@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { CardText, Circle, MegaphoneFill, Star } from "react-bootstrap-icons";
 import useSWR, { useSWRConfig } from "swr"
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "../../../styles/lecture/_lecturelist.module.css";
 
@@ -15,7 +16,9 @@ const fetcher = (url) => {
 }
 
 function MyLectureList() {
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const semester="2022년 1학기"
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
     if (error) return <div>Getting Lectures Failed</div>
@@ -67,7 +70,9 @@ function MyLectureList() {
 }
 
 function AllLectureList() {
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import useSWR, { useSWRConfig } from "swr"
+import { useSelector, useDispatch } from 'react-redux';
 import { PlusSquare } from "react-bootstrap-icons"
 import styles from "../../../styles/mypage/_mygrade.module.css"
 
@@ -65,7 +66,9 @@ function Grade(){
 }
 
 function SubjectGrade({setMode2}){
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const semester = "2022년 1학기" // user _id
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
@@ -124,7 +127,9 @@ function SubjectGrade({setMode2}){
 
 
 function AllSubjectGrade({setMode2}){
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
@@ -258,15 +263,7 @@ export default function MyGrade() {
                 <SubjectGrade setMode2={setMode2}/>
                 :
                 <AllSubjectGrade setMode2={setMode2}/>
-            }
-            
-
-            {/* 과목 클릭 시 아래 컴포넌트 띄움 */}
-            {/* <TestGrade/>
-            <SubmittedTask/>
-            <TestGradeGraph/>
-            <DeductionFactor/> */}
-            
+            }            
         </div>
     )
 }

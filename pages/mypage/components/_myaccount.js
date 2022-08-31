@@ -1,5 +1,6 @@
 import useSWR, { useSWRConfig } from "swr"
 import { useRouter } from "next/router"
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "../../../styles/mypage/_myaccount.module.css"
 
@@ -22,7 +23,9 @@ const fetcher = (url) => {
 function StudentInfo_edit() {
     
     const { mutate } = useSWRConfig()
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
@@ -128,7 +131,9 @@ function StudentInfo_edit() {
 function ChangePassword() {
     
     const { mutate } = useSWRConfig()
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
@@ -206,6 +211,8 @@ function DeleteAccount() {
     
     const { mutate } = useSWRConfig()
     const user_id = "62ff6f624b99ac8a2bcbd01" // user _id 일단 없는 아이디로 줌
+    // const user = useSelector(state => state.user);
+    // const user_id = user.id;
     const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
