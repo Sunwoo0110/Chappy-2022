@@ -2,6 +2,15 @@ import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css
 import lectureStyles from "../../../styles/lectureDetail/_lecture.module.css";
 import { AiOutlineMail, AiOutlineStar } from "react-icons/ai";
 import { useSelector, useDispatch } from 'react-redux';
+import useSWR from "swr"
+
+const fetcher = (url) => {
+    if (typeof url != 'string')
+        return { data: [] }
+    return fetch(url).then((res) => {
+        return res.json()
+    })
+}
 
 const percentage = "90%"
 
@@ -11,15 +20,19 @@ const progressbar_inner = {
     width: percentage,
 }
 
-
-export default function Lecture() {
+export default function Lecture({lecture_id}) {
     const user = useSelector(state => state.user);
     const user_id = user.id;
     
+    const { data, error } = useSWR(`/api/lecture/info/lecture?lecture_id=${lecture_id}`, fetcher);
+
+    if (error) return <div>Getting LectureInfo Failed</div>
+    if (!data) return <div>Loading...</div>
+
     return (
         <div className={lectureStyles.lecture}>
             <div className={lectureStyles["lecture-info"]}>
-                <div className={lectureStyles["lecture-info-title"]}>알고리즘</div>
+                <div className={lectureStyles["lecture-info-title"]}>{data.data.name}</div>
                 <div className={lectureStyles["lecture-info-icons"]}>
                     <AiOutlineMail size="24px"/>
                     <AiOutlineStar size="24px"/>
