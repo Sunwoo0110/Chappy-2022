@@ -1,5 +1,5 @@
 import dbConnect from "../../../../lib/dbConnect"
-import Notice from "../../../../models/lecture/Notice"
+import Assignment from "../../../../models/lecture/Assignment"
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -9,8 +9,8 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const notice = await Notice.find(req.query);
-                res.status(200).json({ success: true, data: notice });
+                const assignments = await Assignment.find(req.query);
+                res.status(200).json({ success: true, data: assignments });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
             }

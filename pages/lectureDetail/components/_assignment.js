@@ -16,19 +16,7 @@ const ThisWeekList = ({lecture_id}) => {
     const user_id = user.id;
 
     // const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/this_week`, fetcher);
-    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/this_week`, fetcher);
-
-
-    const query_test = {
-        "lecture_id":{lecture_id},
-        "user_id":{user_id}, 
-        "type":0, 
-        "submission_state":1
-    }
-    const { data: testData, error: testError } = useSWR(`/api/test?lecture_id=${lecture_id}&user_id=${user_id}&type=${0}`, fetcher);
-    console.log("test___: ", testData);
-    console.log(testError);
-
+    const { data, error } = useSWR(`/api/aggregation/lectureDetail/assignment/this_week?lecture_id=${lecture_id}&user_id=${user_id}`, fetcher);
 
     if (error) return <div>Getting ThisWeekList Failed</div>
     if (!data) return <div>Loading...</div>
@@ -51,7 +39,8 @@ const SubmittedList = ({lecture_id}) => {
     const user = useSelector(state => state.user);
     const user_id = user.id;
 
-    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/submitted`, fetcher);
+    // const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/submitted`, fetcher);
+    const { data, error } = useSWR(`/api/aggregation/lectureDetail/assignment/submitted?lecture_id=${lecture_id}&user_id=${user_id}`, fetcher);
 
     if (error) return <div>Getting SubmittedList Failed</div>
     if (!data) return <div>Loading...</div>
