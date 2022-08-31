@@ -3,8 +3,8 @@ import useSWR, { useSWRConfig } from "swr"
 
 import styles from "../../../styles/mypage/MyPage.module.css";
 
-import Header from "../components/_header";
-import Footer from "../components/_footer";
+import Header from "../../components/_header";
+import Footer from "../../components/_footer";
 import LeftSideBar from "../components/_leftsidebar";
 import MyGrade from "../components/_mygrade";
 

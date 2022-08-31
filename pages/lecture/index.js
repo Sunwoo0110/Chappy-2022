@@ -3,8 +3,8 @@ import axios from "axios";
 import useSWR, { useSWRConfig } from "swr"
 import { useRouter } from "next/router"
 
-import Header from "./components/_header";
-import Footer from "./components/_footer";
+import Header from "../components/_header";
+import Footer from "../components/_footer";
 
 import styles from "../../styles/lecture/Lecture.module.css";
 
