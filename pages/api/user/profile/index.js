@@ -1,5 +1,5 @@
-import dbConnect from "../../../../../lib/dbConnect"
-import Info from "../../../../../models/lecture/Info"
+import dbConnect from "../../../../lib/dbConnect"
+import Profile from "../../../../models/user/Profile"
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -9,15 +9,14 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                console.log(req.query);
-                const lecture = await Info.find({"_id": req.query.id});
-                res.status(200).json({ success: true, data: lecture[0] });
+                const users = await Profile.find(req.query);
+                res.status(200).json({ success: true, data: users });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
             }
             break;
 
-       default:
+        default:
             res.status(400).json({ success: false, data: [] });
             break;
     }

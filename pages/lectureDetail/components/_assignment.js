@@ -15,7 +15,9 @@ const ThisWeekList = ({lecture_id}) => {
     const user = useSelector(state => state.user);
     const user_id = user.id;
 
+    // const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/this_week`, fetcher);
     const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/this_week`, fetcher);
+
 
     const query_test = {
         "lecture_id":{lecture_id},
