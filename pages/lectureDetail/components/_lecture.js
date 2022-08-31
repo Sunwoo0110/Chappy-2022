@@ -24,7 +24,7 @@ export default function Lecture({lecture_id}) {
     const user = useSelector(state => state.user);
     const user_id = user.id;
     
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}/${lecture_id}`, fetcher);
+    const { data, error } = useSWR(`/api/lecture/info/lecture/${lecture_id}`, fetcher);
 
     if (error) return <div>Getting LectureInfo Failed</div>
     if (!data) return <div>Loading...</div>
