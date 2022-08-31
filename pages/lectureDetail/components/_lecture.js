@@ -24,7 +24,7 @@ export default function Lecture({lecture_id}) {
     const user = useSelector(state => state.user);
     const user_id = user.id;
     
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}/${lecture_id}`, fetcher);
+    const { data, error } = useSWR(`/api/lecture/info?_id=${lecture_id}`, fetcher);
 
     if (error) return <div>Getting LectureInfo Failed</div>
     if (!data) return <div>Loading...</div>
@@ -32,7 +32,7 @@ export default function Lecture({lecture_id}) {
     return (
         <div className={lectureStyles.lecture}>
             <div className={lectureStyles["lecture-info"]}>
-                <div className={lectureStyles["lecture-info-title"]}>{data.data.name}</div>
+                <div className={lectureStyles["lecture-info-title"]}>{data.data[0].name}</div>
                 <div className={lectureStyles["lecture-info-icons"]}>
                     <AiOutlineMail size="24px"/>
                     <AiOutlineStar size="24px"/>
