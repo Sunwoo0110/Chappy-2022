@@ -78,16 +78,19 @@ function StudentInfo() {
 }
 
 function LearningInfo() {
-
     const { mutate } = useSWRConfig()
     // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const user = useSelector(state => state.user);
     const user_id = user.id;
     const semester = "2022년 1학기"
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
+    const { data, error } = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}`, fetcher)
+
+    console.log("DATA::: ",data)
 
     if (error) return <div>Getting Lecture Info Failed</div>
     if (!data) return <div>Loading...</div>
+
+    
 
     // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
     async function onDelete(_id) {
@@ -100,7 +103,7 @@ function LearningInfo() {
             body: JSON.stringify({ lecture_id: _id }),
         })
 
-        mutate(`/api/lecture/info/${user_id}`);
+        mutate(`/api/aggregation/mypage/mylectures?user_id=${user_id}`);
         
     }
 
@@ -138,7 +141,7 @@ function LearningInfo() {
                     <div>이번학기 강의 관리</div>
                     <div style={{width:"100%"}} class="row">
                     {
-                        data.lectures.map((lecture) => {
+                        data.data.map((lecture) => {
                             if (lecture.open_semester===semester){
                                 return (
                                     <div class="col-6">
