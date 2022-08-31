@@ -12,9 +12,23 @@ const fetcher = (url) => {
 }
 
 const ThisWeekList = ({lecture_id}) => {
-    const user_id = useSelector(state => state.user);
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
 
+    // const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/this_week`, fetcher);
     const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/assignment/this_week`, fetcher);
+
+
+    const query_test = {
+        "lecture_id":{lecture_id},
+        "user_id":{user_id}, 
+        "type":0, 
+        "submission_state":1
+    }
+    const { data: testData, error: testError } = useSWR(`/api/test?lecture_id=${lecture_id}&user_id=${user_id}&type=${0}`, fetcher);
+    console.log("test___: ", testData);
+    console.log(testError);
+
 
     if (error) return <div>Getting ThisWeekList Failed</div>
     if (!data) return <div>Loading...</div>
