@@ -1,0 +1,36 @@
+
+.footer {
+    display: flex;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 30px;
+    padding-bottom: 5%;
+}
+
+.footer_1 {
+    font-weight: bold;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 1px;
+    /* background: yellow; */
+}
+
+.footer_icon {
+    font-weight: bold;
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-basis: 1px;
+    /* background: orange; */
+}
+
+.footer_contact {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    padding-left: 5%;
+    padding-bottom: 30px;
+}

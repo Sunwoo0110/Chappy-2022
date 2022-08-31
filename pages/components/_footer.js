@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import styles from "../../../styles/mypage/MyPage.module.css";
+import styles from "../../styles/components/_footer.module.css";
 import {Envelope, Instagram, TelephoneFill} from 'react-bootstrap-icons';
 
 export default function Footer() {

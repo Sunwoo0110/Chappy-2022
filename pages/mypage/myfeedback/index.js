@@ -3,10 +3,10 @@ import useSWR, { useSWRConfig } from "swr"
 
 import styles from "../../../styles/mypage/MyPage.module.css";
 
-import Header from "../components/_header";
+import Header from "../../components/_header";
 import LeftSideBar from "../components/_leftsidebar";
 import Feedback from "../components/_myfeedback";
-import Footer from "../components/_footer";
+import Footer from "../../components/_footer";
 
 
 export default function MyFeedBack() {
