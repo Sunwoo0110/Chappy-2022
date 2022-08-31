@@ -49,7 +49,7 @@ export default function LectureDetailIDPage(props) {
                                 </>
                                 : mode === 2 ?
                                 <>
-                                <Learning/>
+                                <Learning lecture_id={lecture_id}/>
                                 </>
                                 : mode === 3 ?
                                 <>
