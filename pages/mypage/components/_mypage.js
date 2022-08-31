@@ -29,7 +29,7 @@ function StudentInfo() {
     // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const user = useSelector(state => state.user);
     const user_id = user.id;
-    const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
+    const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
 
     if (error) return <div>Getting User Info Failed</div>
     if (!data) return <div>Loading...</div>
@@ -47,29 +47,29 @@ function StudentInfo() {
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이름</div>
-                        <div className={styles.studentinfo_3}>{data.user.name}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].name}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학과</div>
-                        <div className={styles.studentinfo_3}>{data.user.department}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].department}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학기수</div>
-                        <div className={styles.studentinfo_3}>{data.user.semester}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].semester}</div>
                     </div>
                 </div>
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>아이디</div>
-                        <div className={styles.studentinfo_3}>{data.user.user_id}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].user_id}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>연락처</div>
-                        <div className={styles.studentinfo_3}>{data.user.cell_number}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].cell_number}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이메일</div>
-                        <div className={styles.studentinfo_3}>{data.user.email}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].email}</div>
                     </div>
                 </div>
             </div>
