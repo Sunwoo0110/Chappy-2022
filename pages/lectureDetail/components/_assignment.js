@@ -1,6 +1,7 @@
 import useSWR from "swr"
 import { useSelector, useDispatch } from 'react-redux';
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
+import assignmentStyles from "../../../styles/lectureDetail/_assignment.module.css";
 
 const fetcher = (url) => {
     if (typeof url != 'string')
@@ -22,10 +23,10 @@ const ThisWeekList = ({lecture_id}) => {
     return(
         <div>
             {data.data.map((assignment) => (
-                <div key={assignment._id}>
-                    <div>{assignment.title}</div>
-                    <div>{assignment.closing_at}</div>
-                    <div>제출하기</div>
+                <div className={assignmentStyles["assignment-item"]} key={assignment._id}>
+                    <div className={assignmentStyles["assignment-item-title"]}>{assignment.title}</div>
+                    <div className={assignmentStyles["assignment-item-date"]}>{assignment.closing_at}</div>
+                    <div className={assignmentStyles["assignment-item-btn"]}>제출하기</div>
                 </div>
             ))}
         </div>
@@ -45,9 +46,9 @@ const SubmittedList = ({lecture_id}) => {
     return(
         <div>
             {data.data.map((submitted) => (
-                <div key={submitted.submission._id}>
-                    <div>{submitted.assignment.title}</div>
-                    <div>다운로드</div>
+                <div className={assignmentStyles["assignment-item"]} key={submitted.submission._id}>
+                    <div className={assignmentStyles["assignment-item-title"]}>{submitted.assignment.title}</div>
+                    <div className={assignmentStyles["assignment-item-btn"]}>다운로드</div>
                 </div>
             ))}
         </div>
@@ -58,11 +59,11 @@ const SubmittedList = ({lecture_id}) => {
 export default function Assignment({lecture_id}){
     return(
         <div>
-            <div>
+            <div className={assignmentStyles.assignment}>
                 <div className={commonStyles.title}>이번주 과제</div>
                 <ThisWeekList lecture_id={lecture_id}/>
             </div>
-            <div>
+            <div className={assignmentStyles.assignment}>
                 <div className={commonStyles.title}>제출한 과제</div>
                 <SubmittedList lecture_id={lecture_id}/>
             </div>
