@@ -12,7 +12,7 @@ export default function Header() {
                 </Link>
             </div>
             <div className={styles.navbar_center}>
-                <Link href="/assignment">
+                <Link href="/lecture">
                     <div className={styles.navbar_menu}>강의목록</div>
                 </Link>
                 <Link href="/mypage/myfeedback">

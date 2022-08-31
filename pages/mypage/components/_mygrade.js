@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import useSWR, { useSWRConfig } from "swr"
+import { useSelector, useDispatch } from 'react-redux';
 import { PlusSquare } from "react-bootstrap-icons"
 import styles from "../../../styles/mypage/_mygrade.module.css"
 
@@ -65,7 +66,9 @@ function Grade(){
 }
 
 function SubjectGrade({setMode2}){
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const semester = "2022년 1학기" // user _id
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
@@ -94,18 +97,22 @@ function SubjectGrade({setMode2}){
                     data.lectures.map((lecture) => {
                         if (lecture.open_semester===semester){
                             return (
+                                <Link as={`/mypage/mygrade/${lecture._id}`}
+                                    href={{
+                                        pathname: "/mypage/mygrade/[id]",
+                                        query: { data: JSON.stringify(lecture._id) },
+                                    }}>
                                 <div class="col-6">
                                 <div className={styles.lecture}>
                                     <div className={styles.lecture_name}>
                                         <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                        <div className={styles.lecture_name_2}>
-                                        <div className={styles.lecture_open}>{lecture.open_semester}</div>
-                                        </div>
+                                        <div className={styles.lecture_name_2}>{lecture.open_semester}</div>
                                     </div>
                                     <div className={styles.lecture_prof}>{lecture.professor}</div>
                                     <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                                 </div>
                                 </div>
+                                </Link>
                             )
                         }
                         else{
@@ -120,7 +127,9 @@ function SubjectGrade({setMode2}){
 
 
 function AllSubjectGrade({setMode2}){
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
     const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
@@ -147,18 +156,22 @@ function AllSubjectGrade({setMode2}){
                 {
                     data.lectures.map((lecture) => {
                     return (
+                        <Link as={`/mypage/mygrade/${lecture._id}`}
+                            href={{
+                                pathname: "/mypage/mygrade/[id]",
+                                query: { data: JSON.stringify(lecture._id) },
+                            }}>
                         <div class="col-6">
                         <div className={styles.lecture}>
                             <div className={styles.lecture_name}>
                                 <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                <div className={styles.lecture_name_2}>
-                                <div className={styles.lecture_open}>{lecture.open_semester}</div>
-                                </div>
+                                <div className={styles.lecture_name_2}>{lecture.open_semester}</div>
                             </div>
                             <div className={styles.lecture_prof}>{lecture.professor}</div>
                             <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                         </div>
                         </div>
+                        </Link>
                     )
                 })
                 }
@@ -222,84 +235,6 @@ function TestGrade(){
     )
 }
 
-function SubmittedTask(){
-    return(
-        <div className={styles.section_bg}>
-            <div className={styles.section_title_bg}>
-                <div className={styles.section_title}>제출한 과제목록</div>
-            </div>
-
-            <div style={{width:"100%"}} class="shadow-sm">
-            <div className={styles.submitted}>
-                <div className={styles.submitted_1}>과목</div>
-                <div className={styles.submitted_2}>날짜</div>
-                <div className={styles.submitted_2}>교수자</div>
-                <div className={styles.submitted_2}>채점진행</div>
-                <div className={styles.submitted_2}>최종성적</div>
-            </div>
-            </div>
-
-            <div style={{width:"100%"}}>
-            <div className={styles.submitted}>
-                <div className={styles.submitted_1}>알고리즘 중간고사</div>
-                <div className={styles.submitted_2}>2021.04.18</div>
-                <div className={styles.submitted_2}>홍길동</div>
-                <div className={styles.submitted_2}>진행중</div>
-                <div className={styles.submitted_2}>--</div>
-            </div>
-            <div className={styles.submitted}>
-                <div className={styles.submitted_1}>알고리즘 주차과제: 9주차</div>
-                <div className={styles.submitted_2}>2021.04.18</div>
-                <div className={styles.submitted_2}>홍길동</div>
-                <div className={styles.submitted_2}>채점완료</div>
-                <div className={styles.submitted_2}>100/100</div>
-            </div>
-            </div>
-        </div>
-    )
-}
-
-function TestGradeGraph(){
-    return(
-        <div className={styles.section_bg}>
-            <div className={styles.section_title_bg}>
-                <div className={styles.section_title}>시험성적통계</div>
-            </div>
-
-            <div>주차별 점수분포</div>
-            <div style={{background:"blue", width:"100%", height:"200px"}}>그래프</div>
-        </div>
-    )
-}
-
-function DeductionFactor(){
-    return(
-
-        <div style={{flexDirection:"row", columnGap:"3%"}} className={styles.section_bg}>
-            <div style={{width:"40%"}}>
-                <div style={{marginBottom:"10px"}} className={styles.section_title_bg}>
-                    <div className={styles.section_title}>주 감점요인</div>
-                </div>
-
-                <div>길동님의 가장 큰 감점요인은 코드컨벤션입니다</div>
-                <div style={{background:"blue", width:"100%", height:"200px"}}>그래프</div>
-            </div>
-            <div style={{width:"40%"}}>
-                <div style={{marginBottom:"10px"}} className={styles.section_title_bg}>
-                    <div className={styles.section_title}>세부 감점요인</div>
-                </div>
-
-                <div>감점요인을 더 자세히 분석해보세요</div>
-                <div style={{background:"blue", width:"100%", height:"200px"}}>그래프</div>
-            </div>
-            
-            <select style={{marginTop:"5%", width:"15%"}} class="form-select form-select-sm" id="floatingSelect" aria-label="Floating label select example">
-                <option selected>학기별 보기</option>
-                <option value="1">다른 선택지?</option>
-            </select>
-        </div>
-    )
-}
 
 // _1 마이페이지
 // _2 내 성적관리
@@ -328,15 +263,7 @@ export default function MyGrade() {
                 <SubjectGrade setMode2={setMode2}/>
                 :
                 <AllSubjectGrade setMode2={setMode2}/>
-            }
-            
-
-            {/* 과목 클릭 시 아래 컴포넌트 띄움 */}
-            {/* <TestGrade/>
-            <SubmittedTask/>
-            <TestGradeGraph/>
-            <DeductionFactor/> */}
-            
+            }            
         </div>
     )
 }

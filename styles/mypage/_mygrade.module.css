@@ -134,6 +134,7 @@
     border-width: 2px;
     border-color: black;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .lecture_name {
@@ -146,22 +147,20 @@
 }
 
 .lecture_name_1 {
-    flex-grow: 2;
-    flex-basis: 1px;
-    /* background: skyblue; */
     color: black;
     font-weight: bold;
     font-size: medium;
 }
 
 .lecture_name_2 {
-    flex-grow: 1;
-    flex-basis: 1px;
-    /* background: pink; */
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    flex-direction: row;
+    font-size: small;
+    margin-left: 30%;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-style : solid;
+    border-width: 2px;
+    border-color: black;
+    border-radius: 20px;
 }
 
 .lecture_open {

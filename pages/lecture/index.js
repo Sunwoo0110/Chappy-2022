@@ -24,8 +24,8 @@ const fetcher = (url) => {
 
 export default function Index() {
 
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
     if (error) return <div>Getting Info Failed</div>
     if (!data) return <div>Loading...</div>
 
@@ -41,7 +41,7 @@ export default function Index() {
             <div className={styles.main}>
                 <div className={styles.content}>
                     <div className={styles.greeting_box}>
-                        <div className={styles.greeting_name}>어서오세요 {data.user.username}님!</div>
+                        <div className={styles.greeting_name}>어서오세요 {data.user.name}님!</div>
                         <div className={styles.greeting_week}>지금은 4주차입니다</div>
                     </div>
                     <div style={{display:"flex", flexDirection:"row", columnGap:"5%"}}>

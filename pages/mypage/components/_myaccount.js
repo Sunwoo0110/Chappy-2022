@@ -1,5 +1,6 @@
 import useSWR, { useSWRConfig } from "swr"
 import { useRouter } from "next/router"
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "../../../styles/mypage/_myaccount.module.css"
 
@@ -22,8 +23,10 @@ const fetcher = (url) => {
 function StudentInfo_edit() {
     
     const { mutate } = useSWRConfig()
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
@@ -61,7 +64,7 @@ function StudentInfo_edit() {
             email: _email,
         }
 
-        await fetch(`/api/user/${user_id}`, {
+        await fetch(`/api/user/profile/${user_id}`, {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json',
@@ -69,7 +72,7 @@ function StudentInfo_edit() {
             body: JSON.stringify(user)
         })
 
-        mutate(`/api/user/${user_id}`);
+        mutate(`/api/user/profile/${user_id}`);
     }
 
     return (
@@ -128,8 +131,10 @@ function StudentInfo_edit() {
 function ChangePassword() {
     
     const { mutate } = useSWRConfig()
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
@@ -150,7 +155,7 @@ function ChangePassword() {
                 password: _newpw,
             }
     
-            await fetch(`/api/user/${user_id}`, {
+            await fetch(`/api/user/profile/${user_id}`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": 'application/json',
@@ -158,7 +163,7 @@ function ChangePassword() {
                 body: JSON.stringify(pw)
             })
     
-            mutate(`/api/user/${user_id}`);
+            mutate(`/api/user/profile/${user_id}`);
         }
         else{
             console.log("failed changing pw")
@@ -206,7 +211,9 @@ function DeleteAccount() {
     
     const { mutate } = useSWRConfig()
     const user_id = "62ff6f624b99ac8a2bcbd01" // user _id 일단 없는 아이디로 줌
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+    // const user = useSelector(state => state.user);
+    // const user_id = user.id;
+    const { data, error } = useSWR(`/api/user/profile/${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
@@ -214,7 +221,7 @@ function DeleteAccount() {
     // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
     async function onDelete(_id) {
 
-        const newList =  await fetch(`/api/user/${user_id}`, {
+        const newList =  await fetch(`/api/user/profile/${user_id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -223,7 +230,7 @@ function DeleteAccount() {
         })
         
 
-        mutate(`/api/user/${user_id}`);
+        mutate(`/api/user/profile/${user_id}`);
 
         console.log("delete account");
 
