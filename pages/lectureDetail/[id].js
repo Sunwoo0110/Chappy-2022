@@ -5,8 +5,8 @@ import Learning from "./components/_learning";
 import Notice from "./components/_notice";
 import Assignment from "./components/_assignment";
 import Exam from "./components/_exam";
-import Header from "./components/_header";
-import Footer from "./components/_footer";
+import Header from "../components/_header";
+import Footer from "../components/_footer";
 import Menu from "./components/_menu";
 import Unit from "./components/_unit";
 import Lecture from "./components/_lecture";
@@ -32,7 +32,7 @@ export default function LectureDetailIDPage(props) {
         <div className={styles.container}>
             <Header />
             <div className={styles.main}>
-                <Lecture/>
+                <Lecture lecture_id={lecture_id}/>
 
                 <div className={styles["content"]}>
                     <div className={styles["content-left"]}>

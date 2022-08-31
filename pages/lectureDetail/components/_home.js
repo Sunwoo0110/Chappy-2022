@@ -33,7 +33,8 @@ const NoticeList = ({lecture_id}) => {
 }
 
 const TaskList = ({lecture_id}) => {
-    const user_id = useSelector(state => state.user);
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
 
     const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/lesson`, fetcher)
 
@@ -46,7 +47,7 @@ const TaskList = ({lecture_id}) => {
             {data.data.map((task) => (
                 <div className={taskStyles["task-item"]} key={task.lesson._id}>
                     {task.attendance==1 && 
-                        <div className={taskStyles["task-item-done"]}/>                   
+                        <div className={taskStyles["task-item-done"]}/>
                     }
                     {task.attendance==0 && 
                         <div className={taskStyles["task-item-undone"]}/>                   
