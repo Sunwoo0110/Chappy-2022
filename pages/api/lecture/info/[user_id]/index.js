@@ -1,7 +1,7 @@
 /** /pages/api/lecture/[id].js **/
-import dbConnect from "../../../../lib/dbConnect"
-import Info from "../../../../models/lecture/Info"
-import Profile from "../../../../models/user/Profile"
+import dbConnect from "../../../../../lib/dbConnect"
+import Info from "../../../../../models/lecture/Info"
+import Profile from "../../../../../models/user/Profile"
 
 export default async function handler(req, res) {
     const { method } = req;
