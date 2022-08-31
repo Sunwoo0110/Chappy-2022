@@ -1,24 +1,24 @@
 import { useState } from "react";
 import useSWR, { useSWRConfig } from "swr"
 
-import styles from "../../styles/mypage/MyPage.module.css";
+import styles from "../../../styles/mypage/MyPage.module.css";
 
-import Header from "../components/_header";
-import Footer from "../components/_footer";
-import LeftSideBar from "./components/_leftsidebar";
-import MyPage from "./components/_mypage";
+import Header from "../../components/_header";
+import Footer from "../../components/_footer";
+import LeftSideBar from "../components/_leftsidebar";
+import MyGrade from "../components/_lecturemygrade";
 
-export default function Index() {
-    // 마이페이지
+export default function Mygrade() {
+    // 내 성적 관리
     return (
         <div className={styles.container}>
             <Header/>
             <div className={styles.main}>
                 <div className={styles.leftsidebar}>
-                    <LeftSideBar mode={1}/>
+                    <LeftSideBar mode={2}/>
                 </div>
                 <div className={styles.content}>
-                    <MyPage/>
+                    <MyGrade/>
                 </div>
             </div>
             <Footer/>

@@ -5,6 +5,7 @@ import Profile from "../../../../models/user/Profile"
 export default async function handler(req, res) {
     const { method } = req;
 
+    console.log("user api");
     await dbConnect();
 
     switch (method) {
