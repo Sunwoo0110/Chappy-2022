@@ -150,7 +150,7 @@ function Objection( {lecture_id} ){
 
             <div style={{width:"100%"}} class="shadow-sm">
             <div className={styles.objection}>
-                <div className={styles.objection_1}>과목</div>
+                <div className={styles.objection_1}>제목</div>
                 <div className={styles.objection_2}>날짜</div>
                 <div className={styles.objection_2}>교수자</div>
                 <div className={styles.objection_2}>확인여부</div>
@@ -163,7 +163,7 @@ function Objection( {lecture_id} ){
                     data.objections.map((objection) => {
                     return (
                         <div className={styles.objection}>
-                            <div className={styles.objection_1}>알고리즘 주차과제: 9주차</div>
+                            <div className={styles.objection_1}>{objection.title}</div>
                             <div className={styles.objection_2}>{objection.date}</div>
                             <div className={styles.objection_3}>홍길동</div>
                             {
