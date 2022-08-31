@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { List, MenuButton } from "react-bootstrap-icons";
 // import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
 import { ResponsivePie } from '@nivo/pie'
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 /**  실행 결과 **/
 function Run() {

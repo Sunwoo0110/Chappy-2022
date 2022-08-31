@@ -126,7 +126,7 @@ export default function CodingPage() {
             setMode(3);
             // setHint(code);
             setRun(code);
-            console.log("validation")
+            // console.log("validation")
 
         } else {
 
