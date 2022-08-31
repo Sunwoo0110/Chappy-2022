@@ -1,5 +1,5 @@
 import dbConnect from "../../../../lib/dbConnect"
-import Info from "../../../../models/Lecture/Info"
+import Info from "../../../../models/lecture/Info"
 
 export default async function handler(req, res) {
     const { method } = req;
