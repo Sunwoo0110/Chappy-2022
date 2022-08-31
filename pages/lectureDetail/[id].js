@@ -32,7 +32,7 @@ export default function LectureDetailIDPage(props) {
         <div className={styles.container}>
             <Header />
             <div className={styles.main}>
-                <Lecture/>
+                <Lecture lecture_id={lecture_id}/>
 
                 <div className={styles["content"]}>
                     <div className={styles["content-left"]}>
