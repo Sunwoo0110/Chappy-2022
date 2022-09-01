@@ -18,7 +18,8 @@ function TotalFeedback(){
     const user = useSelector(state => state.user);
     const user_id = user.id;
     const semester="2022년 1학기"
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
+    const { data, error } = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}`, fetcher)
+
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
 

@@ -42,27 +42,6 @@ export default async function handler(req, res) {
             }
             break
 
-        case 'DELETE':
-            try {
-                console.log('delete:', req.body.lecture_id);
-                const id = req.body.lecture_id;
-                const user = await Profile.findById(req.query.user_id);
-
-                let lecID = user.lectures;
-                let newlectures = lecID.filter((e) => e !== id);
-
-                const newUser = await Profile.findByIdAndUpdate(req.query.user_id, { "lectures": newlectures }, {
-                    new: true, 
-                });
-
-                console.log(newUser)
-                
-                res.status(201).json({ success: true, lectures: newUser.lectures })
-            } catch (error) {
-                res.status(400).json({ success: false, error: error })
-            }
-            break
-
         default:
             res.status(400).json({ success: false, data: [] });
             break;
