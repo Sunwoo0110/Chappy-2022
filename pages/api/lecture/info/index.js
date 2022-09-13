@@ -10,7 +10,10 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 const lectures = await Info.find(req.query);
+                console.log("req.query: ",req.query);
+                console.log("lectures: ",lectures);
                 res.status(200).json({ success: true, data: lectures });
+                
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
             }
