@@ -69,7 +69,7 @@ function SubjectGrade({setMode2, mode2}){
     // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const user = useSelector(state => state.user);
     const user_id = user.id;
-    const semester = "2022년 1학기" // user _id
+    const semester = "2022년 1학기"
     let d;
 
     if(mode2===1){
