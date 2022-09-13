@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useState } from "react";
-import { CardText, Circle, MegaphoneFill, Star } from "react-bootstrap-icons";
-import useSWR, { useSWRConfig } from "swr"
-import { useSelector, useDispatch } from 'react-redux';
+import { CardText, MegaphoneFill, Star } from "react-bootstrap-icons";
+import useSWR from "swr"
+import { useSelector } from 'react-redux';
 
 import styles from "../../../styles/lecture/_lecturelist.module.css";
 
@@ -15,107 +15,64 @@ const fetcher = (url) => {
     })
 }
 
-function MyLectureList() {
+function MyLectureList( {mode} ) {
     // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+
     const user = useSelector(state => state.user);
     const user_id = user.id;
     const semester="2022년 1학기"
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
-    if (error) return <div>Getting Lectures Failed</div>
-    if (!data) return <div>Loading...</div>
+    let d;
+
+    if(mode===1){
+        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`, fetcher);
+    }
+    else{
+        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}`, fetcher);
+    }
+
+    if (d.error) return <div>Getting Lectures Failed</div>
+    if (!d.data) return <div>Loading...</div>
 
     return (
         <div style={{width:"100%"}} class="row">
         {
-            data?.lectures.map((lecture) => {
-                if (lecture.open_semester===semester){
-                    return (
-                        <Link as={`/lectureDetail/${lecture._id}`}
-                            href={{
-                                pathname: "/lectureDetail/[id]",
-                                query: { data: JSON.stringify(lecture._id) },
-                            }}>
-                        <div style={{marginBottom:"20px"}} class="col-6">
-                        <div className={styles.lecture_bg}>
-                            <div style={{justifyContent:"space-between", marginBottom: "60px", padding:"20px"}} className={styles.lecture_icon}>
-                                <Star size="24px" color="white"/>
-                                <div className={styles.lecture_info_icon}/>
-                            </div>
-                            <div className={styles.lecture}>
-                                <div className={styles.lecture_name}>
-                                    <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                    <div className={styles.lecture_name_2}>
-                                    <div className={styles.lecture_open}>{lecture.open_semester}</div>
-                                    </div>
-                                </div>
-                                <div className={styles.lecture_prof}>{lecture.professor}</div>
-                                <div className={styles.lecture_id}>{lecture.lecture_num}</div>
-                                <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
-                                    <MegaphoneFill size={30}/>
-                                    <CardText size={30}/>
+            d.data.lectures.map((lecture) => {
+                return (
+                    <Link as={`/lectureDetail/${lecture._id}`}
+                        href={{
+                            pathname: "/lectureDetail/[id]",
+                            query: { data: JSON.stringify(lecture._id) },
+                        }}>
+                    <div style={{marginBottom:"20px"}} class="col-6">
+                    <div className={styles.lecture_bg}>
+                        <div style={{justifyContent:"space-between", marginBottom: "60px", padding:"20px"}} className={styles.lecture_icon}>
+                            <Star size="24px" color="white"/>
+                            <div className={styles.lecture_info_icon}/>
+                        </div>
+                        <div className={styles.lecture}>
+                            <div className={styles.lecture_name}>
+                                <div className={styles.lecture_name_1}>{lecture.name}</div>
+                                <div className={styles.lecture_name_2}>
+                                <div className={styles.lecture_open}>{lecture.open_semester}</div>
                                 </div>
                             </div>
+                            <div className={styles.lecture_prof}>{lecture.professor}</div>
+                            <div className={styles.lecture_id}>{lecture.lecture_num}</div>
+                            <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
+                                <MegaphoneFill size={30}/>
+                                <CardText size={30}/>
+                            </div>
                         </div>
-                        </div>
-                        </Link>
-                    )
-                }
-                else{
-                    return;
-                }
+                    </div>
+                    </div>
+                    </Link>
+                )
             })
         }
         </div>
     )
 }
 
-function AllLectureList() {
-    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const user = useSelector(state => state.user);
-    const user_id = user.id;
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
-    if (error) return <div>Getting Lectures Failed</div>
-    if (!data) return <div>Loading...</div>
-
-    return (
-        <div style={{width:"100%"}} class="row">
-        {
-            data?.lectures.map((lecture) => {
-            return (
-                <Link as={`/lectureDetail/${lecture._id}`}
-                    href={{
-                        pathname: "/lectureDetail/[id]",
-                        query: { data: JSON.stringify(lecture._id) },
-                    }}>
-                <div style={{marginBottom:"20px"}} class="col-6">
-                <div className={styles.lecture_bg}>
-                    <div style={{justifyContent:"space-between", marginBottom: "60px", padding:"20px"}} className={styles.lecture_icon}>
-                        <Star size="24px" color="white"/>
-                        <div className={styles.lecture_info_icon}/>
-                    </div>
-                    <div className={styles.lecture}>
-                        <div className={styles.lecture_name}>
-                            <div className={styles.lecture_name_1}>{lecture.name}</div>
-                            <div className={styles.lecture_name_2}>
-                            <div className={styles.lecture_open}>{lecture.open_semester}</div>
-                            </div>
-                        </div>
-                        <div className={styles.lecture_prof}>{lecture.professor}</div>
-                        <div className={styles.lecture_id}>{lecture.lecture_num}</div>
-                        <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
-                            <MegaphoneFill size={30}/>
-                            <CardText size={30}/>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                </Link>
-            )
-        })
-        }
-        </div>
-    )
-}
 
 export default function LectureList() {
     //mode 1: 이번 학기 과목만
@@ -142,12 +99,8 @@ export default function LectureList() {
                     <button style={{borderRadius:20}} class="btn btn-outline-primary btn-sm" type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
                 </div>
             </div>
-            {
-                mode === 1 ?
-                <MyLectureList/>
-                :
-                <AllLectureList/>
-            }
+
+            <MyLectureList mode={mode}/>
         </div>
     )
 }
