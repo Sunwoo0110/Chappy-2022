@@ -1,5 +1,6 @@
 import dbConnect from "../../../../lib/dbConnect"
 import Info from "../../../../models/lecture/Info"
+import qs from "qs";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -9,8 +10,9 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const lectures = await Info.find(req.query);
-                console.log("req.query: ",req.query);
+                let query = qs.parse(req.query);
+                const lectures = await Info.find(query);
+                console.log("req.query: ",query);
                 console.log("lectures: ",lectures);
                 res.status(200).json({ success: true, data: lectures });
                 
