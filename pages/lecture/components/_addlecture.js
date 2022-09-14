@@ -21,46 +21,32 @@ const Adder = () => {
     const professor="백우정";
     const [name, setName] = useState('');
     const [engname, setEngName] = useState('');
-    // const [professor, setProfessor]= useState('');
     const [classnumber, setClassnumber] = useState('');
     const [open, setOpen] = useState(0);
     const [description, setDescription] = useState('');
 
     const clickHandler = async () => {
 
-        await axios.post('/api/lecture/lecture', {
+        await axios.post('/api/lecture/info', {
             "name": name,
-            "englishname": engname,
+            "english_name": engname,
             "professor": professor,
-            "classnumber": classnumber,
-            "open": open,
+            "lecture_num": classnumber,
+            "open_semester:": open,
             "description": description,
-        })
-        .then((res) => {
-            // if (res.data.result === null) {
-            //     let payload = {
-            //         result: "실행 결과가 없습니다",
-            //     };
-            //     dispatch(runActions.setRun(payload));
-            // } else {
-            //     let payload = {
-            //         result: res.data.result,
-            //     };
-            //     dispatch(runActions.setRun(payload));
-            // }
         })
         .catch(error => {
             console.log("failed");
             console.log(error.response);
         })
 
-        mutate(`/api/lecture/lecture`);
+        mutate(`/api/lecture/info`);
         console.log(name, " added");
 
         document.getElementById('name').value = null; 
-        document.getElementById('englishname').value = null; 
-        document.getElementById('open').value = null; 
-        document.getElementById('classnumber').value = null; 
+        document.getElementById('english_name').value = null; 
+        document.getElementById('open_semester').value = null; 
+        document.getElementById('lecture_num').value = null; 
         document.getElementById('description').value = null; 
         
     }
@@ -76,19 +62,19 @@ const Adder = () => {
         <div className={styles.row}>
             <div className={styles.row_index}>과목명(영문)</div>
             <div className={styles.row_input}>
-                <input id="englishname" type="text" class="form-control" onChange={(e) => setEngName(e.target.value)}/>
+                <input id="english_name" type="text" class="form-control" onChange={(e) => setEngName(e.target.value)}/>
             </div>
         </div>
         <div className={styles.row}>
             <div className={styles.row_index}>개설 학기</div>
             <div className={styles.row_input}>
-                <input id="open" type="text" class="form-control" onChange={(e) => setOpen(e.target.value)}/>
+                <input id="open_semester" type="text" class="form-control" onChange={(e) => setOpen(e.target.value)}/>
             </div>
         </div>
         <div className={styles.row}>
             <div className={styles.row_index}>학수번호</div>
             <div className={styles.row_input}>
-                <input id="classnumber" type="text" class="form-control" onChange={(e) => setClassnumber(e.target.value)}/>
+                <input id="lecture_num" type="text" class="form-control" onChange={(e) => setClassnumber(e.target.value)}/>
             </div>
         </div>
         <div className={styles.row}>
