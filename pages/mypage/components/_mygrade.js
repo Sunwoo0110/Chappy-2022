@@ -36,7 +36,7 @@ function Grade(){
                     <div className={styles.grade_2}>4.0</div>
                 </div>
                 <Link href="/mypage/myfeedback">
-                <div className={styles.grade_item}>
+                <div style={{cursor:"pointer"}} className={styles.grade_item}>
                     <div className={styles.grade_1}>피드백</div>
                     <div className={styles.grade_2}>50회</div>
                 </div>
