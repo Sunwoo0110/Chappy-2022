@@ -12,8 +12,8 @@ export default async function handler(req, res) {
             try {
                 let query = qs.parse(req.query);
                 const lectures = await Info.find(query);
-                console.log("req.query: ",query);
-                console.log("lectures: ",lectures);
+                // console.log("req.query: ",query);
+                // console.log("lectures: ",lectures);
                 res.status(200).json({ success: true, data: lectures });
                 
             } catch (error) {
