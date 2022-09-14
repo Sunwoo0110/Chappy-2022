@@ -31,36 +31,45 @@ const Adder = () => {
 
     const registerLecture = async () => {
 
-        await axios.post('/api/lecture/info', {
-            "name": document.getElementById('name').value,
-            "english_name": document.getElementById('english_name').value,
-            "professor": data.data[0].name,
-            "lecture_num": document.getElementById('lecture_num').value,
-            "open_semester:": document.getElementById('open_semester').value,
-            "description": document.getElementById('description').value,
-            "feedback":feedback,
-            "department": document.getElementById('department').value,
-            "major": document.getElementById('major').value,
-            "lecture_date": document.getElementById('lecture_date').value ,
-            "lecture_type": document.getElementById('lecture_type').value,
-            "is_ready": false,
-            "is_opened": is_opened,
-            "saved_at": new Date(),
-            "user_list": [],
-        })
-        .catch(error => {
-            console.log("failed");
-            console.log(error.response);
-        })
-
-        mutate(`/api/lecture/info`);
-        console.log(document.getElementById('name').value, " added");
-
-        document.getElementById('name').value = null; 
-        document.getElementById('english_name').value = null;
-        document.getElementById('lecture_num').value = null; 
-        document.getElementById('description').value = null; 
-        document.getElementById('lecture_date').value = null;
+        if(document.getElementById('name').value!=='' &&
+        document.getElementById('english_name').value!=='' &&
+        document.getElementById('lecture_num').value!=='' &&
+        document.getElementById('lecture_date').value!=='' &&
+        document.getElementById('description').value!==''){
+            await axios.post('/api/lecture/info', {
+                "name": document.getElementById('name').value,
+                "english_name": document.getElementById('english_name').value,
+                "professor": data.data[0].name,
+                "lecture_num": document.getElementById('lecture_num').value,
+                "open_semester": document.getElementById('open_semester').value,
+                "description": document.getElementById('description').value,
+                "feedback":feedback,
+                "department": document.getElementById('department').value,
+                "major": document.getElementById('major').value,
+                "lecture_date": document.getElementById('lecture_date').value ,
+                "lecture_type": document.getElementById('lecture_type').value,
+                "is_ready": true,
+                "is_opened": is_opened,
+                "saved_at": new Date(),
+                "user_list": [],
+            })
+            .catch(error => {
+                console.log("failed");
+                console.log(error.response);
+            })
+    
+            mutate(`/api/lecture/info`);
+            console.log(document.getElementById('name').value, " added");
+    
+            document.getElementById('name').value = null; 
+            document.getElementById('english_name').value = null;
+            document.getElementById('lecture_num').value = null; 
+            document.getElementById('description').value = null; 
+            document.getElementById('lecture_date').value = null;
+        }
+        else{
+            console.log("모든 항목이 채워져야합니다.")
+        }
     }
 
     const saveLecture = async () => {
@@ -70,7 +79,7 @@ const Adder = () => {
             "english_name": document.getElementById('english_name').value,
             "professor": data.data[0].name,
             "lecture_num": document.getElementById('lecture_num').value,
-            "open_semester:": document.getElementById('open_semester').value,
+            "open_semester": document.getElementById('open_semester').value,
             "description": document.getElementById('description').value,
             "feedback":feedback,
             "department": document.getElementById('department').value,
