@@ -17,12 +17,6 @@ export default async function handler(req, res) {
                         is_opened: true,
                     }
                 })
-                // .then(function (response) {
-                //     console.log(response.data);
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
 
                 const submissions = await axios.get('/api/submission/submission', {
                     params: {
@@ -40,6 +34,7 @@ export default async function handler(req, res) {
                     if(!submissionRefIds.includes(assignment._id))
                         return assignment;
                 }))
+                
                 res.status(200).json({success: true, data: thisWeekAssignments})
 
             } catch (error) {
