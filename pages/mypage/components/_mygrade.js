@@ -95,8 +95,8 @@ function SubjectGrade({setMode2, mode2}){
             <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
                 <div className={styles.section_title}>과목 성적통계</div>
                 <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                <button style={{borderRadius:20}} class="btn btn-secondary btn-sm" type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
-                <button style={{borderRadius:20}} class="btn btn-outline-secondary btn-sm" type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
+                <button style={{borderRadius:20}} class={mode2==1 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
+                <button style={{borderRadius:20}} class={mode2==2 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
                 </div>
             </div>
             <div style={{width:"100%"}} class="row">
