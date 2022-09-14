@@ -1,5 +1,6 @@
 import dbConnect from "../../../../lib/dbConnect"
 import Submission from "../../../../models/submission/Submission"
+import qs from "qs";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -9,7 +10,8 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const submissions = await Submission.find(req.query);
+                let query = qs.parse(req.query);
+                const submissions = await Submission.find(query);
                 res.status(200).json({ success: true, data: submissions });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });

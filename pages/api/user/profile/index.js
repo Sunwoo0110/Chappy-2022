@@ -1,5 +1,6 @@
 import dbConnect from "../../../../lib/dbConnect"
 import Profile from "../../../../models/user/Profile"
+import qs from "qs";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -9,7 +10,8 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const users = await Profile.find(req.query);
+                let query = qs.parse(req.query);
+                const users = await Profile.find(query);
                 res.status(200).json({ success: true, data: users });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
