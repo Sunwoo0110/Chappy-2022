@@ -1,8 +1,7 @@
 import { useState } from "react";
-import useSWR, { useSWRConfig } from "swr"
-import axios from "axios";
 
 import styles from "../../../styles/lecture/_searchlecture.module.css";
+import {Search} from 'react-bootstrap-icons';
 
 const fetcher = (url) => {
     // console.log('URL:', url, typeof url)
@@ -16,53 +15,42 @@ const fetcher = (url) => {
 
 const Searcher = () => {
 
-    const { mutate } = useSWRConfig();
-
-    const professor="백우정";
-    const [name, setName] = useState('');
-    const [engname, setEngName] = useState('');
-    // const [professor, setProfessor]= useState('');
-    const [classnumber, setClassnumber] = useState('');
-    const [open, setOpen] = useState(0);
-    const [description, setDescription] = useState('');
+    const [title, setTitle] = useState(0);
+    const [data, setData] = useState([]);
 
     const clickHandler = async () => {
 
-        await axios.post('/api/lecture/lecture', {
-            "name": name,
-            "englishname": engname,
-            "professor": professor,
-            "classnumber": classnumber,
-            "open": open,
-            "description": description,
-        })
-        .then((res) => {
-            // if (res.data.result === null) {
-            //     let payload = {
-            //         result: "실행 결과가 없습니다",
-            //     };
-            //     dispatch(runActions.setRun(payload));
-            // } else {
-            //     let payload = {
-            //         result: res.data.result,
-            //     };
-            //     dispatch(runActions.setRun(payload));
-            // }
-        })
-        .catch(error => {
-            console.log("failed");
-            console.log(error.response);
-        })
-
-        mutate(`/api/lecture/lecture`);
-        console.log(name, " added");
+        var _open=document.getElementById('open').value;
+        var _department=document.getElementById('department').value;
+        var _major=document.getElementById('major').value;
+        var _name=document.getElementById('name').value;
 
         document.getElementById('name').value = null; 
-        document.getElementById('englishname').value = null; 
-        document.getElementById('open').value = null; 
-        document.getElementById('classnumber').value = null; 
-        document.getElementById('description').value = null; 
         
+        let url='/api/lecture/info?'
+        if(_open!==''){
+            url=url+"open_semester="+_open+"&";
+        }
+        if(_department!==''){
+            url=url+"department="+_department+"&";
+        }
+        if(_major!==''){
+            url=url+"major="+_major+"&";
+        }
+        if(_name!==''){
+            url=url+"name="+_name+"&";
+        }
+
+        await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(response => {
+            setData(response.data);
+        })        
     }
 
     return (
@@ -72,32 +60,34 @@ const Searcher = () => {
             <div className={styles.criteria_2}>주관학부(대학)</div>
             <div className={styles.criteria_3}>학과, 전공</div>
             <div className={styles.criteria_3}>검색하기</div>
+            <div className={styles.criteria_4}/>
         </div>
         <div className={styles.criteria}>
             <div className={styles.criteria_1}>
-                <select class="form-select form-select-sm" id="floatingSelect" aria-label="Floating label select example">
-                    <option selected>학기 선택</option>
-                    <option value="1">2021년 1학기</option>
-                    <option value="1">2021년 2학기</option>
-                    <option value="2">2022년 1학기</option>
+                <select class="form-select form-select-sm" id="open" aria-label="Floating label select example">
+                    <option selected value="">학기 선택</option>
+                    <option value="2021년 1학기">2021년 1학기</option>
+                    <option value="2021년 2학기">2021년 2학기</option>
+                    <option value="2022년 1학기">2022년 1학기</option>
                 </select>
             </div>
             <div className={styles.criteria_2}>
-                <select class="form-select form-select-sm" id="floatingSelect" aria-label="Floating label select example">
-                    <option selected>주관학부</option>
-                    <option value="1">소프트웨어융합대학</option>
+                <select class="form-select form-select-sm" id="department" aria-label="Floating label select example">
+                    <option selected value="">주관학부</option>
+                    <option value="소프트웨어융합대학">소프트웨어융합대학</option>
                 </select>
             </div>
             <div className={styles.criteria_3}>
-                <select class="form-select form-select-sm" id="floatingSelect" aria-label="Floating label select example">
-                    <option selected>학과, 전공</option>
-                    <option value="1">소프트웨어학과</option>
+                <select class="form-select form-select-sm" id="major" aria-label="Floating label select example">
+                    <option selected value="">학과, 전공</option>
+                    <option value="소프트웨어학과">소프트웨어학과</option>
                 </select>
             </div>
             <div className={styles.criteria_3}>
-                <div className={styles.row_input}>
-                    <input id="open" placeholder="검색어를 입력해주세요" type="text" class="form-control" onChange={(e) => setOpen(e.target.value)}/>
-                </div>
+                <input id="name" placeholder="검색어를 입력해주세요" type="text" class="form-control" onChange={(e) => setTitle(e.target.value)}/>
+            </div>
+            <div className={styles.criteria_4}>
+                <Search style={{cursor:"pointer"}} onClick={()=>clickHandler()}/>
             </div>
         </div>
 
@@ -109,26 +99,31 @@ const Searcher = () => {
             <div className={styles.buttons}/>
         </div>
 
-        <div className={styles.result_item}>
-            <div className={styles.result_1}>
-                <div className={styles.result_name}>AAI-2004-02</div>
-            </div>
-            <div className={styles.result_1}>
-                <div className={styles.result_name}>인공지능통계론</div>
-                <div className={styles.result_engname}>Statistics of Artificial Intelligence</div>
-            </div>
-            <div className={styles.result_2}>
-                <div className={styles.result_engname}>화 18:00- 19:30</div>
-            </div>
-            <div className={styles.result_3}>
-                <div className={styles.result_engname}>실시간 스트리밍 수업</div>
-            </div>
-            <div className={styles.buttons}>
-                <button style={{fontSize: "15px", background: "#414E5A"}} class="btn btn-secondary" type="button">수업계획서</button>
-                <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button">담기</button>
-            </div>
-        </div>
-                
+        {
+            data.map((lecture) => {
+                return (
+                    <div className={styles.result_item}>
+                        <div className={styles.result_1}>
+                            <div className={styles.result_name}>{lecture.lecture_num}</div>
+                        </div>
+                        <div className={styles.result_1}>
+                            <div className={styles.result_name}>{lecture.name}</div>
+                            <div className={styles.result_engname}>{lecture.english_name}</div>
+                        </div>
+                        <div className={styles.result_2}>
+                            <div className={styles.result_engname}>{lecture.lecture_date}</div>
+                        </div>
+                        <div className={styles.result_3}>
+                            <div className={styles.result_engname}>{lecture.lecture_type}</div>
+                        </div>
+                        <div className={styles.buttons}>
+                            <button style={{fontSize: "15px", background: "#414E5A"}} class="btn btn-secondary" type="button">수업계획서</button>
+                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button">담기</button>
+                        </div>
+                    </div>
+                )
+            })
+        }
     </div >
     )
 

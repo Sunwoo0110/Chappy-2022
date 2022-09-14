@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                console.log("req.query: ",req.query)
+                console.log("?req.query: ",req.query)
                 const submissions = await Submission.find({
                     "lecture_id":req.query.lecture_id,
                     "user_id":req.query.user_id, 

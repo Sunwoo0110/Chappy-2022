@@ -65,15 +65,22 @@ function Grade(){
     )
 }
 
-function SubjectGrade({setMode2}){
+function SubjectGrade({setMode2, mode2}){
     // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const user = useSelector(state => state.user);
     const user_id = user.id;
-    const semester = "2022년 1학기" // user _id
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
+    const semester = "2022년 1학기"
+    let d;
 
-    if (error) return <div>Getting Lectures Failed</div>
-    if (!data) return <div>Loading...</div>
+    if(mode2===1){
+        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`, fetcher);
+    }
+    else{
+        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}`, fetcher);
+    }
+    
+    if (d.error) return <div>Getting Lectures Failed</div>
+    if (!d.data) return <div>Loading...</div>
 
     const toMode1 = async () => {
         setMode2(1);
@@ -94,92 +101,31 @@ function SubjectGrade({setMode2}){
             </div>
             <div style={{width:"100%"}} class="row">
                 {
-                    data.lectures.map((lecture) => {
-                        if (lecture.open_semester===semester){
-                            return (
-                                <Link as={`/mypage/mygrade/${lecture._id}`}
-                                    href={{
-                                        pathname: "/mypage/mygrade/[id]",
-                                        query: { data: JSON.stringify(lecture._id) },
-                                    }}>
-                                <div class="col-6">
-                                <div className={styles.lecture}>
-                                    <div className={styles.lecture_name}>
-                                        <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                        <div className={styles.lecture_name_2}>{lecture.open_semester}</div>
-                                    </div>
-                                    <div className={styles.lecture_prof}>{lecture.professor}</div>
-                                    <div className={styles.lecture_id}>{lecture.lecture_num}</div>
+                    d.data.lectures.map((lecture) => {
+                        return (
+                            <Link as={`/mypage/mygrade/${lecture._id}`}
+                                href={{
+                                    pathname: "/mypage/mygrade/[id]",
+                                    query: { data: JSON.stringify(lecture._id) },
+                                }}>
+                            <div class="col-6">
+                            <div className={styles.lecture}>
+                                <div className={styles.lecture_name}>
+                                    <div className={styles.lecture_name_1}>{lecture.name}</div>
+                                    <div className={styles.lecture_name_2}>{lecture.open_semester}</div>
                                 </div>
-                                </div>
-                                </Link>
-                            )
-                        }
-                        else{
-                            return;
-                        }
+                                <div className={styles.lecture_prof}>{lecture.professor}</div>
+                                <div className={styles.lecture_id}>{lecture.lecture_num}</div>
+                            </div>
+                            </div>
+                            </Link>
+                        )
                     })
                 }
             </div>
         </div>
     )
 }
-
-
-function AllSubjectGrade({setMode2}){
-    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const user = useSelector(state => state.user);
-    const user_id = user.id;
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
-
-    if (error) return <div>Getting Lectures Failed</div>
-    if (!data) return <div>Loading...</div>
-
-    const toMode1 = async () => {
-        setMode2(1);
-    }
-
-    const toMode2 = async () => {
-        setMode2(2);
-    }
-
-    return(
-        <div className={styles.section_bg}>
-            <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
-                <div className={styles.section_title}>과목 성적통계</div>
-                <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                <button style={{borderRadius:20}} class="btn btn-secondary btn-sm" type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
-                <button style={{borderRadius:20}} class="btn btn-outline-secondary btn-sm" type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
-                </div>
-            </div>
-            <div style={{width:"100%"}} class="row">
-                {
-                    data.lectures.map((lecture) => {
-                    return (
-                        <Link as={`/mypage/mygrade/${lecture._id}`}
-                            href={{
-                                pathname: "/mypage/mygrade/[id]",
-                                query: { data: JSON.stringify(lecture._id) },
-                            }}>
-                        <div class="col-6">
-                        <div className={styles.lecture}>
-                            <div className={styles.lecture_name}>
-                                <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                <div className={styles.lecture_name_2}>{lecture.open_semester}</div>
-                            </div>
-                            <div className={styles.lecture_prof}>{lecture.professor}</div>
-                            <div className={styles.lecture_id}>{lecture.lecture_num}</div>
-                        </div>
-                        </div>
-                        </Link>
-                    )
-                })
-                }
-            </div>
-        </div>
-    )
-}
-
 
 function TestGrade(){
     return(
@@ -249,21 +195,14 @@ export default function MyGrade() {
     //mode 2: 모든 과목
     const [mode2, setMode2] = useState(1);
 
-    
-
     return (
         <div className={styles.content}>
 
             <Title mode={2}/>
             
             <Grade/>
+            <SubjectGrade setMode2={setMode2} mode2={mode2}/>
 
-            {
-                mode2 === 1 ?
-                <SubjectGrade setMode2={setMode2}/>
-                :
-                <AllSubjectGrade setMode2={setMode2}/>
-            }            
         </div>
     )
 }
