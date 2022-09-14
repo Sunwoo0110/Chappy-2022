@@ -9,18 +9,18 @@ function SubjectFeedback(){
                 <div className={styles.section_title}>></div>
                 <div className={styles.section_title}>알고리즘</div>
             </div>
-            <div className={styles.grade}>
-                <div className={styles.grade_item}>
-                    <div className={styles.grade_1}>제공된 피드백</div>
-                    <div className={styles.grade_2}>18개</div>
+            <div className={styles.feedback}>
+                <div className={styles.feedback_item}>
+                    <div className={styles.feedback_1}>제공된 피드백</div>
+                    <div className={styles.feedback_2}>18개</div>
                 </div>
-                <div className={styles.grade_item}>
-                    <div className={styles.grade_1}>시험</div>
-                    <div className={styles.grade_2}>6개</div>
+                <div className={styles.feedback_item}>
+                    <div className={styles.feedback_1}>시험</div>
+                    <div className={styles.feedback_2}>6개</div>
                 </div>
-                <div className={styles.grade_item}>
-                    <div className={styles.grade_1}>과제</div>
-                    <div className={styles.grade_2}>12개</div>
+                <div className={styles.feedback_item}>
+                    <div className={styles.feedback_1}>과제</div>
+                    <div className={styles.feedback_2}>12개</div>
                 </div>
             </div>
         </div>
