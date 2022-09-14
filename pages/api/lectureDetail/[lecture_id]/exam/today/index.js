@@ -26,13 +26,15 @@ export default async function handler(req, res) {
                 let todayExams = await Promise.all(exams.map( async (exam) => {
                     console.log(exam.open_at);
                     let dateTime = exam.open_at.toISOString().split('T');
+                    console.log(dateTime);
+                    console.log(dateTime[0]);
                     if (todayDate.format("YYYY-MM-DD")==dateTime[0])
                         return exam;
                 }));
 
                 if (todayExams[0]==undefined)
                     todayExams=null;
-                // console.log(todayExams);
+                // console.log("----------", todayExams);
                 
                 res.status(200).json({success: true, data: todayExams})
 
