@@ -15,7 +15,7 @@ const fetcher = (url) => {
 }
 
 
-const Adder = () => {
+const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
 
     const { mutate } = useSWRConfig();
 
@@ -26,8 +26,8 @@ const Adder = () => {
     if (error) return <div>Getting User Info Failed</div>
     if (!data) return <div>Loading...</div>
 
-    const [feedback, setFeedback] = useState(true);
-    const [is_opened, setIsOpened] = useState(true);
+    // const [feedback, setFeedback] = useState(true);
+    // const [is_opened, setIsOpened] = useState(true);
 
     const registerLecture = async () => {
 
@@ -193,8 +193,8 @@ const Adder = () => {
 
         <div className={styles.feedback}>
             <div className={styles.feedback_text}>해당 과목의 피드백을 제공하시겠습니까?</div>
-            <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:"20px"}} class="btn btn-secondary" type="button" onClick={()=>giveFeedback()}>예</button>
-            <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:"20px"}} class="btn btn-outline-secondary" type="button" onClick={()=>noFeedback()}>아니오</button>
+            <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:"20px"}} class={feedback ? "btn btn-secondary" : "btn btn-outline-secondary"} type="button" onClick={()=>giveFeedback()}>예</button>
+            <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:"20px"}} class={feedback ? "btn btn-outline-secondary" : "btn btn-secondary"} type="button" onClick={()=>noFeedback()}>아니오</button>
         </div>
 
         <div className={styles.buttons}>
@@ -208,13 +208,17 @@ const Adder = () => {
 
 
 export default function LectureAdder() {
+
+    const [feedback, setFeedback] = useState(true);
+    const [is_opened, setIsOpened] = useState(true);
+
     return (
         <div style={{width:"100%"}}>
             <div className={styles.section_title_bg}>
                 <div className={styles.section_title}>수업 등록하기</div>
                 <div className={styles.section_title_exp}>수업을 검색하고 강의 목록에 등록하세요</div>
             </div>
-            <Adder/>
+            <Adder feedback={feedback} setFeedback={setFeedback} is_opened={is_opened} setIsOpened={setIsOpened}/>
         </div>
     )
 }
