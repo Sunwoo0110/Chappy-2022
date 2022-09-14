@@ -1,18 +1,22 @@
 import useSWR from "swr"
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import noticeStyles from "../../../styles/lectureDetail/_notice.module.css"
-import { useSelector, useDispatch } from 'react-redux';
+import axios from "../../../lib/api";
 
-const fetcher = (url) => {
+const fetcher = async (url, queryParams='') => {
     if (typeof url != 'string')
         return { data: [] }
-    return fetch(url).then((res) => {
-        return res.json()
-    })
+    return await axios.get(url, {params: queryParams})
+        .then((res) => {
+            return res.data
+        })
 }
 
 const NoticeList = ({lecture_id}) => {
-    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/notice`, fetcher);
+    const paramData = {
+        lecture_id: lecture_id,
+    };
+    const { data, error } = useSWR([`/api/lecture/notice`, paramData], fetcher);
 
     if (error) return <div>Getting Notice Failed</div>
     if (!data) return <div>Loading...</div>
