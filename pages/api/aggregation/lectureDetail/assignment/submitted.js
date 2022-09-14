@@ -14,36 +14,26 @@ export default async function handler(req, res) {
                         submission_state:1,
                     }
                 });
-                
-                // const assignments = await axios.get('/api/lecture/assignment', {
-                //     params: {
-                //         lecture_id: req.query.lecture_id,
-                //         temp: false,
-                //         type: 0,
-                //         weeks: week,
-                //         is_opened: true,
-                //     }
-                // })
-                // .then(function (response) {
-                //     console.log(response.data);
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
 
-                let submittedAssignments = await Promise.all(submissions.data.data.map( async (submission) => {
-                    let submittedAssignment = {};
-                    let assignment = await axios.get('api/lecture/assignment', {
-                        params: {
-                            _id: submission.ref_id,
-                            temp: false,
-                        }
-                    });
-                    submittedAssignment["submission"] = submission;
-                    submittedAssignment["assignment"] = assignment.data.data[0];
-                    console.log(submittedAssignment)
-                    return submittedAssignment;                    
+                const submissions_ref_ids = await Promise.all(submissions.data.data.map( async (submission) => {
+                    return submission.ref_id;
                 }))
+
+                const assignments = await axios.get('/api/lecture/assignment', {
+                    params: {
+                        _id: {$in: submissions_ref_ids},
+                        $addFields : { "__order" : { "$indexOfArray" : [ submissions_ref_ids, "$id" ] } },
+                        $sort: { "__order" : 1 }, 
+                    }    
+                })
+
+                let submittedAssignments = [];
+                for(let i=0; i<submissions_ref_ids.length; i++){
+                    let submittedAssignment = {};
+                    submittedAssignment["submission"] = submissions.data.data[i];
+                    submittedAssignment["assignment"] = assignments.data.data[i];
+                    submittedAssignments.push(submittedAssignment);                    
+                }
 
                 res.status(200).json({success: true, data: submittedAssignments});
 

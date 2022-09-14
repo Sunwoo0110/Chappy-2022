@@ -1,20 +1,39 @@
 import useSWR from "swr"
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import examStyles from "../../../styles/lectureDetail/_exam.module.css";
+import axios from "../../../lib/api";
+import moment from 'moment';
+import Moment from 'react-moment';
 
-const fetcher = (url) => {
+const fetcher = async (url, queryParams='') => {
     if (typeof url != 'string')
         return { data: [] }
-    return fetch(url).then((res) => {
-        return res.json()
-    })
+    return await axios.get(url, {params: queryParams})
+        .then((res) => {
+            return res.data
+        })
 }
 
+const date = moment('00:00:00','HH:mm:ss');
+const todayDate = date.toISOString();
+const tomorrow = date.add(1, 'days');
+const tomorrowDate = tomorrow.toISOString();
+
 const TodayExamList = ({lecture_id}) => {
-    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/exam/today`, fetcher)
+    const paramData = {
+        lecture_id: lecture_id,
+        type: 1,
+        temp: false,
+        close_at: {
+            $gte: todayDate,
+            $lte: tomorrowDate,
+        },
+    };
+    const { data, error } = useSWR([`/api/lecture/assignment`, paramData], fetcher)
+
     if (error) return <div>Getting Today Exams Failed</div>
     if (!data) return <div>Loading...</div>
-    if (data.data==null || data.data[0]==undefined) 
+    if (data==null || data==undefined) 
         return <div className={examStyles["exam-today"]}>
                 <div className={examStyles["exam-today-none"]}>
                     오늘은 예정된 시험이 없습니다
@@ -33,7 +52,14 @@ const TodayExamList = ({lecture_id}) => {
 }
 
 const ScheduledExamList = ({lecture_id}) => {
-    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/exam/scheduled`, fetcher)
+    const paramData = {
+        lecture_id: lecture_id,
+        type: 1,
+        temp: false,
+        close_at: {$gte: todayDate},
+    };
+    const { data, error } = useSWR([`/api/lecture/assignment`, paramData], (url) => fetcher(url, paramData))
+
     if (error) return <div>Getting Scheduled Exams Failed</div>
     if (!data) return <div>예정된 시험이 없습니다.</div>
 
