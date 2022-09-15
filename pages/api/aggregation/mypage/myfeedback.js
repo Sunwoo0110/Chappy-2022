@@ -34,6 +34,7 @@ export default async function handler(req, res) {
                 const submissions = await axios.get('/api/submission/submission', {
                     params: {
                         ref_id: {$in: assignmentsID},
+                        user_id: req.query.user_id,
                         submission_state: 1,
                     }
                 });
