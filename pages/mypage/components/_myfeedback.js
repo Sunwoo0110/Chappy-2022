@@ -2,7 +2,7 @@ import styles from "../../../styles/mypage/_myfeedback.module.css"
 import Title from "./_title"
 import useSWR, { useSWRConfig } from "swr"
 import Link from "next/link";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const fetcher = (url) => {
     // console.log('URL:', url, typeof url)
