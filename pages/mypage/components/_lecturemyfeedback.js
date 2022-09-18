@@ -62,10 +62,6 @@ function FeedbackList({lecture_id}){
         <div className={styles.section_bg}>
             <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
                 <div className={styles.section_title}>피드백 목록</div>
-                <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                <button style={{borderRadius:20}} class="btn btn-secondary btn-sm" type="button">이번 학기 과제만 보기</button>
-                <button style={{borderRadius:20}} class="btn btn-outline-secondary btn-sm" type="button">모든 과제 보기</button>
-                </div>
             </div>
 
             
