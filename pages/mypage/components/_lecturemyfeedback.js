@@ -22,7 +22,7 @@ function SubjectFeedback({lecture_id}){
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
 
-    console.log("data:! ",data);
+    // console.log("data: ",data);
 
     return(
         <div className={styles.section_bg}>
@@ -52,10 +52,10 @@ function SubjectFeedback({lecture_id}){
 function FeedbackList({lecture_id}){
     const user = useSelector(state => state.user);
     const user_id = user.id;
-    // const { data, error } = useSWR(`/api/aggregation/mypage/lecturefeedbacklist?user_id=${user_id}&lecture_id=${lecture_id}`, fetcher)
+    const { data, error } = useSWR(`/api/aggregation/mypage/lecturefeedbacklist?user_id=${user_id}&lecture_id=${lecture_id}`, fetcher)
 
-    // if (error) return <div>Getting Lectures Failed</div>
-    // if (!data) return <div>Loading...</div>
+    if (error) return <div>Getting Lectures Failed</div>
+    if (!data) return <div>Loading...</div>
 
     // console.log("data.data: ",data.data)
     return(
@@ -72,24 +72,22 @@ function FeedbackList({lecture_id}){
                 <div className={styles.objection_2}>피드백확인</div>
             </div>
 
-            <div style={{width:"100%"}}>
-            <div className={styles.objection}>
-                <div className={styles.objection_1}>알고리즘 중간고사</div>
-                <div className={styles.objection_2}>알고리즘</div>
-                <div className={styles.objection_2}>2021.04.18</div>
-                <div className={styles.objection_2}>
-                    <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:5}} class="btn btn-primary" type="button">피드백 보기</button>
-                </div>
-            </div>
-            <div className={styles.objection}>
-                <div className={styles.objection_1}>알고리즘 중간고사</div>
-                <div className={styles.objection_2}>알고리즘</div>
-                <div className={styles.objection_2}>2021.04.18</div>
-                <div className={styles.objection_2}>
-                    <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:5}} class="btn btn-primary" type="button">피드백 보기</button>
-                </div>
-            </div>
-            </div>
+            {
+                data.data.map((feedback) => {
+                    return (
+                        <div style={{width:"100%"}}>
+                            <div className={styles.objection}>
+                                <div className={styles.objection_1}>{feedback.title}</div>
+                                <div className={styles.objection_2}>{feedback.lecture}</div>
+                                <div className={styles.objection_2}>{feedback.date}</div>
+                                <div className={styles.objection_2}>
+                                    <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:5}} class="btn btn-primary" type="button">피드백 보기</button>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })
+            }
         </div>
     )
 }
