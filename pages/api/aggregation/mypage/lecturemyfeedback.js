@@ -2,7 +2,6 @@
 import dbConnect from "../../../../lib/dbConnect"
 
 import axios from "../../../../lib/api";
-import qs from "qs";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -39,8 +38,8 @@ export default async function handler(req, res) {
                 var assignmentsID = await Promise.all(assignments.data.data.map( async (assignment) => {
                     return assignment._id;
                 }))
-                console.log("examsID: ", examsID)
-                console.log("assignmentsID: ", assignmentsID)
+                // console.log("examsID: ", examsID)
+                // console.log("assignmentsID: ", assignmentsID)
 
                 let ex_submissions=[];
                 let as_submissions=[];
@@ -104,7 +103,7 @@ export default async function handler(req, res) {
                 myfeedback["exam"] = ex_feedbacks.length;
                 myfeedback["assignment"] = as_feedbacks.length;
 
-                console.log("myfeedback: ",myfeedback)
+                // console.log("myfeedback: ",myfeedback)
                 res.status(200).json({ success: true, data: myfeedback });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
