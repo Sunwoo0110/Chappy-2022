@@ -85,11 +85,9 @@ function Objection( {lecture_id} ){
     const user_id = user.id;
     let d ;
     if(lecture_id!==""){
-        console.log("id is not empty")
         d= useSWR(`/api/aggregation/mypage/objection?user_id=${user_id}&lecture_id=${lecture_id}`, fetcher)
     }
     else{
-        console.log("id is empty")
         d= useSWR(`/api/aggregation/mypage/objection?user_id=${user_id}`, fetcher)
     }
 
