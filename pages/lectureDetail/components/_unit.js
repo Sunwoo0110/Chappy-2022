@@ -7,7 +7,7 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { RiBookletFill, RiDraftLine } from "react-icons/ri"
 import { useSelector, useDispatch } from 'react-redux';
 
-const UnitList = ({ dropdown, setDropdown }) => {
+const UnitList = ({ lecture_id, dropdown, setDropdown }) => {
     //unit DB schema 정의
     const user = useSelector(state => state.user);
     const user_id = user.id;
@@ -74,11 +74,11 @@ const UnitList = ({ dropdown, setDropdown }) => {
     );
 }
 
-export default function Unit({ dropdown, setDropdown }){
+export default function Unit({ lecture_id, dropdown, setDropdown }){
     return (
         <div className={unitStyles.units}>
             <div className={unitStyles.title}>단원별 학습</div>
-            <UnitList dropdown={dropdown} setDropdown={setDropdown}/>
+            <UnitList lecture_id={lecture_id} dropdown={dropdown} setDropdown={setDropdown}/>
         </div>
     );
 }
