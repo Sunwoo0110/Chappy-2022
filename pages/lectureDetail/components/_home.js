@@ -1,18 +1,24 @@
 import useSWR from "swr"
+import { useSelector, useDispatch } from 'react-redux';
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import noticeStyles from "../../../styles/lectureDetail/_notice.module.css"
 import taskStyles from "../../../styles/lectureDetail/_task.module.css"
+import axios from "../../../lib/api";
 
-const fetcher = (url) => {
+const fetcher = async (url, queryParams='') => {
     if (typeof url != 'string')
         return { data: [] }
-    return fetch(url).then((res) => {
-        return res.json()
-    })
+    return await axios.get(url, {params: queryParams})
+        .then((res) => {
+            return res.data
+        })
 }
 
 const NoticeList = ({lecture_id}) => {
-    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/notice`, fetcher);
+    const paramData = {
+        lecture_id: lecture_id,
+    };
+    const { data, error } = useSWR([`/api/lecture/notice`, paramData], fetcher);
 
     if (error) return <div>Getting Notice Failed</div>
     if (!data) return <div>Loading...</div>
@@ -32,20 +38,29 @@ const NoticeList = ({lecture_id}) => {
 }
 
 const TaskList = ({lecture_id}) => {
-    const user_id = "62ff6f624b99ac8a2bcbd015"; //redux처리 필요
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
 
-    const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/lesson`, fetcher)
+    const paramData = {
+        lecture_id: lecture_id,
+        user_id: user_id,
+    };
+    const { data, error } = useSWR([`/api/aggregation/lectureDetail/lesson/this_week`, paramData], fetcher)
+
+    // const { data, error } = useSWR(`/api/lectureDetail/${lecture_id}/${user_id}/lesson`, fetcher)
 
     if (error) return <div>Getting Tasks Failed</div>
     if (!data) return <div>Loading...</div>
     if (data.data==-1) return <div>Task Not Existing</div>
+
+    console.log(data);
 
     return(
         <div>
             {data.data.map((task) => (
                 <div className={taskStyles["task-item"]} key={task.lesson._id}>
                     {task.attendance==1 && 
-                        <div className={taskStyles["task-item-done"]}/>                   
+                        <div className={taskStyles["task-item-done"]}/>
                     }
                     {task.attendance==0 && 
                         <div className={taskStyles["task-item-undone"]}/>                   

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "../../../styles/mypage/_mypage.module.css"
 
@@ -25,8 +26,10 @@ const fetcher = (url) => {
 
 function StudentInfo() {
     
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
 
     if (error) return <div>Getting User Info Failed</div>
     if (!data) return <div>Loading...</div>
@@ -44,29 +47,29 @@ function StudentInfo() {
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이름</div>
-                        <div className={styles.studentinfo_3}>{data.user.name}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].name}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학과</div>
-                        <div className={styles.studentinfo_3}>{data.user.department}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].department}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학기수</div>
-                        <div className={styles.studentinfo_3}>{data.user.semester}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].semester}</div>
                     </div>
                 </div>
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>아이디</div>
-                        <div className={styles.studentinfo_3}>{data.user.user_id}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].user_id}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>연락처</div>
-                        <div className={styles.studentinfo_3}>{data.user.cell_number}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].cell_number}</div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이메일</div>
-                        <div className={styles.studentinfo_3}>{data.user.email}</div>
+                        <div className={styles.studentinfo_3}>{data.data[0].email}</div>
                     </div>
                 </div>
             </div>
@@ -75,21 +78,20 @@ function StudentInfo() {
 }
 
 function LearningInfo() {
-
     const { mutate } = useSWRConfig()
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const semester = "2022년 1학기" // user _id
-    const { data, error } = useSWR(`/api/lecture/info/${user_id}`, fetcher)
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const semester = "2022년 1학기"
+    const { data, error } = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`, fetcher)
 
     if (error) return <div>Getting Lecture Info Failed</div>
     if (!data) return <div>Loading...</div>
-    
-    console.log("lecture:: ",data);
 
     // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
     async function onDelete(_id) {
 
-        const newList =  await fetch(`/api/lecture/info/${user_id}`, {
+        await fetch(`/api/aggregation/mypage/mylectures?user_id=${user_id}&lecture_id=${_id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +99,7 @@ function LearningInfo() {
             body: JSON.stringify({ lecture_id: _id }),
         })
 
-        mutate(`/api/lecture/info/${user_id}`);
+        mutate(`/api/aggregation/mypage/mylectures?user_id=${user_id}&lecture_id=${_id}`);
         
     }
 
@@ -136,43 +138,38 @@ function LearningInfo() {
                     <div style={{width:"100%"}} class="row">
                     {
                         data.lectures.map((lecture) => {
-                            if (lecture.open_semester===semester){
-                                return (
-                                    <div class="col-6">
-                                    <div className={styles.lecture}>
-                                        <div className={styles.lecture_name}>
-                                            <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                            <div className={styles.lecture_name_2}>
-                                            <div className={styles.lecture_open}>{lecture.open_semester}</div>
-                                            <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal" data-bs-target="#deleteChecker"></button>
-                                            <div class="modal fade" id="deleteChecker" tabindex="-1" aria-labelledby="deleteCheckerLabel" aria-hidden="true">
+                            return (
+                                <div class="col-6">
+                                <div className={styles.lecture}>
+                                    <div className={styles.lecture_name}>
+                                        <div className={styles.lecture_name_1}>{lecture.name}</div>
+                                        <div className={styles.lecture_name_2}>
+                                        <div className={styles.lecture_open}>{lecture.open_semester}</div>
+                                        <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal" data-bs-target="#deleteChecker"></button>
+                                        <div class="modal fade" id="deleteChecker" tabindex="-1" aria-labelledby="deleteCheckerLabel" aria-hidden="true">
 
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
-                                                        <div className={styles.deletecheck}>정말 목록에서 지울까요?</div>
-                                                        <div className={styles.deletecheck_exp}>목록에서 지우면 해당 강의가 강의목록에서 지워지며,</div>
-                                                        <div className={styles.deletecheck_exp}>알림도 오지 않습니다. 수강 취소는 학교 사이트를 이용해주세요.</div>
-                                                        <div className={styles.buttons}>
-                                                            <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">취소</button>
-                                                            <button type="button" class="btn btn-primary" style={{flexGrow: "1", flexBasis: "1px", background: "#FF0000"}} onClick={()=>onDelete(lecture._id)} data-bs-dismiss="modal">네, 지울게요</button>
-                                                        </div>
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                                                    <div className={styles.deletecheck}>정말 목록에서 지울까요?</div>
+                                                    <div className={styles.deletecheck_exp}>목록에서 지우면 해당 강의가 강의목록에서 지워지며,</div>
+                                                    <div className={styles.deletecheck_exp}>알림도 오지 않습니다. 수강 취소는 학교 사이트를 이용해주세요.</div>
+                                                    <div className={styles.buttons}>
+                                                        <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">취소</button>
+                                                        <button type="button" class="btn btn-primary" style={{flexGrow: "1", flexBasis: "1px", background: "#FF0000"}} onClick={()=>onDelete(lecture._id)} data-bs-dismiss="modal">네, 지울게요</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                            </div>
+                                    </div>
                                         </div>
-                                        <div className={styles.lecture_prof}>{lecture.professor} 교수님</div>
-                                        <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                                     </div>
-                                    </div>
-                                )
-                            }
-                            else{
-                                return;
-                            }
-                    })
+                                    <div className={styles.lecture_prof}>{lecture.professor} 교수님</div>
+                                    <div className={styles.lecture_id}>{lecture.lecture_num}</div>
+                                </div>
+                                </div>
+                            )
+                        })
                     }
                     </div>
                 </div>

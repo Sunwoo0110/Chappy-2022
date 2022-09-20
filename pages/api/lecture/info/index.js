@@ -1,6 +1,6 @@
-/** /pages/api/lecture/lecture.js **/
-import dbConnect from "../../../lib/dbConnect"
-import Lecture from "../../../models/Lecture"
+import dbConnect from "../../../../lib/dbConnect"
+import Info from "../../../../models/lecture/Info"
+import qs from "qs";
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -10,19 +10,12 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const lectures = await Lecture.find({});
-                res.status(200).json({ success: true, lectures: lectures });
-            } catch (error) {
-                res.status(400).json({ success: false, error: error });
-            }
-            break;
-
-        case 'PUT':
-            try {
-                // var type = req.body.type;
-                // console.log(type)
-                const lectures = await Lecture.find( { name : {$regex : req.body.name}});
-                res.status(200).json({ success: true, lectures: lectures });
+                let query = qs.parse(req.query);
+                const lectures = await Info.find(query);
+                console.log("req.query: ",query);
+                console.log("lectures: ",lectures);
+                res.status(200).json({ success: true, data: lectures });
+                
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
             }
@@ -30,27 +23,25 @@ export default async function handler(req, res) {
 
         case 'POST':
             try {
+                console.log('add:', req.body.lecture_id);
+                const user = await Profile.findById(req.query.user_id);
+                var lecID = user.lectures;
+
+                let newID = lecID.filter((e) => e === req.body.lecture_id);
+
+                if (newID.length > 0) {
+                    res.status(200).json({ success: false });
+                } else {
+                    lecID.push(req.body.lecture_id);
+
+                    const newUser = await Profile.findByIdAndUpdate(req.query.user_id, { "lectures": lecID }, {
+                        new: true, 
+                    });
+
+                    res.status(200).json({ success: true, lectures: newUser.lectures });
+                }
+
                 
-                Lecture.create({
-                    name: req.body.name,
-                    englishname: req.body.englishname,
-                    professor: req.body.professor,
-                    classnumber: req.body.classnumber,
-                    open: req.body.open,
-                    description: req.body.description,
-                });
-
-                const lectures = await Lecture.find({});
-                res.status(200).json({ success: true, lectures: lectures });
-            } catch (error) {
-                res.status(400).json({ success: false, error: error })
-            }
-            break
-
-        case 'DELETE':
-            try {
-                const result = await Lecture.findByIdAndDelete(req.body.lecture_id)
-                res.status(201).json({ success: true })
             } catch (error) {
                 res.status(400).json({ success: false, error: error })
             }

@@ -1,12 +1,10 @@
 import useSWR, { useSWRConfig } from "swr"
 import { useRouter } from "next/router"
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "../../../styles/mypage/_myaccount.module.css"
 
 import Title from "./_title"
-
-// import 'bootstrap';
-// import Modal from "bootstrap/js/dist/modal";
 
 
 const fetcher = (url) => {
@@ -22,8 +20,10 @@ const fetcher = (url) => {
 function StudentInfo_edit() {
     
     const { mutate } = useSWRConfig()
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
@@ -45,12 +45,12 @@ function StudentInfo_edit() {
         document.getElementById('cellnumber').value = null; 
         document.getElementById('email').value = null; 
 
-        if(_username==='') _username=data.user.name;
-        if(_department==='') _department=data.user.department;
-        if(_semester==='') _semester=data.user.semester;
-        if(_userid==='') _userid=data.user.user_id;
-        if(_cellnumber==='') _cellnumber=data.user.cell_number;
-        if(_email==='') _email=data.user.email;
+        if(_username==='') _username=data.data[0].name;
+        if(_department==='') _department=data.data[0].department;
+        if(_semester==='') _semester=data.data[0].semester;
+        if(_userid==='') _userid=data.data[0].user_id;
+        if(_cellnumber==='') _cellnumber=data.data[0].cell_number;
+        if(_email==='') _email=data.data[0].email;
 
         let user = {
             name: _username,
@@ -61,7 +61,7 @@ function StudentInfo_edit() {
             email: _email,
         }
 
-        await fetch(`/api/user/${user_id}`, {
+        await fetch(`/api/user/profile?_id=${user_id}`, {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json',
@@ -69,7 +69,7 @@ function StudentInfo_edit() {
             body: JSON.stringify(user)
         })
 
-        mutate(`/api/user/${user_id}`);
+        mutate(`/api/user/profile?_id=${user_id}`);
     }
 
     return (
@@ -84,19 +84,19 @@ function StudentInfo_edit() {
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이름</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="username" class="form-control" placeholder={data.user.name} aria-describedby="basic-addon1"/>
+                            <input type="text" id="username" class="form-control" placeholder={data.data[0].name} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학과</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="department" class="form-control" placeholder={data.user.department} aria-describedby="basic-addon1"/>
+                            <input type="text" id="department" class="form-control" placeholder={data.data[0].department} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>학기수</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="semester" class="form-control" placeholder={data.user.semester} aria-describedby="basic-addon1"/>
+                            <input type="text" id="semester" class="form-control" placeholder={data.data[0].semester} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                 </div>
@@ -104,19 +104,19 @@ function StudentInfo_edit() {
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>아이디</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="userid" class="form-control" placeholder={data.user.user_id} aria-describedby="basic-addon1"/>
+                            <input type="text" id="userid" class="form-control" placeholder={data.data[0].user_id} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>연락처</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="cellnumber" class="form-control" placeholder={data.user.cell_number} aria-describedby="basic-addon1"/>
+                            <input type="text" id="cellnumber" class="form-control" placeholder={data.data[0].cell_number} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이메일</div>
                         <div className={styles.studentinfo_2}>
-                            <input type="text" id="email" class="form-control" placeholder={data.user.email} aria-describedby="basic-addon1"/>
+                            <input type="text" id="email" class="form-control" placeholder={data.data[0].email} aria-describedby="basic-addon1"/>
                         </div>
                     </div>
                 </div>
@@ -128,8 +128,10 @@ function StudentInfo_edit() {
 function ChangePassword() {
     
     const { mutate } = useSWRConfig()
-    const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
@@ -145,12 +147,12 @@ function ChangePassword() {
         document.getElementById('newpw').value = null; 
         document.getElementById('checknewpw').value = null; 
 
-        if(_curpw===data.user.password && _newpw===_checknewpw){
+        if(_curpw===data.data[0].password && _newpw===_checknewpw){
             let pw = {
                 password: _newpw,
             }
     
-            await fetch(`/api/user/${user_id}`, {
+            await fetch(`/api/user/profile?_id=${user_id}`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": 'application/json',
@@ -158,7 +160,7 @@ function ChangePassword() {
                 body: JSON.stringify(pw)
             })
     
-            mutate(`/api/user/${user_id}`);
+            mutate(`/api/user/profile?_id=${user_id}`);
         }
         else{
             console.log("failed changing pw")
@@ -206,7 +208,9 @@ function DeleteAccount() {
     
     const { mutate } = useSWRConfig()
     const user_id = "62ff6f624b99ac8a2bcbd01" // user _id 일단 없는 아이디로 줌
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
+    // const user = useSelector(state => state.user);
+    // const user_id = user.id;
+    const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
 
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
@@ -214,7 +218,7 @@ function DeleteAccount() {
     // https://swr.vercel.app/ko/docs/mutation#현재-데이터를-기반으로-뮤테이트
     async function onDelete(_id) {
 
-        const newList =  await fetch(`/api/user/${user_id}`, {
+        const newList =  await fetch(`/api/user/profile?_id=${user_id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -223,7 +227,7 @@ function DeleteAccount() {
         })
         
 
-        mutate(`/api/user/${user_id}`);
+        mutate(`/api/user/profile?_id=${user_id}`);
 
         console.log("delete account");
 

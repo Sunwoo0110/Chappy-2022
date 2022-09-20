@@ -22,10 +22,6 @@ const AssignmentSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    temp: {
-        type: Boolean,
-        default: true,
-    },
     weeks: Number,
     lecture_id: mongoose.Schema.Types.ObjectId,
     professor_id: mongoose.Schema.Types.ObjectId,

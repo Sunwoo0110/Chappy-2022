@@ -81,6 +81,11 @@
     color: #4C4C4C;
 }
 
+.criteria_4 {
+    flex-grow: 1;
+    flex-basis: 1px;
+}
+
 .result {
     display: flex;
     justify-content: flex-start;

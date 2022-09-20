@@ -5,11 +5,12 @@ import Learning from "./components/_learning";
 import Notice from "./components/_notice";
 import Assignment from "./components/_assignment";
 import Exam from "./components/_exam";
-import Header from "./components/_header";
-import Footer from "./components/_footer";
+import Header from "../components/_header";
+import Footer from "../components/_footer";
 import Menu from "./components/_menu";
 import Unit from "./components/_unit";
 import Lecture from "./components/_lecture";
+import { useSelector, useDispatch } from 'react-redux';
 
 export function getServerSideProps({ params }) {
     console.log("getssp", params);
@@ -25,14 +26,13 @@ export default function LectureDetailIDPage(props) {
     const [dropdown, setDropdown] = useState([]);
     const lecture_id = props.params.id;
 
-    const user_id = "62ff6f624b99ac8a2bcbd015"; //이후 redux로 넘겨받기
-    console.log("heheheh=========", props.params.id);
+    const user_id = useSelector(state => state.user);
 
     return(
         <div className={styles.container}>
             <Header />
             <div className={styles.main}>
-                <Lecture/>
+                <Lecture lecture_id={lecture_id}/>
 
                 <div className={styles["content"]}>
                     <div className={styles["content-left"]}>
@@ -49,7 +49,7 @@ export default function LectureDetailIDPage(props) {
                                 </>
                                 : mode === 2 ?
                                 <>
-                                <Learning/>
+                                <Learning lecture_id={lecture_id}/>
                                 </>
                                 : mode === 3 ?
                                 <>

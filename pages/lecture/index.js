@@ -2,9 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import useSWR, { useSWRConfig } from "swr"
 import { useRouter } from "next/router"
+import { useSelector, useDispatch } from 'react-redux';
 
-import Header from "./components/_header";
-import Footer from "./components/_footer";
+import Header from "../components/_header";
+import Footer from "../components/_footer";
 
 import styles from "../../styles/lecture/Lecture.module.css";
 
@@ -23,9 +24,10 @@ const fetcher = (url) => {
 
 
 export default function Index() {
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
 
-    const user_id = "62a9a23fd5ca81cddd59604b" // user _id
-    const { data, error } = useSWR(`/api/user/${user_id}`, fetcher)
     if (error) return <div>Getting Info Failed</div>
     if (!data) return <div>Loading...</div>
 
@@ -41,7 +43,7 @@ export default function Index() {
             <div className={styles.main}>
                 <div className={styles.content}>
                     <div className={styles.greeting_box}>
-                        <div className={styles.greeting_name}>어서오세요 {data.user.username}님!</div>
+                        <div className={styles.greeting_name}>어서오세요 {data.data[0].name}님!</div>
                         <div className={styles.greeting_week}>지금은 4주차입니다</div>
                     </div>
                     <div style={{display:"flex", flexDirection:"row", columnGap:"5%"}}>
