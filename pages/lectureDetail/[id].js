@@ -64,7 +64,7 @@ export default function LectureDetailIDPage(props) {
                     </div>
                     <div className={styles["vectorline"]}/>
                     <div className={styles["content-right"]}>
-                        <Unit lecture_id={lecture_id} dropdown={dropdown} setDropdown={setDropdown}/>
+                        <Unit lecture_id={lecture_id} mode={mode} setMode={setMode} dropdown={dropdown} setDropdown={setDropdown}/>
                     </div>
                 </div>
             </div>

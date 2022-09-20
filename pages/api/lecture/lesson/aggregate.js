@@ -1,5 +1,5 @@
 import dbConnect from "../../../../lib/dbConnect"
-import Assignment from "../../../../models/lecture/Assignment"
+import Lesson from "../../../../models/lecture/Lesson"
 import qs from "qs";
 
 export default async function handler(req, res) {
@@ -10,15 +10,15 @@ export default async function handler(req, res) {
     switch (method) {
         case 'POST':
             try {
-                const assignments = await Assignment.aggregate(req.body.pipeline);
+                const lessons = await Lesson.aggregate(req.body.pipeline);
                 
-                res.status(200).json({ success: true, data: assignments });
+                res.status(200).json({ success: true, data: lessons });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
             }
             break;
 
-        default:
+       default:
             res.status(400).json({ success: false, data: [] });
             break;
     }

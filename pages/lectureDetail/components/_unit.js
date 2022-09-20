@@ -6,26 +6,29 @@ import { TiArrowSortedDown } from "react-icons/ti";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { RiBookletFill, RiDraftLine } from "react-icons/ri"
 import { useSelector, useDispatch } from 'react-redux';
+import axios from "../../../lib/api";
 
-const UnitList = ({ lecture_id, dropdown, setDropdown }) => {
-    //unit DB schema 정의
+const fetcher = async (url, queryParams='') => {
+    if (typeof url != 'string')
+        return { data: [] }
+    return await axios.get(url, {params: queryParams})
+        .then((res) => {
+            return res.data
+        })
+}
+
+const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
     const user = useSelector(state => state.user);
     const user_id = user.id;
 
-    const unitData = [
-        {
-            _id: 1,
-            title: "recursion",
-        },
-        {
-            _id: 2,
-            title: "graph",
-        },
-        {
-            _id: 3,
-            title: "dfs",
-        },
-    ];
+    const paramData = {
+        lecture_id: lecture_id,
+    };
+    const { data, error } = useSWR([`/api/aggregation/lectureDetail/unit`, paramData], fetcher);
+
+    if (error) return <div>Getting Units Failed</div>
+    if (!data) return <div>Loading...</div>
+    if (data.data.unit_id.length==0) return <div>공개된 주차가 없습니다.</div>
 
     const handleClickEvent = (target) => {
         let idx = dropdown.indexOf(target);
@@ -40,19 +43,24 @@ const UnitList = ({ lecture_id, dropdown, setDropdown }) => {
         }
     };
 
+    const handleLearningClickEvent = (target) => {
+        setMode(2);
+        window.scrollTo({top:0, left:0, behavior:'auto'});
+    }
+
     return (
         <div className={unitStyles.units}>
-            {unitData.map((unit) => {
+            {data.data.unit_id.map((unit) => {
                 return (
-                    <div key={unit._id} className={unitStyles["unit-item"]}>
-                        <button className={unitStyles["unit-item-btn"]} onClick={() => handleClickEvent(unit._id)}>
-                            {unit.title}
+                    <div key={unit} className={unitStyles["unit-item"]}>
+                        <button className={unitStyles["unit-item-btn"]} onClick={() => handleClickEvent(unit)}>
+                            {unit}주차
                             <TiArrowSortedDown />
                         </button>
                         <div>
-                            { dropdown.includes(unit._id)===true &&
+                            { dropdown.includes(unit)===true &&
                                 <div className={unitStyles["unit-item-dropdown"]}>
-                                    <div className={unitStyles["unit-item-dropdown-btn"]}>
+                                    <div className={unitStyles["unit-item-dropdown-btn"]} onClick={() => handleLearningClickEvent(unit)}>
                                         <RiBookletFill className={unitStyles["unit-item-dropdown-btn-icon"]}/>
                                         <div className={unitStyles["unit-item-dropdown-btn-title"]}>학습</div>
                                     </div>
@@ -74,11 +82,11 @@ const UnitList = ({ lecture_id, dropdown, setDropdown }) => {
     );
 }
 
-export default function Unit({ lecture_id, dropdown, setDropdown }){
+export default function Unit({ lecture_id, mode, setMode, dropdown, setDropdown }){
     return (
         <div className={unitStyles.units}>
-            <div className={unitStyles.title}>단원별 학습</div>
-            <UnitList lecture_id={lecture_id} dropdown={dropdown} setDropdown={setDropdown}/>
+            <div className={unitStyles.title}>주차별 학습</div>
+            <UnitList lecture_id={lecture_id} mode={mode} setMode={setMode} dropdown={dropdown} setDropdown={setDropdown}/>
         </div>
     );
 }

@@ -36,7 +36,7 @@ const LessonList = ({lecture_id}) => {
                         light={false}         // 플레이어 모드
                         pip={true}            // pip 모드 설정 여부
                         poster={'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg'}   // 플레이어 초기 포스터 사진
-                        onEnded={() => handleVideo()}  // 플레이어 끝났을 때 이벤트
+                        // onEnded={() => handleVideo()}  // 플레이어 끝났을 때 이벤트
                     />
                 </div>
             ))}
