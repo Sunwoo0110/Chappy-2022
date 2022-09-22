@@ -21,9 +21,9 @@ export default async function handler(req, res) {
 
                 const assignments = await axios.get('/api/lecture/assignment', {
                     params: {
-                        _id: {$in: submissions_ref_ids},
-                        $addFields : { "__order" : { "$indexOfArray" : [ submissions_ref_ids, "$id" ] } },
-                        $sort: { "__order" : 1 }, 
+                        _id: {$in: submissions_ref_ids}
+                        // $addFields : { "__order" : { "$indexOfArray" : [ submissions_ref_ids, "$id" ] } },
+                        // $sort: { "__order" : 1 }, 
                     }    
                 })
 

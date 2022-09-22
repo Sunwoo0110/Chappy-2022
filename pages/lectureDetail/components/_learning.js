@@ -15,7 +15,7 @@ const fetcher = (url) => {
 const LessonList = ({lecture_id}) => {
     const user = useSelector(state => state.user);
     const user_id = user.id;
-    const { data, error } = useSWR(`/api/lecture/lesson?lecture=${lecture_id}`, fetcher);
+    const { data, error } = useSWR(`/api/lecture/lesson?lecture_id=${lecture_id}`, fetcher);
 
     if (error) return <div>Getting LessonList Failed</div>
     if (!data) return <div>Loading...</div>
@@ -36,7 +36,7 @@ const LessonList = ({lecture_id}) => {
                         light={false}         // 플레이어 모드
                         pip={true}            // pip 모드 설정 여부
                         poster={'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg'}   // 플레이어 초기 포스터 사진
-                        onEnded={() => handleVideo()}  // 플레이어 끝났을 때 이벤트
+                        // onEnded={() => handleVideo()}  // 플레이어 끝났을 때 이벤트
                     />
                 </div>
             ))}
