@@ -17,6 +17,7 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
     const [code, setCode] = useState(baseCode);
     const [deco, setDeco] = useState([]);
     const [vars, setVars] = useState({});
+    const [viewZoneId, setViewZoneId] = useState("");
     const { editor, monaco } = vars;
 
     const dispatch = useDispatch();
@@ -36,22 +37,6 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
         setVars({ editor, monaco });
         
     }
-
-    // useEffect(() => {
-    //     if (validation.click === true) {
-    //         checkPoint('hint');
-    //         handleChangeDeco();
-
-    //     }
-    // }, []);
-
-    // function handleEffect() {
-    //     useEffect(() => {
-    //         checkPoint('hint');
-    //         handleChangeDeco();
-    //         console.log("effect")
-    //     }, []);
-    // }
 
     function checkPoint(action) {
         // if (editorRef.current === null) {
@@ -95,7 +80,35 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
             validation.deco
         );
         setDeco(deco);
-        return () => editor.deltaDecorations(deco, []);
+
+        var id = null;
+
+        editor.changeViewZones(function (changeAccessor) {
+            var domNode = document.createElement('div');
+            domNode.style.background = '#DFFFE2';
+            domNode.innerHTML = 'Fix box to be correct:\n' + "<br>" + '&nbsp;&nbsp;&nbsp' + 'elif a == 1 and b == 2 and XXX and (d == 4) and (e == 5):\n' + 
+            "<br>" + 'Traces: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 11 -> 13 -> 14';
+            domNode.style.fontSize = '12px'
+
+            id = changeAccessor.addZone({
+                afterLineNumber: 2,
+                heightInLines: 3,
+                domNode: domNode
+            });
+
+            setViewZoneId(id);
+            console.log("add" + id)
+            console.log("add" + viewZoneId)
+
+        });
+
+        return () => {
+            editor.deltaDecorations(deco, []);
+            editor.changeViewZones(function (changeAccessor) {
+                // console.log(viewZoneId)
+                changeAccessor.removeZone(viewZoneId)
+            });
+        }
     }, [validation.click]);
 
     return (
@@ -110,6 +123,11 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
                         onClick={() => {
                             dispatch(validationActions.setVal({num: 0, click: false}));
                             dispatch(validationActions.setDeco({deco: []}));
+
+                            editor.changeViewZones(function (changeAccessor) {
+                                console.log("remove" + viewZoneId)
+                                changeAccessor.removeZone(viewZoneId)
+                            });
                         }}>힌트 모두 적용</button>
                     </div>
                     : 
@@ -132,7 +150,8 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
                                 enabled: false,
                             },
                             fontSize: 12,
-
+                            glyphMargin: true,
+                            contextmenu: false
                         }} />
                 } 
             </div>

@@ -6,9 +6,19 @@ const { Schema, Types } = mongoose;
 
 const TestCaseSchema = new Schema(
 {
+    assignment_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        trim: true
+    },
     testnumber: {
         type: Number,
         required: true,
+        trim: true
+    },
+    is_open: {
+        type: Boolean,
+        required: false,
         trim: true
     },
     input:  {

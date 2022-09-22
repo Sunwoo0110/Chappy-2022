@@ -42,10 +42,13 @@ export default function LeftSideBar({ assignment, example }) {
                                         dispatch(validationActions.setVal({num: examples.indexOf(ex), click: true}));
                                         dispatch(validationActions.setDeco({deco: [
                                             {
-                                                range: new monaco.Range(2, 3, 2, 5),
+                                                range: new monaco.Range(2, 1, 2, 1),
                                                 options: {
                                                     isWholeLine: true,
-                                                    inlineClassName: "_codingbox_inlineDeco__6slDQ",
+                                                    className: "_codingbox_lineDeco__mFjG5",
+                                                    glyphMarginClassName: "_codingbox_glyphDeco__5Hk3V"
+                                                    // DOM 으로 css 검색해보기
+
                                                 }
                                             }
                                         ]}))
