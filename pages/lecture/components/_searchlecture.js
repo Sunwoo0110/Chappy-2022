@@ -27,7 +27,7 @@ const Searcher = () => {
 
         document.getElementById('name').value = null; 
         
-        let url='/api/lecture/info?'
+        let url='/api/lecture/info?is_ready=true&is_opened=true&'
         if(_open!==''){
             url=url+"open_semester="+_open+"&";
         }

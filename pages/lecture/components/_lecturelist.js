@@ -95,8 +95,8 @@ export default function LectureList() {
                     <div className={styles.section_title_exp}>듣고싶은 과목을 선택하세요</div>
                 </div>
                 <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                    <button style={{borderRadius:20}} class="btn btn-primary btn-sm" type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
-                    <button style={{borderRadius:20}} class="btn btn-outline-primary btn-sm" type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
+                    <button style={{borderRadius:20}} class={mode==1 ? "btn btn-primary btn-sm" : "btn btn-outline-primary btn-sm"} onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
+                    <button style={{borderRadius:20}} class={mode==2 ? "btn btn-primary btn-sm" : "btn btn-outline-primary btn-sm"} type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
                 </div>
             </div>
 

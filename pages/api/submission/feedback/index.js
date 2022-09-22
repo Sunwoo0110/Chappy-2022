@@ -1,5 +1,5 @@
 import dbConnect from "../../../../lib/dbConnect"
-import Assignment from "../../../../models/lecture/Assignment"
+import Feedback from "../../../../models/submission/Feedback"
 import qs from "qs";
 
 export default async function handler(req, res) {
@@ -11,11 +11,10 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 let query = qs.parse(req.query);
-                console.log("=================================\n", req.query);
-                console.log("=================================\n", query);
-                const assignments = await Assignment.find(query);
-                res.status(200).json({ success: true, data: assignments });
+                const feedbacks = await Feedback.find(query);
+                res.status(200).json({ success: true, data: feedbacks });
             } catch (error) {
+                console.log("error: ",error)
                 res.status(400).json({ success: false, error: error });
             }
             break;
