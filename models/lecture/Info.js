@@ -5,7 +5,7 @@ const InfoSchema = new mongoose.Schema({
     name: String,
     english_name: String,
     professor: String,
-    leture_num: String,
+    lecture_num: String,
     open_semester: String,
     description: String,
     syllabus: Object,

@@ -1,5 +1,3 @@
-import { useState } from "react";
-import useSWR, { useSWRConfig } from "swr"
 
 import styles from "../../../styles/mypage/MyPage.module.css";
 
@@ -8,8 +6,16 @@ import LeftSideBar from "../components/_leftsidebar";
 import Feedback from "../components/_lecturemyfeedback";
 import Footer from "../../components/_footer";
 
+export function getServerSideProps({ params }) {
+    return {
+      props: {
+        params,
+      },
+    };
+}
 
-export default function LectureMyFeedBack() {
+export default function LectureMyFeedBack(props) {
+    const lecture_id = props.params.id;
     // 나의 피드백
     return (
         <div className={styles.container}>
@@ -19,7 +25,7 @@ export default function LectureMyFeedBack() {
                     <LeftSideBar mode={3}/>
                 </div>
                 <div className={styles.content}>
-                    <Feedback/>
+                    <Feedback lecture_id={lecture_id}/>
                 </div>
             </div>
             <Footer/>

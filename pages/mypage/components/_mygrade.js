@@ -16,14 +16,27 @@ const fetcher = (url) => {
     })
 }
 
-function Grade(){
+function Grade({setMode, mode}){
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const semester = "2022년 1학기"
+    let d;
+
+    const toMode1 = async () => {
+        setMode(1);
+    }
+
+    const toMode2 = async () => {
+        setMode(2);
+    }
+
     return(
         <div className={styles.section_bg}>
             <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
                 <div className={styles.section_title}>전체성적</div>
                 <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                <button style={{borderRadius:20}} class="btn btn-secondary btn-sm" type="button">채피 과목만 보기</button>
-                <button style={{borderRadius:20}} class="btn btn-outline-secondary btn-sm" type="button">모든 과목 보기</button>
+                <button style={{borderRadius:20}} class={mode==1 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
+                <button style={{borderRadius:20}} class={mode==2 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
                 </div>
             </div>
             <div className={styles.grade}>
@@ -36,28 +49,18 @@ function Grade(){
                     <div className={styles.grade_2}>4.0</div>
                 </div>
                 <Link href="/mypage/myfeedback">
-                <div className={styles.grade_item}>
+                <div style={{cursor:"pointer"}} className={styles.grade_item}>
                     <div className={styles.grade_1}>피드백</div>
                     <div className={styles.grade_2}>50회</div>
                 </div>
                 </Link>
             </div>
             <div style={{marginTop:"15px"}} className={styles.gradegraph}>
-                {/* 채피 과목 보기 */}
                 <div>성적 그래프</div>
-
-                {/* 모든 과목 보기 */}
-                {/* <div style={{display:"flex", flexDirection:"row", width:"50%"}}>
-                    <div>성적 그래프</div>
-                    <div className={styles.add_lecture}>
-                        <PlusSquare/>
-                        <div>다른과목 추가하기</div>
-                    </div>
-                </div> */}
                 <select style={{width:"15%"}} class="form-select form-select-sm" id="floatingSelect" aria-label="Floating label select example">
                     <option selected>학기별 보기</option>
-                    <option value="1">2021년 1학기</option>
-                    <option value="2">2022년 1학기</option>
+                    <option value="1">다른 옵션</option>
+                    <option value="2">뭐가 있지</option>
                 </select>
             </div>
             <div style={{background:"blue", width:"100%", height:"200px"}}>그래프</div>
@@ -95,8 +98,8 @@ function SubjectGrade({setMode2, mode2}){
             <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
                 <div className={styles.section_title}>과목 성적통계</div>
                 <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                <button style={{borderRadius:20}} class="btn btn-secondary btn-sm" type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
-                <button style={{borderRadius:20}} class="btn btn-outline-secondary btn-sm" type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
+                <button style={{borderRadius:20}} class={mode2==1 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
+                <button style={{borderRadius:20}} class={mode2==2 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
                 </div>
             </div>
             <div style={{width:"100%"}} class="row">
@@ -193,6 +196,7 @@ function TestGrade(){
 export default function MyGrade() {
     //mode 1: 이번 학기 과목만
     //mode 2: 모든 과목
+    const [mode, setMode] = useState(1);
     const [mode2, setMode2] = useState(1);
 
     return (
@@ -200,7 +204,7 @@ export default function MyGrade() {
 
             <Title mode={2}/>
             
-            <Grade/>
+            <Grade setMode={setMode} mode={mode}/>
             <SubjectGrade setMode2={setMode2} mode2={mode2}/>
 
         </div>
