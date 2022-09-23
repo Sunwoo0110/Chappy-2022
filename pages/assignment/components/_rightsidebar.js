@@ -64,9 +64,9 @@ function Grade() {
                         return (
                             <li key={results.indexOf(rt)}>
                                 <div className={styles.content}>
-                                    <h4>{`테스트케이스 ${number}번: ${rt.success}`}</h4>
-                                    <h4>{`입력값:  ${rt.input}`}</h4>
-                                    <h4>{`출력값:  ${rt.output}`}</h4>
+                                    <h6>{`테스트케이스 ${number}번: ${rt.success}`}</h6>
+                                    <h6>{`입력값:  ${rt.input}`}</h6>
+                                    <h6>{`출력값:  ${rt.output}`}</h6>
                                 </div>
                             </li>
                         );

@@ -8,12 +8,10 @@ export default async function handler(req, res) {
     await dbConnect();
 
     switch (method) {
-        case 'GET':
+        case 'POST':
             try {
-                let query = qs.parse(req.query);
-                console.log("=================================\n", req.query);
-                console.log("=================================\n", query);
-                const assignments = await Assignment.find(query);
+                const assignments = await Assignment.aggregate(req.body.pipeline);
+                
                 res.status(200).json({ success: true, data: assignments });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
