@@ -55,7 +55,8 @@ function Grade() {
     if (runValue.score === 100)  result = "Success";
     
     return (
-        <div>
+        <div className={styles.feedback}>
+            <h3 className={styles.section_title}>채점 결과</h3>
             <h4>{`총점: ${runValue.score}`}</h4>
             <div style={{ overflowY: "scroll", height: "100%" }}>
                 <ul>
