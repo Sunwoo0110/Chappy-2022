@@ -40,6 +40,18 @@ export default function LeftSideBar({ assignment, example }) {
                                     {`테스트케이스 - ${examples.indexOf(ex)+1}`}
                                     <button type="button" className={styles.val_button}  onClick={() => {
                                         dispatch(validationActions.setVal({num: examples.indexOf(ex), click: true}));
+                                        dispatch(validationActions.setDeco({deco: [
+                                            {
+                                                range: new monaco.Range(2, 1, 2, 1),
+                                                options: {
+                                                    isWholeLine: true,
+                                                    className: "_codingbox_lineDeco__mFjG5",
+                                                    glyphMarginClassName: "_codingbox_glyphDeco__5Hk3V"
+                                                    // DOM 으로 css 검색해보기
+
+                                                }
+                                            }
+                                        ]}))
                                     }}>검증</button>
                                     <button className={styles.val_button} type="button"
                                     onClick={() => navigator.clipboard.writeText(`main(${ex.inputs})`)}>Copy</button>
