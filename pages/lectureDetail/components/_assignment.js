@@ -2,6 +2,7 @@ import useSWR from "swr"
 import { useSelector, useDispatch } from 'react-redux';
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import assignmentStyles from "../../../styles/lectureDetail/_assignment.module.css";
+import Link from "next/link";
 
 const fetcher = (url) => {
     if (typeof url != 'string')
@@ -27,8 +28,7 @@ const ThisWeekList = ({lecture_id}) => {
                 <div className={assignmentStyles["assignment-item"]} key={assignment._id}>
                     <div className={assignmentStyles["assignment-item-title"]}>{assignment.title}</div>
                     <div className={assignmentStyles["assignment-item-date"]}>{(assignment.closing_at).split('T')[0].replace(/-/g, '.')}</div>
-                    <div className={assignmentStyles["assignment-item-date"]}>{assignment.closing_at}</div>
-                    <Link as={`"/assignment/${assignment._id}`}
+                    <Link as={`/assignment/${assignment._id}`}
                         href={{
                             pathname: "/assignment/[id]",
                             query: { data: JSON.stringify(assignment._id) },
