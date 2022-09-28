@@ -66,7 +66,7 @@
 
 /* ================================================ */
 
-.grade {
+.feedback {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -77,7 +77,7 @@
     /* background: rgb(137, 137, 165); */
 }
 
-.grade_item {
+.feedback_item {
     display: flex;
     flex-basis: 1px;
     flex-grow: 1;
@@ -92,14 +92,29 @@
     background: #F8F8F8;
 }
 
-.grade_1 {
-    color: black;
+.feedback_1 {
+    font-style: normal;
+    font-weight: 500;
+    /* font-size: 20px; */
+    line-height: 24px;
+    color: #4C4C4C;
 }
 
-.grade_2 {
-    color: blue;
+.feedback_2 {
+    font-style: normal;
+    font-weight: 500;
+    /* font-size: 20px; */
+    line-height: 24px;
+    color: #0B51FF;
 }
 
+.feedback_3 {
+    font-style: normal;
+    font-weight: 500;
+    /* font-size: 20px; */
+    line-height: 24px;
+    color: #FF0000;
+}
 /* ================================================ */
 
 .lecture { 

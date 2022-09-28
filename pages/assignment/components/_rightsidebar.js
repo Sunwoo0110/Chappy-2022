@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { List, MenuButton } from "react-bootstrap-icons";
 // import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
 import { ResponsivePie } from '@nivo/pie'
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 /**  실행 결과 **/
 function Run() {
@@ -44,6 +44,50 @@ function Validation() {
 /**  채점 결과 **/
 function Grade() {
 
+    const runValue = useSelector((state) => state.run);
+    const results = runValue.all_result;
+    // console.log(results);
+    const user = "백우정"; // 추후에 redux 로 user 관리
+
+    var result = "Wrong";
+    var number = 0;
+    
+    if (runValue.score === 100)  result = "Success";
+    
+    return (
+        <div className={styles.feedback}>
+            <h3 className={styles.section_title}>채점 결과</h3>
+            <h4>{`총점: ${runValue.score}`}</h4>
+            <div style={{ overflowY: "scroll", height: "100%" }}>
+                <ul>
+                    {results.map((rt) => {
+                        ++number;
+                        return (
+                            <li key={results.indexOf(rt)}>
+                                <div className={styles.content}>
+                                    <h6>{`테스트케이스 ${number}번: ${rt.success}`}</h6>
+                                    <h6>{`입력값:  ${rt.input}`}</h6>
+                                    <h6>{`출력값:  ${rt.output}`}</h6>
+                                </div>
+                            </li>
+                        );
+                    }
+                    )}
+                </ul>
+            </div>
+        </div> 
+
+    )
+}
+
+/** 제출 성적 **/
+function Final() {
+    // return (
+    //     <div className={styles.feedback}>
+    //         <h3 className={styles.section_title}>성적</h3>
+    //         <div style={{overflowY: "scroll", height:"100%"}}></div>
+    //     </div>
+    // )
     // const runValue = useSelector((state) => state.run);
     // const results = runValue.all_result;
     // // console.log(results);
@@ -61,10 +105,9 @@ function Grade() {
         },
     };
 
-
     return (
         <div className={styles.outputs}>
-            <h3 className={styles.section_title}>채점 결과</h3>
+            <h3 className={styles.section_title}>제출 결과</h3>
             <div className={styles.problem}>
                 <h3>Overall Score</h3>
                 <div style={{ width: '100%', height: '75%'}}>
@@ -178,15 +221,6 @@ function Hint() {
     // )
 }
 
-/** 제출 성적 **/
-function Final() {
-    return (
-        <div className={styles.feedback}>
-            <h3 className={styles.section_title}>성적</h3>
-            <div style={{overflowY: "scroll", height:"100%"}}></div>
-        </div>
-    )
-}
 
 /**  제출 해결 방안 **/
 function Solutions(props) {
@@ -266,7 +300,7 @@ export default function RightSideBar({ mode, solutions }) {
                 <Run/>
                 : mode === 2 ?
                 <>
-                <Grade/>
+                <Final/>
                 </>
                 : mode === 3 ?
                 <Validation />

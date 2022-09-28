@@ -27,7 +27,14 @@ const ThisWeekList = ({lecture_id}) => {
                 <div className={assignmentStyles["assignment-item"]} key={assignment._id}>
                     <div className={assignmentStyles["assignment-item-title"]}>{assignment.title}</div>
                     <div className={assignmentStyles["assignment-item-date"]}>{(assignment.closing_at).split('T')[0].replace(/-/g, '.')}</div>
-                    <div className={assignmentStyles["assignment-item-btn"]}>제출하기</div>
+                    <div className={assignmentStyles["assignment-item-date"]}>{assignment.closing_at}</div>
+                    <Link as={`"/assignment/${assignment._id}`}
+                        href={{
+                            pathname: "/assignment/[id]",
+                            query: { data: JSON.stringify(assignment._id) },
+                        }}>
+                        <div className={assignmentStyles["assignment-item-btn"]}>제출하기</div>
+                    </Link>
                 </div>
             ))}
         </div>

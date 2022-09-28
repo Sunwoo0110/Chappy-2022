@@ -38,3 +38,21 @@
     height: 20px;
     filter: opacity(0.4) drop-shadow(0 0 0  #414E5A); 
 }
+
+.lineDeco {
+    /* color: red !important; */
+    background-color: #FF818140;
+	/* cursor: pointer;
+	text-decoration: underline;
+	font-weight: bold;
+	font-style: oblique; */
+}
+
+.glyphDeco {
+    /* color: red !important; */
+    background-color: #DFFFE2;
+	/* cursor: pointer;
+	text-decoration: underline;
+	font-weight: bold;
+	font-style: oblique; */
+}
