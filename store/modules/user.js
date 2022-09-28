@@ -18,7 +18,7 @@ export default function reducer(state=initialState, action){
         case SET_USER:
             return {...state, id: action.payload.id}
 
-            default:
+        default:
             return state;
     }
 }
