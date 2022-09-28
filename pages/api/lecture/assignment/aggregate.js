@@ -11,7 +11,6 @@ export default async function handler(req, res) {
         case 'POST':
             try {
                 const assignments = await Assignment.aggregate(req.body.pipeline);
-                
                 res.status(200).json({ success: true, data: assignments });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
