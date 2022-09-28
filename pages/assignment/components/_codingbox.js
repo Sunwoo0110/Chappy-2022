@@ -1,5 +1,5 @@
 import Editor, { DiffEditor,  useMonaco } from "@monaco-editor/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "../../../styles/assignment/_codingbox.module.css"
@@ -7,21 +7,20 @@ import styles from "../../../styles/assignment/_codingbox.module.css"
 import * as validationActions from "../../../store/modules/validation";
 
 export default function CodingBox({ assignment, onClickCheckPoint }) {
-    const editorRef = useRef(null)
+    const editorRef = useRef(null);
     const [submit, setSubmit] = useState(false);
 
     const baseCode = assignment?.reference_code
-    // console.log(assignment);
-    // console.log(baseCode);
 
     const validation = useSelector((state) => state.validation);
+
     const [code, setCode] = useState(baseCode);
+    const [deco, setDeco] = useState([]);
+    const [vars, setVars] = useState({});
+    const [viewZoneId, setViewZoneId] = useState("");
+    const { editor, monaco } = vars;
 
     const dispatch = useDispatch();
-
-    function handleEditorDidMount(editor, monaco) {
-        editorRef.current = editor
-    }
 
     function handleEditorValidation(markers) {
         markers.forEach(marker => console.log("onValidate:", marker.message))
@@ -31,11 +30,22 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
         setCode(value);
     }
 
+    const handleEditorDidMount = (editor, monaco) => {
+        editorRef.current = editor
+        // console.log("editor" + editorRef.current);
+        // console.log(validation.click)
+        setVars({ editor, monaco });
+        
+    }
+
     function checkPoint(action) {
-        if (editorRef.current === null) return
+        // if (editorRef.current === null) {
+        //     console.log(editorRef.current)
+        //     return
+        // }
         // const code = editorRef.current.getValue()
-        const code = editorRef.current.getValue();
-        onClickCheckPoint(code, action)
+        onClickCheckPoint(code, action);
+        // console.log("action")
     }
     
     function openFile() {
@@ -61,19 +71,65 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
         reader.readAsText(file);
     }
 
+    useEffect(() => {
+        if (!editor || !monaco) {
+            return;
+        }
+        const deco = editor.deltaDecorations(
+            [],
+            validation.deco
+        );
+        setDeco(deco);
+
+        var id = null;
+
+        editor.changeViewZones(function (changeAccessor) {
+            var domNode = document.createElement('div');
+            domNode.style.background = '#DFFFE2';
+            domNode.innerHTML = 'Fix box to be correct:\n' + "<br>" + '&nbsp;&nbsp;&nbsp' + 'elif a == 1 and b == 2 and XXX and (d == 4) and (e == 5):\n' + 
+            "<br>" + 'Traces: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 11 -> 13 -> 14';
+            domNode.style.fontSize = '12px'
+
+            id = changeAccessor.addZone({
+                afterLineNumber: 2,
+                heightInLines: 3,
+                domNode: domNode
+            });
+
+            setViewZoneId(id);
+            console.log("add" + id)
+            console.log("add" + viewZoneId)
+
+        });
+
+        return () => {
+            editor.deltaDecorations(deco, []);
+            editor.changeViewZones(function (changeAccessor) {
+                // console.log(viewZoneId)
+                changeAccessor.removeZone(viewZoneId)
+            });
+        }
+    }, [validation.click]);
+
     return (
         <div className={styles.codingbox}>
             <div>
                 {
                     validation.click === true ? 
                     <div style={{display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: "space-between"}}>
-                        <div className={styles.section_title}>코드 입력</div>
-                        <button type="button" style={{backgroundColor: "#FFD600", height: "100%", fontSize: "10px", color: "white", border: "none", marginRight: "10px"}} class="btn btn-warning" onClick={() => {
-                            // checkPoint('hintAll')
-                            dispatch(validationActions.setVal({num: 0, click: false}));
-                        }}>힌트 모두 적용</button>
                         {checkPoint('hint')}
-                    </div>   
+                        <div className={styles.section_title}>코드 입력</div>
+                        <button type="button" style={{backgroundColor: "#FFD600", height: "100%", fontSize: "10px", color: "white", border: "none", marginRight: "10px"}} class="btn btn-warning" 
+                        onClick={() => {
+                            dispatch(validationActions.setVal({num: 0, click: false}));
+                            dispatch(validationActions.setDeco({deco: []}));
+
+                            editor.changeViewZones(function (changeAccessor) {
+                                console.log("remove" + viewZoneId)
+                                changeAccessor.removeZone(viewZoneId)
+                            });
+                        }}>힌트 모두 적용</button>
+                    </div>
                     : 
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                         <div className={styles.section_title}>코드 입력</div>
@@ -82,16 +138,6 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
             </div>
             <div className={styles.border}>
                 {
-                    validation.click === true ?
-                    <DiffEditor
-                        original={code}
-                        modified={baseCode}
-                        language="python"
-                        options={{
-                            enableSplitViewResizing: false,
-                            renderSideBySide: false
-                        }}/>
-                    :
                     <Editor
                         language="python"
                         onValidate={handleEditorValidation}
@@ -104,7 +150,8 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
                                 enabled: false,
                             },
                             fontSize: 12,
-
+                            glyphMargin: true,
+                            contextmenu: false
                         }} />
                 } 
             </div>

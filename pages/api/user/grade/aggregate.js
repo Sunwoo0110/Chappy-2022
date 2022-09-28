@@ -1,6 +1,5 @@
 import dbConnect from "../../../../lib/dbConnect"
-import Assignment from "../../../../models/lecture/Assignment"
-import qs from "qs";
+import Grade from "../../../../models/user/Grade"
 
 export default async function handler(req, res) {
     const { method } = req;
@@ -10,8 +9,9 @@ export default async function handler(req, res) {
     switch (method) {
         case 'POST':
             try {
-                const assignments = await Assignment.aggregate(req.body.pipeline);
-                res.status(200).json({ success: true, data: assignments });
+                const grades = await Grade.aggregate(req.body.pipeline);
+                
+                res.status(200).json({ success: true, data: grades });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
             }

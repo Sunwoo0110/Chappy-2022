@@ -10,6 +10,7 @@ import feedback from "./feedback";
 import run from "./run";
 import validation from "./validation";
 import user from "./user";
+import week from "./week"
 
 const rootReducer = combineReducers({
     counter,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     run,
     validation,
     user,
+    week,
 });
 
 const reducer = (state, action) => {
@@ -33,7 +35,7 @@ const reducer = (state, action) => {
 
 const persistConfig = {
     key: 'root',
-    // whitelist: ['user'], // only counter will be persisted, add other reducers if needed
+    whitelist: ['user'], // only counter will be persisted, add other reducers if needed
     storage, // if needed, use a safer storage
   };
 

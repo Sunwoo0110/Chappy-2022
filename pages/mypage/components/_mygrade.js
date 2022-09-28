@@ -17,10 +17,15 @@ const fetcher = (url) => {
 }
 
 function Grade({setMode, mode}){
+    const semester = "2022년 1학기"
     const user = useSelector(state => state.user);
     const user_id = user.id;
-    const semester = "2022년 1학기"
-    let d;
+    const { data, error } = useSWR(`/api/aggregation/mypage/mygrade?user_id=${user_id}&semester=${semester}`, fetcher)
+
+    if (error) return <div>Getting Lectures Failed</div>
+    if (!data) return <div>Loading...</div>
+
+    // console.log("data.data: ",data.data)
 
     const toMode1 = async () => {
         setMode(1);

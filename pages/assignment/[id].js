@@ -51,9 +51,10 @@ async function get_assignment(assignmentId) {
     return (await res.json()).data;
 }
 
-export default function CodingPage() {
+export default function CodingPage(props) {
     const router = useRouter();
     const dispatch = useDispatch();
+    // const assignment_id = props.params.id;
 
     const [assignment, setAssignment] = useState(JSON.parse(router.query?.data));
     const [example, setExample] = useState(
@@ -126,7 +127,7 @@ export default function CodingPage() {
             setMode(3);
             // setHint(code);
             setRun(code);
-            console.log("validation")
+            // console.log("validation")
 
         } else {
 

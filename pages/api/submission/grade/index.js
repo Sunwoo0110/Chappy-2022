@@ -1,5 +1,5 @@
 import dbConnect from "../../../../lib/dbConnect"
-import Assignment from "../../../../models/lecture/Assignment"
+import Grade from "../../../../models/submission/Grade"
 import qs from "qs";
 
 export default async function handler(req, res) {
@@ -8,11 +8,13 @@ export default async function handler(req, res) {
     await dbConnect();
 
     switch (method) {
-        case 'POST':
+        case 'GET':
             try {
-                const assignments = await Assignment.aggregate(req.body.pipeline);
-                res.status(200).json({ success: true, data: assignments });
+                let query = qs.parse(req.query);
+                const grades = await Grade.find(query);
+                res.status(200).json({ success: true, data: grades });
             } catch (error) {
+                console.log("error: ",error)
                 res.status(400).json({ success: false, error: error });
             }
             break;

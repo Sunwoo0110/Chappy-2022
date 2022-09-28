@@ -14,26 +14,65 @@ const fetcher = async (url, queryParams='') => {
         })
 }
 
-const date = moment('00:00:00','HH:mm:ss');
-const todayDate = date.toISOString();
-const tomorrow = date.add(1, 'days');
+const postFetcher = async (url, bodyData={}) => {
+    if (typeof url != 'string')
+        return { data: [] }
+    return await axios({
+        method: 'post',
+        url: url,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: bodyData,
+    }).then((res) => {
+        return res.data
+    })
+}
+
+// const date = moment('00:00:00','HH:mm:ss');
+// const date = moment().format();
+const curDateTime = moment().toISOString();
+const todayDate = moment().hours('00').minutes('00').seconds('00');
+const tomorrow = moment().add(1, 'days').hours('00').minutes('00').seconds('00');
 const tomorrowDate = tomorrow.toISOString();
 
 const TodayExamList = ({lecture_id}) => {
-    const paramData = {
-        lecture_id: lecture_id,
-        type: 1,
-        temp: false,
-        close_at: {
-            $gte: todayDate,
-            $lte: tomorrowDate,
-        },
+    const bodyData = {
+        pipeline: [
+            {
+                $match: {
+                    $expr: {
+                        $and: [
+                            {
+                                $eq: [
+                                    '$lecture_id' , 
+                                    { $toObjectId: lecture_id } 
+                                ]
+                            },
+                            {
+                                $gte: [
+                                    '$open_at',
+                                    { $toDate: todayDate }
+                                ]
+                            },
+                            {
+                                $gte: [
+                                    '$closing_at',
+                                    { $toDate: curDateTime }
+                                ]
+                            },
+                        ],
+                    },
+                    type: 1,
+                }
+            },
+        ]
     };
-    const { data, error } = useSWR([`/api/lecture/assignment`, paramData], fetcher)
+    const { data, error } = useSWR([`/api/lecture/assignment/aggregate`, bodyData], postFetcher)
 
     if (error) return <div>Getting Today Exams Failed</div>
     if (!data) return <div>Loading...</div>
-    if (data==null || data==undefined) 
+    if (data==null || data.data.length==0) 
         return <div className={examStyles["exam-today"]}>
                 <div className={examStyles["exam-today-none"]}>
                     오늘은 예정된 시험이 없습니다
@@ -52,16 +91,42 @@ const TodayExamList = ({lecture_id}) => {
 }
 
 const ScheduledExamList = ({lecture_id}) => {
-    const paramData = {
-        lecture_id: lecture_id,
-        type: 1,
-        temp: false,
-        close_at: {$gte: todayDate},
-    };
-    const { data, error } = useSWR([`/api/lecture/assignment`, paramData], (url) => fetcher(url, paramData))
+    const bodyData = {
+        pipeline: [
+            {
+                $match: {
+                    $expr: {
+                        $and: [
+                            {
+                                $eq: [
+                                    '$lecture_id' , 
+                                    { $toObjectId: lecture_id } 
+                                ]
+                            },
+                            {
+                                $gte: [
+                                    '$open_at',
+                                    { $toDate: tomorrowDate }
+                                ]
+                            },
 
+                        ],
+                    },
+                    type: 1,
+                }
+            },
+        ]
+    };
+    const { data, error } = useSWR([`/api/lecture/assignment/aggregate`, bodyData], postFetcher)
+    console.log(error)
     if (error) return <div>Getting Scheduled Exams Failed</div>
-    if (!data) return <div>예정된 시험이 없습니다.</div>
+    if (!data) return <div>Loading...</div>
+    if (data==null || data.data.length==0) 
+        return <div className={examStyles["exam-today"]}>
+                <div className={examStyles["exam-today-none"]}>
+                    예정된 시험이 없습니다.
+                </div>
+            </div>
 
     return(
         <div>

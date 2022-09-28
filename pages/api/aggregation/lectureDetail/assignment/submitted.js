@@ -6,40 +6,94 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
-                const submissions = await axios.get('/api/submission/submission', {
-                    params: {
-                        lecture_id: req.query.lecture_id,
-                        user_id: req.query.user_id,
-                        type:0,
-                        submission_state:1,
-                    }
-                });
-
-                const submissions_ref_ids = await Promise.all(submissions.data.data.map( async (submission) => {
-                    return submission.ref_id;
-                }))
-
-                const assignments = await axios.get('/api/lecture/assignment', {
-                    params: {
-                        _id: {$in: submissions_ref_ids}
-                        // $addFields : { "__order" : { "$indexOfArray" : [ submissions_ref_ids, "$id" ] } },
-                        // $sort: { "__order" : 1 }, 
-                    }    
+                let submissionBody = {
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        {
+                                            $eq: [
+                                                '$lecture_id' , 
+                                                { $toObjectId: req.query.lecture_id } 
+                                            ] 
+                                        },
+                                        {
+                                            $eq: [
+                                                '$user_id',
+                                                { $toObjectId: req.query.user_id}
+                                            ]
+                                        }
+                                    ]
+                                },
+                                type: 0,
+                                submission_state: 1,
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: 0,
+                                ref_id: 1,
+                            }
+                        },
+                    ]
+                }
+                const submissions = await axios({
+                    method: 'post',
+                    url: '/api/submission/submission/aggregate',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: submissionBody
                 })
 
-                let submittedAssignments = [];
-                for(let i=0; i<submissions_ref_ids.length; i++){
-                    let submittedAssignment = {};
-                    submittedAssignment["submission"] = submissions.data.data[i];
-                    submittedAssignment["assignment"] = assignments.data.data[i];
-                    submittedAssignments.push(submittedAssignment);                    
+                const submissionRefIds = await Promise.all(submissions.data.data.map( async (submission)=>{
+                    return submission.ref_id;
+                }));
+
+                let assignmentBody = {
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $in: [
+                                        '$_id', 
+                                        { 
+                                            $map: {
+                                                input: submissionRefIds,
+                                                in: { $toObjectId: '$$this' }
+                                            } 
+                                        }
+                                    ]
+                                },                                            
+                                is_opened: true,
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: 1,
+                                title: 1,
+                            }
+                        },
+                        {
+                            $sort: {
+                                open_at: -1
+                            }
+                        },
+                    ]
                 }
+                const assignments = await axios({
+                    method: 'post',
+                    url: '/api/lecture/assignment/aggregate',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: assignmentBody
+                });
 
-                res.status(200).json({success: true, data: submittedAssignments});
+                res.status(200).json({success: true, data: assignments.data.data});
 
-            } catch (error) {
-                if(error.name=="CastError")
-                    res.status(200).json({success: true, data: -1})            
+            } catch (error) {     
                 res.status(400).json({success: false, error: error})
             }
             break
