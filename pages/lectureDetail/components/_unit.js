@@ -68,10 +68,10 @@ const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
                                         <AiFillCheckCircle className={unitStyles["unit-item-dropdown-btn-icon"]}/>
                                         <div className={unitStyles["unit-item-dropdown-btn-title"]}>과제</div>
                                     </div>
-                                    <div className={unitStyles["unit-item-dropdown-btn"]}>
+                                    {/* <div className={unitStyles["unit-item-dropdown-btn"]}>
                                         <RiDraftLine className={unitStyles["unit-item-dropdown-btn-icon"]}/>
                                         <div className={unitStyles["unit-item-dropdown-btn-title"]}>프로그래밍 실습</div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             }
                         </div>

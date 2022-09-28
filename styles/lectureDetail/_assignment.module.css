@@ -27,7 +27,7 @@
     line-height: 100%;
     text-align: start;    
     color: #4C4C4C;
-    width: 78%;
+    width: 73%;
 }
 
 .assignment-item-date {
@@ -35,7 +35,7 @@
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
-    line-height: 22px;
+    line-height: 100%;
     color: rgba(76, 76, 76, 0.5);
     width: 11%;
 }

@@ -53,8 +53,6 @@ const TaskList = ({lecture_id}) => {
     if (!data) return <div>Loading...</div>
     if (data.data==-1) return <div>Task Not Existing</div>
 
-    console.log(data);
-
     return(
         <div>
             {data.data.map((task) => (
