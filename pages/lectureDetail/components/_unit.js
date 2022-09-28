@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr"
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import unitStyles from "../../../styles/lectureDetail/_unit.module.css";
@@ -7,6 +7,7 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { RiBookletFill, RiDraftLine } from "react-icons/ri"
 import { useSelector, useDispatch } from 'react-redux';
 import axios from "../../../lib/api";
+import * as weekActions from "../../../store/modules/week"
 
 const fetcher = async (url, queryParams='') => {
     if (typeof url != 'string')
@@ -18,8 +19,25 @@ const fetcher = async (url, queryParams='') => {
 }
 
 const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
+    const dispatch = useDispatch();
     const user = useSelector(state => state.user);
     const user_id = user.id;
+
+    const selectedWeek = useSelector(state => state.week);
+    const learningWeek = selectedWeek.learning;
+    const assignmentWeek = selectedWeek.assignment;
+    const setLearningWeek = useCallback( (week) => {
+        let payload = {
+            learning: week,
+        };
+        dispatch(weekActions.setLearning(payload));
+    }, [dispatch]);
+    const setAssignmentWeek = useCallback( (week) => {
+        let payload = {
+            assignment: week,
+        };
+        dispatch(weekActions.setAssignment(payload));
+    }, [dispatch]);
 
     const paramData = {
         lecture_id: lecture_id,
@@ -45,6 +63,13 @@ const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
 
     const handleLearningClickEvent = (target) => {
         setMode(2);
+        setLearningWeek(target);
+        window.scrollTo({top:0, left:0, behavior:'auto'});
+    }
+
+    const handleAssignemntClickEvent = (target) => {
+        setMode(3);
+        setAssignmentWeek(target);
         window.scrollTo({top:0, left:0, behavior:'auto'});
     }
 
@@ -64,7 +89,7 @@ const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
                                         <RiBookletFill className={unitStyles["unit-item-dropdown-btn-icon"]}/>
                                         <div className={unitStyles["unit-item-dropdown-btn-title"]}>학습</div>
                                     </div>
-                                    <div className={unitStyles["unit-item-dropdown-btn"]}>
+                                    <div className={unitStyles["unit-item-dropdown-btn"]} onClick={() => handleAssignemntClickEvent(unit)}>
                                         <AiFillCheckCircle className={unitStyles["unit-item-dropdown-btn-icon"]}/>
                                         <div className={unitStyles["unit-item-dropdown-btn-title"]}>과제</div>
                                     </div>

@@ -22,11 +22,11 @@ export function getServerSideProps({ params }) {
 }
 
 export default function LectureDetailIDPage(props) {
+    const lecture_id = props.params.id;
+    const user_id = useSelector(state => state.user);
+
     const [mode, setMode] = useState(0);    
     const [dropdown, setDropdown] = useState([]);
-    const lecture_id = props.params.id;
-
-    const user_id = useSelector(state => state.user);
 
     return(
         <div className={styles.container}>
