@@ -11,6 +11,7 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
     const [submit, setSubmit] = useState(false);
 
     const baseCode = assignment?.reference_code
+    // const baseCode = assignment?.base_code
 
     const validation = useSelector((state) => state.validation);
 
@@ -27,6 +28,7 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
     }
 
     function handleEditorChange(value, event) {
+        console.log('edits');
         setCode(value);
     }
 
@@ -71,7 +73,7 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
         reader.readAsText(file);
     }
 
-    useEffect(() => {
+    /* useEffect(() => {
         if (!editor || !monaco) {
             return;
         }
@@ -109,7 +111,7 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
                 changeAccessor.removeZone(viewZoneId)
             });
         }
-    }, [validation.click]);
+    }, [validation.click]); */
 
     return (
         <div className={styles.codingbox}>
@@ -117,9 +119,9 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
                 {
                     validation.click === true ? 
                     <div style={{display: "flex", flexDirection: "row", alignItems: 'center', justifyContent: "space-between"}}>
-                        {checkPoint('hint')}
+                        {/* {checkPoint('hint')} */}
                         <div className={styles.section_title}>코드 입력</div>
-                        <button type="button" style={{backgroundColor: "#FFD600", height: "100%", fontSize: "10px", color: "white", border: "none", marginRight: "10px"}} class="btn btn-warning" 
+                        <button type="button" style={{backgroundColor: "#FFD600", height: "100%", fontSize: "10px", color: "white", border: "none", marginRight: "10px"}} className="btn btn-warning" 
                         onClick={() => {
                             dispatch(validationActions.setVal({num: 0, click: false}));
                             dispatch(validationActions.setDeco({deco: []}));
@@ -172,9 +174,9 @@ export default function CodingBox({ assignment, onClickCheckPoint }) {
                             </button>
                         </div>
                         <div>
-                            <button type="button" style={{backgroundColor: "#414E5A", fontSize: "12px"}} class="btn btn-secondary" onClick={() => checkPoint('run')}>실행</button>
-                            <button type="button" style={{marginLeft: "5px", backgroundColor: "#414E5A", fontSize: "12px"}} class="btn btn-secondary" onClick={() => checkPoint('test')}>채점</button>
-                            <button type="button" style={{marginLeft: "10px", backgroundColor: "#0B51FF", fontSize: "12px"}} class="btn btn-primary" onClick={() => {
+                            <button type="button" style={{backgroundColor: "#414E5A", fontSize: "12px"}} className="btn btn-secondary" onClick={() => checkPoint('run')}>실행</button>
+                            <button type="button" style={{marginLeft: "5px", backgroundColor: "#414E5A", fontSize: "12px"}} className="btn btn-secondary" onClick={() => checkPoint('test')}>채점</button>
+                            <button type="button" style={{marginLeft: "10px", backgroundColor: "#0B51FF", fontSize: "12px"}} className="btn btn-primary" onClick={() => {
                                 checkPoint('submit')
                                 setSubmit(true);
                             }}>제출</button>

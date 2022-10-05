@@ -1,7 +1,18 @@
 import styles from "../../../styles/assignment/_sidebar.module.css"
 import { useSelector, useDispatch } from 'react-redux';
+import useSWR, { useSWRConfig } from "swr"
 
 import * as validationActions from "../../../store/modules/validation";
+
+
+const fetcher = (url) => {
+    // console.log('URL:', url, typeof url)
+    if (typeof url != 'string') return { data: [] }
+    return fetch(url).then((res) => {
+        // console.log(res)
+        return res.json()
+    })
+}
 
 export default function LeftSideBar({ assignment, example }) {
 
@@ -25,7 +36,11 @@ export default function LeftSideBar({ assignment, example }) {
     function Example(props) {
     
         const dispatch = useDispatch();
-        const examples = props.data
+        const { data, error } = useSWR(`/api/assignment/testcases?assignmentId=${assignment._id}`, fetcher);
+        if (error) return <div>Getting TestSuite Failed</div>
+        if (!data) return <div>Loading...</div>
+        if (data.data[0]==undefined) return <div>TestSuite Not Existing</div>
+        const examples = data.data;
     
         return (
             <div className={styles.testcase}>
@@ -39,8 +54,9 @@ export default function LeftSideBar({ assignment, example }) {
                                 <div className={styles.example_title}>
                                     {`테스트케이스 - ${examples.indexOf(ex)+1}`}
                                     <button type="button" className={styles.val_button}  onClick={() => {
+                                        console.log(`TC#${examples.indexOf(ex)} selected`);
                                         dispatch(validationActions.setVal({num: examples.indexOf(ex), click: true}));
-                                        dispatch(validationActions.setDeco({deco: [
+                                        /* dispatch(validationActions.setDeco({deco: [
                                             {
                                                 range: new monaco.Range(2, 1, 2, 1),
                                                 options: {
@@ -51,19 +67,20 @@ export default function LeftSideBar({ assignment, example }) {
 
                                                 }
                                             }
-                                        ]}))
+                                        ]})) */
                                     }}>검증</button>
-                                    <button className={styles.val_button} type="button"
-                                    onClick={() => navigator.clipboard.writeText(`main(${ex.inputs})`)}>Copy</button>
+                                    <button className={styles.val_button}></button>
+                                    {/* <button className={styles.val_button} type="button"
+                                    onClick={() => navigator.clipboard.writeText(`main(${ex.input})`)}>Copy</button> */}
                                 </div>
                                 <div className={styles.example_content}>
                                     <div className={styles.testcase_content}>
                                         <div style={{padding: "5px"}}>{`Input: `}</div>
-                                        <div style={{padding: "5px"}}>{`main({${ex.inputs}})`}</div>
+                                        <div style={{padding: "5px"}}>{`${ex.input}`}</div>
                                     </div>
                                     <div className={styles.testcase_content}>
                                         <div style={{padding: "5px"}}>{`Output: `}</div>
-                                        <div style={{padding: "5px"}}>{`main({${ex.expected_output}})`}</div>
+                                        <div style={{padding: "5px"}}>{`${ex.output}`}</div>
                                     </div>
                                     {/* <button style={{marginLeft:"15px"}}type="button" class="btn btn-outline-primary" 
                                     onClick={() => navigator.clipboard.writeText(`main(${ex.inputs})`)}>Copy</button> */}

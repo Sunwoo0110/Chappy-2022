@@ -25,10 +25,10 @@ function Run() {
 
 /**  검증 결과 **/
 function Validation() {
-
     const runValue = useSelector((state) => state.run);
+    const validation = useSelector((state) => state.validation);
     // console.log(runValue.result);
-
+    validation.click = false;
     return (
         <div className={styles.feedback}>
             <h3 className={styles.section_title}>검증 결과</h3>
@@ -37,6 +37,7 @@ function Validation() {
                 {`Your Output: ${runValue.result}`}
             </p>
             </div>
+            <Hint/>
         </div>
     )
 }
@@ -47,6 +48,7 @@ function Grade() {
     const runValue = useSelector((state) => state.run);
     const results = runValue.all_result;
     // console.log(results);
+    if (results == undefined) return <p>채점중이에요~</p>
     const user = "백우정"; // 추후에 redux 로 user 관리
 
     var result = "Wrong";
@@ -189,36 +191,36 @@ function Final() {
 
 /** 제출 힌트 **/
 function Hint() {
-    // const hintVal = useSelector(state => state.hint);
+    const hintVal = useSelector(state => state.hint);
+    // console.log(hintVal)
+    return (
+        //힌트 개수 쓰려면 아래 값 고고
+        // {hintVal.num}
 
-    // return (
-    //     //힌트 개수 쓰려면 아래 값 고고
-    //     // {hintVal.num}
+        <div className={styles.feedback}>
+            <h3 className={styles.section_title}>힌트</h3>
+            <div style={{overflowY: "scroll", height:"100%"}}>
+                {hintVal.content == null &&
+                    <div>힌트를 만들고 있습니다 :) </div>
+                }
+                {hintVal.content!=null && hintVal.content.data}
+                {/* {hintVal.num == -1 &&
+                    <div>{hintVal.content} </div>
+                }
 
-    //     <div className={styles.feedback}>
-    //         <h3 className={styles.section_title}>힌트</h3>
-    //         <div style={{overflowY: "scroll", height:"100%"}}>
-    //             {hintVal.content == null &&
-    //                 <div>Loading ... </div>
-    //             }
-
-    //             {hintVal.num == -1 &&
-    //                 <div>{hintVal.content} </div>
-    //             }
-
-    //             {hintVal.num!=-1 && hintVal.content!=null &&
-    //                 Object.keys(hintVal.content).map((line) => (
-    //                     hintVal.content[line].map((contents) => (
-    //                         Object.keys(contents).map((content) => (
-    //                             <li key={line.toString()+content.toString()}>
-    //                                 <div>line {line}</div>
-    //                                 <div>{content+" "+contents[content]}</div>
-    //                             </li>
-    //                 ))))))
-    //             }
-    //         </div>
-    //     </div>
-    // )
+                {hintVal.num!=-1 && hintVal.content!=null &&
+                    Object.keys(hintVal.content).map((line) => (
+                        hintVal.content[line].map((contents) => (
+                            Object.keys(contents).map((content) => (
+                                <li key={line.toString()+content.toString()}>
+                                    <div>line {line}</div>
+                                    <div>{content+" "+contents[content]}</div>
+                                </li>
+                    ))))))
+                } */}
+            </div>
+        </div>
+    )
 }
 
 
@@ -295,6 +297,7 @@ export default function RightSideBar({ mode, solutions }) {
                 mode === 0 ?
                 <>
                 <Grade/>
+                <Hint/>
                 </>
                 : mode === 1 ?
                 <Run/>
