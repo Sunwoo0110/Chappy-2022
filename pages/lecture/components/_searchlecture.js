@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from 'react-redux';
 import useSWR from "swr"
 
 import styles from "../../../styles/lecture/_searchlecture.module.css";
@@ -14,6 +15,8 @@ const fetcher = (url) => {
 }
 
 const Searcher = () => {
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
 
     const [title, setTitle] = useState(0);
     const [data, setData] = useState([]);
@@ -28,6 +31,7 @@ const Searcher = () => {
 
         var match={};
         match['name'] = { $regex: _name };
+        match['is_ready'] = true;
         match['is_opened'] = true;
         if(_open!==''){
             match['open_semester'] = _open;
@@ -52,7 +56,17 @@ const Searcher = () => {
         })
     }
 
-    const lectureAdder = async () => {
+    const clickHandler2 = async (lecture_id) => {
+        var data={};
+        data['user_id'] = user_id;
+        data['lecture_id'] = lecture_id;
+        await fetch(`/api/aggregation/lecture/searchlecture`, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            },
+        })
     }
 
     return (
@@ -120,7 +134,7 @@ const Searcher = () => {
                         </div>
                         <div className={styles.buttons}>
                             <button style={{fontSize: "15px", background: "#414E5A"}} class="btn btn-secondary" type="button">수업계획서</button>
-                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button" onClick={()=>lectureAdder()}>담기</button>
+                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button" onClick={()=>clickHandler2(lecture._id)}>담기</button>
                         </div>
                     </div>
                 )
