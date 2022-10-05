@@ -35,55 +35,45 @@ const Searcher = () => {
     const [data, setData] = useState([]);
 
     const clickHandler = async () => {
-
         var _open=document.getElementById('open').value;
         var _department=document.getElementById('department').value;
         var _major=document.getElementById('major').value;
         var _name=document.getElementById('name').value;
 
         document.getElementById('name').value = null; 
-        
-        // let url='/api/lecture/info/aggregate?is_ready=true&is_opened=true&'
-        // if(_open!==''){
-        //     url=url+"open_semester="+_open+"&";
-        // }
-        // if(_department!==''){
-        //     url=url+"department="+_department+"&";
-        // }
-        // if(_major!==''){
-        //     url=url+"major="+_major+"&";
-        // }
-        // if(_name!==''){
-        //     url=url+"name="+_name+"&";
-        // }
+
+        var match={};
+        match['name'] = { $regex: _name };
+        match['is_opened'] = true;
+        if(_open!==''){
+            match['open_semester'] = _open;
+        }
+        if(_department!==''){
+            match['department'] = _department;
+        }
+        if(_major!==''){
+            match['major'] = _major;
+        }
 
         const bodyData = {
             pipeline: [
                 {
-                    $match: {
-                        open_semester: _open,
-                        department:_department,
-                        major:_major,
-                        $expr: {
-                            $regex : ['$name', _name]
-                        },
-                    }
+                    $match: match
                 },
             ]
         };
-        data = useSWR([`/api/lecture/info/aggregate`, bodyData], postFetcher)
         
-
-        // await fetch(url, {
-        //     method: 'GET',
-        //     headers: {
-        //         "Content-Type": 'application/json',
-        //     },
-        // })
-        // .then(response => response.json())
-        // .then(response => {
-        //     setData(response.data);
-        // })        
+        await fetch(`/api/lecture/info/aggregate`, {
+            method: "POST",
+            body: JSON.stringify(bodyData),
+            headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            },
+        })
+        .then(response => response.json())
+        .then(response => {
+            setData(response.data);
+        })
     }
 
     return (
