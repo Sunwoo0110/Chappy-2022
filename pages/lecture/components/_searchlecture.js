@@ -13,22 +13,6 @@ const fetcher = (url) => {
     })
 }
 
-const postFetcher = async (url, bodyData={}) => {
-    if (typeof url != 'string')
-        return { data: [] }
-    return await axios({
-        method: 'post',
-        url: url,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        data: bodyData,
-    }).then((res) => {
-        return res.data
-    })
-}
-
-
 const Searcher = () => {
 
     const [title, setTitle] = useState(0);
@@ -54,18 +38,10 @@ const Searcher = () => {
         if(_major!==''){
             match['major'] = _major;
         }
-
-        const bodyData = {
-            pipeline: [
-                {
-                    $match: match
-                },
-            ]
-        };
         
         await fetch(`/api/lecture/info/aggregate`, {
             method: "POST",
-            body: JSON.stringify(bodyData),
+            body: JSON.stringify({pipeline: [{$match: match}]}),
             headers: {
             "Content-type": "application/json; charset=UTF-8",
             },
@@ -74,6 +50,9 @@ const Searcher = () => {
         .then(response => {
             setData(response.data);
         })
+    }
+
+    const lectureAdder = async () => {
     }
 
     return (
@@ -141,7 +120,7 @@ const Searcher = () => {
                         </div>
                         <div className={styles.buttons}>
                             <button style={{fontSize: "15px", background: "#414E5A"}} class="btn btn-secondary" type="button">수업계획서</button>
-                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button">담기</button>
+                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button" onClick={()=>lectureAdder()}>담기</button>
                         </div>
                     </div>
                 )

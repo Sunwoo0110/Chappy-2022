@@ -9,9 +9,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'POST':
             try {
-                console.log("req.body.pipeline: ",req.body.pipeline)
                 const info = await Info.aggregate(req.body.pipeline);
-                console.log("info: ",info)
                 res.status(200).json({ success: true, data: info });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
