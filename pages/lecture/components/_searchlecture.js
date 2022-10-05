@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useSWR from "swr"
 
 import styles from "../../../styles/lecture/_searchlecture.module.css";
 import {Search} from 'react-bootstrap-icons';
@@ -9,6 +10,21 @@ const fetcher = (url) => {
     return fetch(url).then((res) => {
         // console.log(res)
         return res.json()
+    })
+}
+
+const postFetcher = async (url, bodyData={}) => {
+    if (typeof url != 'string')
+        return { data: [] }
+    return await axios({
+        method: 'post',
+        url: url,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: bodyData,
+    }).then((res) => {
+        return res.data
     })
 }
 
@@ -27,30 +43,47 @@ const Searcher = () => {
 
         document.getElementById('name').value = null; 
         
-        let url='/api/lecture/info?is_ready=true&is_opened=true&'
-        if(_open!==''){
-            url=url+"open_semester="+_open+"&";
-        }
-        if(_department!==''){
-            url=url+"department="+_department+"&";
-        }
-        if(_major!==''){
-            url=url+"major="+_major+"&";
-        }
-        if(_name!==''){
-            url=url+"name="+_name+"&";
-        }
+        // let url='/api/lecture/info/aggregate?is_ready=true&is_opened=true&'
+        // if(_open!==''){
+        //     url=url+"open_semester="+_open+"&";
+        // }
+        // if(_department!==''){
+        //     url=url+"department="+_department+"&";
+        // }
+        // if(_major!==''){
+        //     url=url+"major="+_major+"&";
+        // }
+        // if(_name!==''){
+        //     url=url+"name="+_name+"&";
+        // }
 
-        await fetch(url, {
-            method: 'GET',
-            headers: {
-                "Content-Type": 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(response => {
-            setData(response.data);
-        })        
+        const bodyData = {
+            pipeline: [
+                {
+                    $match: {
+                        open_semester: _open,
+                        department:_department,
+                        major:_major,
+                        $expr: {
+                            $regex : ['$name', _name]
+                        },
+                    }
+                },
+            ]
+        };
+        data = useSWR([`/api/lecture/info/aggregate`, bodyData], postFetcher)
+        
+
+        // await fetch(url, {
+        //     method: 'GET',
+        //     headers: {
+        //         "Content-Type": 'application/json',
+        //     },
+        // })
+        // .then(response => response.json())
+        // .then(response => {
+        //     setData(response.data);
+        // })        
     }
 
     return (
