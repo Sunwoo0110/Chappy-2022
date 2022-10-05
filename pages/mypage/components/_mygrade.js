@@ -37,7 +37,6 @@ function Grade(){
         }
         chart = new Chart(document.getElementById("myChart"), {
             type: 'line',
-            grid: false,
             data: {
                 labels: data.data.semesters,
                 datasets: [{
@@ -48,6 +47,11 @@ function Grade(){
             },
             options: {
                 responsive: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
                 scales: {
                     x: {
                         grid: {
