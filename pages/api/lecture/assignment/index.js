@@ -11,8 +11,6 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 let query = qs.parse(req.query);
-                console.log("=================================\n", req.query);
-                console.log("=================================\n", query);
                 const assignments = await Assignment.find(query);
                 res.status(200).json({ success: true, data: assignments });
             } catch (error) {
