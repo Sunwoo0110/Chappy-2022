@@ -81,7 +81,7 @@ const LessonList = ({lecture_id}) => {
             {
                 learningWeek!=0 ?
                 <>
-                    <div className={taskStyles["task-item-btn"]} onClick={() => handleEntireClickEvent()}>전체 강의보기</div>
+                    <div className={taskStyles["whole-btn"]} onClick={() => handleEntireClickEvent()}>전체 강의보기</div>
                 </>
                     :
                     <></>
