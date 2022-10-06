@@ -20,24 +20,30 @@ export default async function handler(req, res) {
             {result: string}
     */
     case 'POST':
-      const code = req.body?.code;
-      if (!code) res.json({ output: 'There is no code to run' });
-
-      const assignmentId = new Types.ObjectId(req.body?.assignmentId);
       const testNumber = req.body?.testNumber;
+
+      const code = req.body?.code;
+      if (!code) res.status(400).json({ success: false, data: [], error: 'There is no code to run' });
+
+      let assignmentId;
+      if (req.body?.assignmentId === undefined) {
+        assignmentId = req.body?.assignmentId;
+      } else {
+        assignmentId = new Types.ObjectId(req.body?.assignmentId);
+      }
 
       if (testNumber == undefined) {
         PythonShell.runString(code, null, (error, output_lines) => {
           if (error) {
-            res.status(400).json({ success: false, data: [] })
+            console.log(error);
+            res.status(400).json({ success: false, data: [], error: "runCode:error" })
             return;
           }
-          if (output_lines == null) {
-            res.status(200).json({ result: "" });
-            return;
+          let response = {
+            result: "",
           }
-          const response = {
-            result: output_lines.join("\n"),
+          if (output_lines !== null) {
+            response.result = output_lines.join("\n");
           }
           res.status(200).json(response);
         });
@@ -70,17 +76,10 @@ export default async function handler(req, res) {
           res.status(200).json(response);
         });
       }
-
-      /* try {
-        const output = await runPython(code);
-        res.status(200).json({ result: output });
-      } catch (error) {
-        res.status(400).json({ success: false, error: error })
-      } */
       break;
 
     default:
-      res.status(400).json({ success: false, data: [] })
+      res.status(400).json({ success: false, data: [], error: "runCode:methodUnknown" })
       break
   }
 }
