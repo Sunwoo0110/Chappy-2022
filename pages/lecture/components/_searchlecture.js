@@ -151,7 +151,7 @@ const Searcher = () => {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
-                        <div className="message" id="message" className={styles.deletecheck}>담는 중..</div>
+                        <div className="message" id="message">담는 중..</div>
                         <div className={styles.buttons}>
                             <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">확인</button>
                         </div>
