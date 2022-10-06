@@ -38,17 +38,14 @@ function MyLectureList( {mode} ) {
         {
             d.data.lectures.map((lecture) => {
                 return (
-                    <Link as={`/lectureDetail/${lecture._id}`}
+                    <Link
                         href={{
                             pathname: "/lectureDetail/[id]",
-                            query: { data: JSON.stringify(lecture._id) },
+                            query: { id: lecture._id,
+                                    mode: 0 },
                         }}>
                     <div style={{marginBottom:"20px"}} class="col-6">
                     <div className={styles.lecture_bg}>
-                        <div style={{justifyContent:"space-between", marginBottom: "60px", padding:"20px"}} className={styles.lecture_icon}>
-                            <Star size="24px" color="white"/>
-                            <div className={styles.lecture_info_icon}/>
-                        </div>
                         <div className={styles.lecture}>
                             <div className={styles.lecture_name}>
                                 <div className={styles.lecture_name_1}>{lecture.name}</div>
@@ -59,7 +56,14 @@ function MyLectureList( {mode} ) {
                             <div className={styles.lecture_prof}>{lecture.professor}</div>
                             <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                             <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
-                                <MegaphoneFill size={30}/>
+                                <Link
+                                    href={{
+                                        pathname: "/lectureDetail/[id]",
+                                        query: { id: lecture._id,
+                                                mode: 1 },
+                                    }}>
+                                    <MegaphoneFill size={30}/>
+                                </Link>
                                 <CardText size={30}/>
                             </div>
                         </div>

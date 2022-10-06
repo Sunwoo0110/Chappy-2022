@@ -36,7 +36,7 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
         document.getElementById('lecture_num').value!=='' &&
         document.getElementById('lecture_date').value!=='' &&
         document.getElementById('description').value!==''){
-            await axios.post('/api/lecture/info', {
+            await axios.put('/api/lecture/info', {
                 "name": document.getElementById('name').value,
                 "english_name": document.getElementById('english_name').value,
                 "professor": data.data[0].name,
@@ -59,7 +59,10 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
             })
     
             mutate(`/api/lecture/info`);
-            console.log(document.getElementById('name').value, " added");
+            // console.log(document.getElementById('name').value, " added");
+            var checkerModal = document.getElementById('checker')
+            var modalBody = checkerModal.querySelector('#message')
+            modalBody.textContent = "\""+document.getElementById('name').value+"\" 등록 완료"
     
             document.getElementById('name').value = null; 
             document.getElementById('english_name').value = null;
@@ -68,13 +71,16 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
             document.getElementById('lecture_date').value = null;
         }
         else{
-            console.log("모든 항목이 채워져야합니다.")
+            var checkerModal = document.getElementById('checker')
+            var modalBody = checkerModal.querySelector('#message')
+            modalBody.textContent = "모든 항목이 채워져야 합니다."
+            // console.log("모든 항목이 채워져야합니다.")
         }
     }
 
     const saveLecture = async () => {
 
-        await axios.post('/api/lecture/info', {
+        await axios.put('/api/lecture/info', {
             "name": document.getElementById('name').value ,
             "english_name": document.getElementById('english_name').value,
             "professor": data.data[0].name,
@@ -97,7 +103,10 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
         })
 
         mutate(`/api/lecture/info`);
-        console.log(document.getElementById('name').value, " temp added");
+        // console.log(document.getElementById('name').value, " temp added");
+        var checkerModal = document.getElementById('checker')
+        var modalBody = checkerModal.querySelector('#message')
+        modalBody.textContent = "임시 저장 완료"
 
         document.getElementById('name').value = null; 
         document.getElementById('english_name').value = null;
@@ -198,10 +207,24 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
         </div>
 
         <div className={styles.buttons}>
-            <button style={{background: "#0B51FF", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} class="btn btn-primary" type="button" onClick={()=>registerLecture()}>등록하기</button>
-            <button style={{background: "#414E5A", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} class="btn btn-secondary" type="button" onClick={()=>saveLecture()}>임시저장</button>
+            <button style={{background: "#0B51FF", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} class="btn btn-primary" type="button" onClick={()=>registerLecture()}  data-bs-toggle="modal" data-bs-target="#checker">등록하기</button>
+            <button style={{background: "#414E5A", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} class="btn btn-secondary" type="button" onClick={()=>saveLecture()} data-bs-toggle="modal" data-bs-target="#checker">임시저장</button>
+        </div>
+
+        <div class="modal fade" id="checker" tabindex="-1" aria-labelledby="checkerLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                        <div className="message" id="message">확인 중..</div>
+                        <div className={styles.buttons}>
+                            <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div >
+    
     )
 
 }
