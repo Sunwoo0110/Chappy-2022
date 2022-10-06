@@ -67,6 +67,12 @@ const Searcher = () => {
             "Content-type": "application/json; charset=UTF-8",
             },
         })
+        .then(response => response.json())
+        .then(response => {
+            var checkerModal = document.getElementById('checker')
+            var modalBody = checkerModal.querySelector('#message')
+            modalBody.textContent = response.data
+        })
     }
 
     return (
@@ -134,12 +140,25 @@ const Searcher = () => {
                         </div>
                         <div className={styles.buttons}>
                             <button style={{fontSize: "15px", background: "#414E5A"}} class="btn btn-secondary" type="button">수업계획서</button>
-                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button" onClick={()=>clickHandler2(lecture._id)}>담기</button>
+                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button" onClick={()=>clickHandler2(lecture._id)} data-bs-toggle="modal" data-bs-target="#checker">담기</button>
+                            
                         </div>
                     </div>
                 )
             })
         }
+        <div class="modal fade" id="checker" tabindex="-1" aria-labelledby="checkerLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                        <div className="message" id="message" className={styles.deletecheck}>담는 중..</div>
+                        <div className={styles.buttons}>
+                            <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div >
     )
 

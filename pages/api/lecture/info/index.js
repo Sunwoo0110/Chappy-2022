@@ -21,7 +21,7 @@ export default async function handler(req, res) {
             }
             break;
 
-        case 'POST':
+        case 'PUT':
             try {
                 // console.log('add:', req.body);
                 // const user = await Profile.findById(query.user_id);
@@ -48,7 +48,22 @@ export default async function handler(req, res) {
                 .catch((err)=>{
                     console.log("lecture adding failed: ", err);
                 });
+
+                
                 res.status(200).json({ success: true });
+            } catch (error) {
+                res.status(400).json({ success: false, error: error })
+            }
+            break
+
+        case 'POST':
+            try {
+                console.log("***req.query._id: ", req.query._id)
+                console.log("***req.body: ", req.body)
+                await Info.findByIdAndUpdate(req.query._id, req.body);
+
+                res.status(200).json({ success: true });
+                
             } catch (error) {
                 res.status(400).json({ success: false, error: error })
             }
