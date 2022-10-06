@@ -11,6 +11,7 @@ import Menu from "../components/_menu";
 import Unit from "../components/_unit";
 import Lecture from "../components/_lecture";
 import { useSelector, useDispatch } from 'react-redux';
+import Router, { useRouter } from "next/router";
 
 export function getServerSideProps({ params }) {
     console.log("getssp", params);
@@ -24,9 +25,13 @@ export function getServerSideProps({ params }) {
 export default function LectureDetailIDPage(props) {
     const lecture_id = props.params.id;
     const user_id = useSelector(state => state.user);
+    const router = useRouter();
 
-    const [mode, setMode] = useState(0);    
+    const [mode, setMode] = useState(router.query.mode);
     const [dropdown, setDropdown] = useState([]);
+    console.log('router.query');
+    console.log(router.query);
+
 
     return(
         <div className={styles.container}>
@@ -43,15 +48,15 @@ export default function LectureDetailIDPage(props) {
                                 <>
                                 <Home lecture_id={lecture_id}/>
                                 </>
-                                : mode === 1 ?
+                                : mode == 1 ?
                                 <>
                                 <Notice lecture_id={lecture_id}/>
                                 </>
-                                : mode === 2 ?
+                                : mode == 2 ?
                                 <>
                                 <Learning lecture_id={lecture_id}/>
                                 </>
-                                : mode === 3 ?
+                                : mode == 3 ?
                                 <>
                                 <Assignment lecture_id={lecture_id}/>
                                 </>

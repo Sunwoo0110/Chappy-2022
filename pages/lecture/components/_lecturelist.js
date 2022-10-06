@@ -38,7 +38,7 @@ function MyLectureList( {mode} ) {
         {
             d.data.lectures.map((lecture) => {
                 return (
-                    <Link
+                    <Link as={`/lectureDetail/${lecture._id}`}
                         href={{
                             pathname: "/lectureDetail/[id]",
                             query: { id: lecture._id,
@@ -56,7 +56,7 @@ function MyLectureList( {mode} ) {
                             <div className={styles.lecture_prof}>{lecture.professor}</div>
                             <div className={styles.lecture_id}>{lecture.lecture_num}</div>
                             <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
-                                <Link
+                                <Link as={`/lectureDetail/${lecture._id}`}
                                     href={{
                                         pathname: "/lectureDetail/[id]",
                                         query: { id: lecture._id,
