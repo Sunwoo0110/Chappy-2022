@@ -25,7 +25,8 @@ export default async function handler(req, res) {
                         user_id: req.query.user_id,
                     }
                 });
-                console.log("grades.data.data: ", grades.data.data)
+                // console.log("req.query.user_id: ", req.query.user_id)
+                // console.log("grades.data.data: ", grades.data.data)
 
                 const lectures = await axios.get('/api/lecture/info', {
                     params: {
@@ -33,48 +34,53 @@ export default async function handler(req, res) {
                         is_ready: true, //임시저장 제외하기 위한 조건
                     }
                 });
-                console.log("lectures: ", lectures.data.data)
+                // console.log("lectures: ", lectures.data.data)
 
-                // const submissions = await axios.get('/api/submission/submission', {
-                //     params: {
-                //         ref_id: {$in: assignmentsID},
-                //         user_id: req.query.user_id,
-                //         submission_state: 1,
-                //     }
-                // });
-                // const submissionsID = await Promise.all(submissions.data.data.map( async (submission) => {
-                //     return submission._id;
-                // }))
-                // // console.log("submissionsID: ", submissionsID)
+                let x_semesters=[];
 
-                // let feedbacks=[];
-                // if(submissionsID.length!==0){
-                //     feedbacks = await axios.get('/api/submission/feedback', {
-                //         params: {
-                //             submission_id: {$in: submissionsID},
-                //         }
-                //     });
-                //     feedbacks=feedbacks.data.data;
-                // }
+                for(let lec of lectures.data.data){
+                    if(!x_semesters.includes(lec.open_semester)){
+                        x_semesters.push(lec.open_semester);
+                    }
+                }
+                x_semesters.sort();
+                // console.log("x_semesters: ", x_semesters);
 
-                // let checked_feedbacks=[];
-                // if(submissionsID.length!==0){
-                //     checked_feedbacks = await axios.get('/api/submission/feedback', {
-                //         params: {
-                //             submission_id: {$in: submissionsID},
-                //             check: true,
-                //         }
-                //     });
-                //     checked_feedbacks=checked_feedbacks.data.data;
-                // }
+                var y_grades=new Array(x_semesters.length);
+                y_grades.fill(0);
+                // console.log("y_grades: ", y_grades);
 
-                // let myfeedback = {};
-                // myfeedback["total_feedback"] = feedbacks.length;
-                // myfeedback["checked_feedback"] = checked_feedbacks.length;
-                // myfeedback["missed"] = assignmentsID.length-submissionsID.length;
+                let total_credit=0;
+                let total_grade=0;
 
-                // // console.log("myfeedback: ",myfeedback)
-                // res.status(200).json({ success: true, data: myfeedback});
+                for(let sem of x_semesters){
+                    let credit=0;
+                    for(let g of grades.data.data){
+                        let ref_lecture;
+                        for(let l of lectures.data.data){
+                            if(l._id===g.lecture_id){
+                                ref_lecture=l;
+                            }
+                        }
+                        if(ref_lecture.open_semester===sem){
+                            total_credit+=1;
+                            total_grade+=g.grade*1;
+                            credit+=1;//학점 더해주기로 수정
+                            y_grades[x_semesters.indexOf(sem)]+=g.grade*1; //학점 곱해주기로 수정
+                        }
+                    }
+                    y_grades[x_semesters.indexOf(sem)]/=credit;
+                }
+                // console.log("y_grades: ", y_grades);
+
+                let grade = {};
+                grade["total"] = total_grade/total_credit;
+                grade["this_semester"] = y_grades[x_semesters.indexOf(req.query.semester)];
+                grade["semesters"] = x_semesters;
+                grade["grades"] = y_grades;
+
+                // console.log("grade: ",grade)
+                res.status(200).json({ success: true, data: grade});
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
             }
