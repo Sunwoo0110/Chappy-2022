@@ -56,7 +56,13 @@ const SubmittedList = ({lecture_id}) => {
             {data.data.map((subAssignment) => (
                 <div className={assignmentStyles["assignment-item"]} key={subAssignment._id}>
                     <div className={assignmentStyles["assignment-item-title"]}>{subAssignment.title}</div>
-                    <div className={assignmentStyles["assignment-item-btn"]}>다운로드</div>
+                    <Link as={`/assignment/${subAssignment._id}`}
+                        href={{
+                            pathname: "/assignment/[id]",
+                            query: { data: JSON.stringify(subAssignment._id) },
+                        }}>
+                        <div className={assignmentStyles["assignment-item-btn"]}>제출확인</div>
+                    </Link>
                 </div>
             ))}
         </div>

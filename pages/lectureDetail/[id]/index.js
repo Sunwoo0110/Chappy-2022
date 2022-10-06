@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import styles from "../../styles/lectureDetail/LectureDetail.module.css";
-import Home from "./components/_home";
-import Learning from "./components/_learning";
-import Notice from "./components/_notice";
-import Assignment from "./components/_assignment";
-import Exam from "./components/_exam";
-import Header from "../components/_header";
-import Footer from "../components/_footer";
-import Menu from "./components/_menu";
-import Unit from "./components/_unit";
-import Lecture from "./components/_lecture";
+import styles from "../../../styles/lectureDetail/LectureDetail.module.css";
+import Home from "../components/_home";
+import Learning from "../components/_learning";
+import Notice from "../components/_notice";
+import Assignment from "../components/_assignment";
+import Exam from "../components/_exam";
+import Header from "../../components/_header";
+import Footer from "../../components/_footer";
+import Menu from "../components/_menu";
+import Unit from "../components/_unit";
+import Lecture from "../components/_lecture";
 import { useSelector, useDispatch } from 'react-redux';
 
 export function getServerSideProps({ params }) {
