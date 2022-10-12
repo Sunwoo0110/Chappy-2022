@@ -18,10 +18,10 @@ const Adder = ({ lecture_id }) => {
 
     const user = useSelector(state => state.user);
     const user_id = user.id;
-    const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
+    // const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
 
-    if (error) return <div>Getting User Info Failed</div>
-    if (!data) return <div>Loading...</div>
+    // if (error) return <div>Getting User Info Failed</div>
+    // if (!data) return <div>Loading...</div>
 
     const registerLecture = async () => {
 
