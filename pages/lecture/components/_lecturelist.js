@@ -64,7 +64,14 @@ function MyLectureList( {mode} ) {
                                     }}>
                                     <MegaphoneFill size={30}/>
                                 </Link>
-                                <CardText size={30}/>
+                                <Link as={`/lectureDetail/${lecture._id}`}
+                                    href={{
+                                        pathname: "/lectureDetail/[id]",
+                                        query: { id: lecture._id,
+                                                mode: 3 },
+                                    }}>
+                                    <CardText size={30}/>
+                                </Link>
                             </div>
                         </div>
                     </div>
