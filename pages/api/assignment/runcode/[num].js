@@ -27,7 +27,9 @@ export default async function handler(req, res) {
                 if (!code) res.json({ output: 'running code failed' });
 
                 const testcase = await TestCase.findOne({testnumber: req.query.num});
-                // console.log(testcase)
+                console.log('testcase at runcode/[num].py')
+                console.log(req.query.num)
+                console.log(testcase)
                 var result = [];
                 var check = 0;
                 for (var i = 0; i < testcase.input.length; ++i) {

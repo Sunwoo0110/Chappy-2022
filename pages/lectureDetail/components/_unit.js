@@ -8,6 +8,7 @@ import { RiBookletFill, RiDraftLine } from "react-icons/ri"
 import { useSelector, useDispatch } from 'react-redux';
 import axios from "../../../lib/api";
 import * as weekActions from "../../../store/modules/week"
+import { useRouter } from "next/router";
 
 const fetcher = async (url, queryParams='') => {
     if (typeof url != 'string')
@@ -19,6 +20,7 @@ const fetcher = async (url, queryParams='') => {
 }
 
 const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
+    const router = useRouter();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
     const user_id = user.id;
@@ -71,6 +73,12 @@ const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
         setMode(3);
         setAssignmentWeek(target);
         window.scrollTo({top:0, left:0, behavior:'auto'});
+        console.log('target');
+        console.log(target);
+        // const assignmentId = target
+        // router.push(`/assignment/${assignmentId}`)
+        router.push(`/assignment/6300f814d273cf05e1cc975d`);
+        
     }
 
     return (

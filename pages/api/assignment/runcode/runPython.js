@@ -1,6 +1,6 @@
  /* 파이썬 파일 생성 및 실행 */
 import { spawn } from 'child_process';
-import { promises as fs } from 'fs';
+import { promises as fs, existsSync} from 'fs';
 import path from 'path';
 
 const runPython = async (code) => {
@@ -8,7 +8,9 @@ const runPython = async (code) => {
     const codePath = codeDirectory + '/source.py';
 
     // console.log("code: "+code);
-    
+    if (!existsSync(codeDirectory)) {
+        await fs.mkdir(codeDirectory);
+    }
     await fs.writeFile(codePath, code, 'utf8');
 
     let result;
