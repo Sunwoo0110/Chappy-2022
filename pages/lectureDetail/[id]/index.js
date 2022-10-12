@@ -29,9 +29,10 @@ export default function LectureDetailIDPage(props) {
 
     const [mode, setMode] = useState(router.query.mode);
     const [dropdown, setDropdown] = useState([]);
-    console.log('router.query');
-    console.log(router.query);
-
+    useEffect(() => {
+        if (router.query.mode===undefined)
+            setMode(0);
+    }, [router.query.mode]);
 
     return(
         <div className={styles.container}>
