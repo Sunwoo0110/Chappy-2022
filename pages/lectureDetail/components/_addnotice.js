@@ -2,8 +2,8 @@ import { useState } from "react";
 import useSWR, { useSWRConfig } from "swr"
 import axios from "axios";
 import { useSelector } from 'react-redux';
-
 import styles from "../../../styles/lecture/_addlecture.module.css";
+import moment from 'moment';
 
 const fetcher = (url) => {
     if (typeof url != 'string') return { data: [] }
@@ -12,7 +12,7 @@ const fetcher = (url) => {
     })
 }
 
-const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
+const Adder = ({ lecture_id }) => {
 
     const { mutate } = useSWRConfig();
 
@@ -25,103 +25,45 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
 
     const registerLecture = async () => {
 
-        if(document.getElementById('name').value!=='' &&
-        document.getElementById('english_name').value!=='' &&
-        document.getElementById('lecture_num').value!=='' &&
-        document.getElementById('lecture_date').value!=='' &&
+        if(document.getElementById('title').value!=='' &&
+        document.getElementById('notice_type').value!=='' &&
         document.getElementById('description').value!==''){
-            await axios.post('/api/lecture/info', {
-                "name": document.getElementById('name').value,
-                "english_name": document.getElementById('english_name').value,
-                "professor": data.data[0].name,
-                "lecture_num": document.getElementById('lecture_num').value,
-                "open_semester": document.getElementById('open_semester').value,
-                "description": document.getElementById('description').value,
-                "feedback":feedback,
-                "department": document.getElementById('department').value,
-                "major": document.getElementById('major').value,
-                "lecture_date": document.getElementById('lecture_date').value ,
-                "lecture_type": document.getElementById('lecture_type').value,
-                "is_ready": true,
-                "is_opened": is_opened,
-                "saved_at": new Date(),
-                "user_list": [],
+            await axios.post('/api/lecture/notice', {
+                "lecture_id": lecture_id,
+                "title": document.getElementById('title').value,
+                "type": document.getElementById('notice_type').value,
+                "created_at": moment().toISOString(),
+                "description": document.getElementById('description').value, 
             })
             .catch(error => {
                 console.log("failed");
                 console.log(error.response);
             })
     
-            mutate(`/api/lecture/info`);
-            console.log(document.getElementById('name').value, " added");
+            mutate(`/api/lecture/notice`);
+            console.log(document.getElementById('title').value, " added");
     
-            document.getElementById('name').value = null; 
-            document.getElementById('english_name').value = null;
-            document.getElementById('lecture_num').value = null; 
+            document.getElementById('title').value = null; 
+            document.getElementById('notice_type').value = null; 
             document.getElementById('description').value = null; 
-            document.getElementById('lecture_date').value = null;
         }
         else{
             console.log("모든 항목이 채워져야합니다.")
         }
     }
 
-    const saveLecture = async () => {
-
-        await axios.post('/api/lecture/info', {
-            "name": document.getElementById('name').value ,
-            "english_name": document.getElementById('english_name').value,
-            "professor": data.data[0].name,
-            "lecture_num": document.getElementById('lecture_num').value,
-            "open_semester": document.getElementById('open_semester').value,
-            "description": document.getElementById('description').value,
-            "feedback":feedback,
-            "department": document.getElementById('department').value,
-            "major": document.getElementById('major').value,
-            "lecture_date": document.getElementById('lecture_date').value ,
-            "lecture_type": document.getElementById('lecture_type').value,
-            "is_ready": false,
-            "is_opened": is_opened,
-            "saved_at": new Date(),
-            "user_list": [],
-        })
-        .catch(error => {
-            console.log("failed");
-            console.log(error.response);
-        })
-
-        mutate(`/api/lecture/info`);
-        console.log(document.getElementById('name').value, " temp added");
-
-        document.getElementById('name').value = null; 
-        document.getElementById('english_name').value = null;
-        document.getElementById('lecture_num').value = null; 
-        document.getElementById('description').value = null; 
-        document.getElementById('lecture_date').value = null;
-    }
-
-    const giveFeedback = () => {
-        console.log("give feedback")
-        setFeedback(true);
-    };
-
-    const noFeedback = () => {
-        console.log("no feedback")
-        setFeedback(false);
-    };
-
     return (
     <div className={styles.column}>
         <div className={styles.row}>
             <div className={styles.row_index}>공지 제목</div>
             <div className={styles.row_input}>
-                <input id="name" type="text" className="form-control"/>
+                <input id="title" type="text" className="form-control"/>
             </div>
         </div>
         <div className={styles.row}>
             <div className={styles.row_index}>분류</div>
             <div className={styles.row_input}>
-                <select className="form-select form-select-sm" id="lecture_type" aria-label="Floating label select example">
+                <select className="form-select form-select-sm" id="notice_type" aria-label="Floating label select example">
                     <option selected value="과제">과제</option>
                     <option value="시험">시험</option>
                     <option value="기타">기타</option>
@@ -150,7 +92,7 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
 }
 
 
-export default function LectureAdder() {
+export default function NoticeAdder({lecture_id}) {
 
     const [feedback, setFeedback] = useState(true);
     const [is_opened, setIsOpened] = useState(true);
@@ -161,7 +103,7 @@ export default function LectureAdder() {
                 <div className={styles.section_title}>공지 등록하기</div>
                 <div className={styles.section_title_exp}>새로운 공지 목록을 추가하세요</div>
             </div>
-            <Adder feedback={feedback} setFeedback={setFeedback} is_opened={is_opened} setIsOpened={setIsOpened}/>
+            <Adder lecture_id={lecture_id}/>
         </div>
     )
 }
