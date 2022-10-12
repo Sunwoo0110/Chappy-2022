@@ -13,6 +13,27 @@ export default async function handler(req, res) {
                 let assignmentBody = {
                     pipeline: [
                         {
+                            $match: {
+                                $expr : {
+                                    $and: [
+                                        {
+                                            $eq: [
+                                                    '$lecture_id' , 
+                                                    { $toObjectId: req.query.lecture_id } 
+                                            ] 
+                                        },
+                                        {
+                                            $lte: [
+                                                    '$open_at' , 
+                                                    { $toDate: todayDate } 
+                                            ] 
+                                        }
+                                    ] 
+                                },
+                                is_ready: true,
+                            }
+                        },
+                        {
                             $group: {
                                 _id: "$weeks",
                                 assignments: {$addToSet: "$_id"},
