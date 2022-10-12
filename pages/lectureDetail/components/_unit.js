@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from "../../../lib/api";
 import * as weekActions from "../../../store/modules/week"
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const fetcher = async (url, queryParams='') => {
     if (typeof url != 'string')
@@ -48,7 +49,7 @@ const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
 
     if (error) return <div>Getting Units Failed</div>
     if (!data) return <div>Loading...</div>
-    if (data.data.unit_id.length==0) return <div>공개된 주차가 없습니다.</div>
+    if (data.data.length==0) return <div>공개된 주차가 없습니다.</div>
 
     const handleClickEvent = (target) => {
         let idx = dropdown.indexOf(target);
@@ -75,39 +76,46 @@ const UnitList = ({ lecture_id, mode, setMode, dropdown, setDropdown }) => {
         window.scrollTo({top:0, left:0, behavior:'auto'});
         console.log('target');
         console.log(target);
-        // const assignmentId = target
-        // router.push(`/assignment/${assignmentId}`)
-        router.push(`/assignment/6300f814d273cf05e1cc975d`);
-        
+        // router.push(`/assignment/6300f814d273cf05e1cc975d`);        
     }
 
     return (
         <div className={unitStyles.units}>
-            {data.data.unit_id.map((unit) => {
+            {data?.data.map((unit) => {
                 return (
-                    <div key={unit} className={unitStyles["unit-item"]}>
-                        <button className={unitStyles["unit-item-btn"]} onClick={() => handleClickEvent(unit)}>
-                            {unit}주차
+                    <div key={unit._id} className={unitStyles["unit-item"]}>
+                        <button className={unitStyles["unit-item-btn"]} onClick={() => handleClickEvent(unit._id)}>
+                            {unit._id}주차
                             <TiArrowSortedDown />
                         </button>
-                        <div>
-                            { dropdown.includes(unit)===true &&
-                                <div className={unitStyles["unit-item-dropdown"]}>
-                                    <div className={unitStyles["unit-item-dropdown-btn"]} onClick={() => handleLearningClickEvent(unit)}>
-                                        <RiBookletFill className={unitStyles["unit-item-dropdown-btn-icon"]}/>
-                                        <div className={unitStyles["unit-item-dropdown-btn-title"]}>학습</div>
-                                    </div>
-                                    <div className={unitStyles["unit-item-dropdown-btn"]} onClick={() => handleAssignemntClickEvent(unit)}>
-                                        <AiFillCheckCircle className={unitStyles["unit-item-dropdown-btn-icon"]}/>
-                                        <div className={unitStyles["unit-item-dropdown-btn-title"]}>과제</div>
-                                    </div>
-                                    {/* <div className={unitStyles["unit-item-dropdown-btn"]}>
-                                        <RiDraftLine className={unitStyles["unit-item-dropdown-btn-icon"]}/>
-                                        <div className={unitStyles["unit-item-dropdown-btn-title"]}>프로그래밍 실습</div>
-                                    </div> */}
-                                </div>
-                            }
-                        </div>
+                        { dropdown.includes(unit._id)===true &&
+                            <div className={unitStyles["unit-item-dropdown"]}>
+                                { unit.lessons!=undefined &&
+                                        <div className={unitStyles["unit-item-dropdown-btn"]} onClick={() => handleLearningClickEvent(unit._id)}>
+                                            <RiBookletFill className={unitStyles["unit-item-dropdown-btn-icon"]}/>
+                                            <div className={unitStyles["unit-item-dropdown-btn-title"]}>학습</div>
+                                        </div>
+                                }
+                                { unit.assignments?.map((assignment, idx) => (
+                                    <>
+                                    <Link as={`/assignment/${assignment}`}
+                                        href={{
+                                        pathname: "/assignment/[id]",
+                                        query: { data: JSON.stringify(assignment) },
+                                        }}>
+                                        <div className={unitStyles["unit-item-dropdown-btn"]}>
+                                            <AiFillCheckCircle className={unitStyles["unit-item-dropdown-btn-icon"]}/>
+                                            <div className={unitStyles["unit-item-dropdown-btn-title"]}>과제 {idx+1}</div>
+                                        </div>                                        
+                                    </Link>
+                                    </>
+                                ))} 
+                                    {/* // <div className={unitStyles["unit-item-dropdown-btn"]}>
+                                    //     <RiDraftLine className={unitStyles["unit-item-dropdown-btn-icon"]}/>
+                                    //     <div className={unitStyles["unit-item-dropdown-btn-title"]}>프로그래밍 실습</div>
+                                    // </div> */}
+                            </div>
+                        }
                     </div>
                 );
             })}

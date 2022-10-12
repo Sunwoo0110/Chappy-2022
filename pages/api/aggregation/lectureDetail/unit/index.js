@@ -13,43 +13,29 @@ export default async function handler(req, res) {
                 let assignmentBody = {
                     pipeline: [
                         {
-                            $match: {
-                                $expr : {
-                                    $and: [
-                                        {
-                                            $eq: [
-                                                    '$lecture_id' , 
-                                                    { $toObjectId: req.query.lecture_id } 
-                                            ] 
-                                        },
-                                        {
-                                            $lte: [
-                                                    '$open_at' , 
-                                                    { $toDate: todayDate } 
-                                            ] 
-                                        }
-                                    ] 
-                                },
-                                is_ready: true,
-                            }
-                        },
-                        {
-                            $project: {
-                                _id: 0,
-                                weeks: 1,
+                            $group: {
+                                _id: "$weeks",
+                                assignments: {$addToSet: "$_id"},
                             }
                         },
                         {
                             $sort: {
-                                weeks: -1,
+                                _id: 1,
                             }
                         },
-                        {
-                            $limit: 1
-                        }
                     ]
                 };
-                
+                const assignmentResponse = await axios({
+                    method: 'post',
+                    url: '/api/lecture/assignment/aggregate',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: assignmentBody
+                });
+                const assignmentData = assignmentResponse.data.data;
+
+
                 let lessonBody = {
                     pipeline: [
                         {
@@ -73,32 +59,19 @@ export default async function handler(req, res) {
                             }
                         },
                         {
-                            $project: {
-                                _id: 0,
-                                weeks: 1,
+                            $group: {
+                                _id: "$weeks",
+                                lessons: {$addToSet: "$_id"},
                             }
                         },
                         {
                             $sort: {
-                                weeks: -1,
+                                _id: 1,
                             }
-                        },
-                        {
-                            $limit: 1
-                        }
+                        },                    
                     ]
                 };
-
-                const assignment_weeks = await axios({
-                    method: 'post',
-                    url: '/api/lecture/assignment/aggregate',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    data: assignmentBody
-                });
-
-                const lesson_weeks = await axios({
+                const lessonResponse = await axios({
                     method: 'post',
                     url: '/api/lecture/lesson/aggregate',
                     headers: {
@@ -106,28 +79,44 @@ export default async function handler(req, res) {
                     },
                     data: lessonBody
                 });
+                const lessonData = lessonResponse.data.data;
 
-                let assignment_week=0;
-                let lesson_week=0;
+                let assignmentWeek=0;
+                let lessonWeek=0;
                 let week = 0;
 
-                if(assignment_weeks.data.data.length!=0){
-                    assignment_week = assignment_weeks.data.data[0].weeks;
+                let assignmentWeekLen = assignmentData.length;
+                let lessonWeekLen = lessonData.length;
+                if(assignmentWeekLen!=0){
+                    assignmentWeek = assignmentData[assignmentWeekLen-1]._id;
                 }
+                if(lessonWeekLen!=0)
+                    lessonWeek = lessonData[lessonWeekLen-1]._id;    
 
-                if(lesson_weeks.data.data.length!=0)
-                    lesson_week = lesson_weeks.data.data[0].weeks;
-    
-                if(lesson_week >= assignment_week)
-                    week = lesson_week;
+                if(lessonWeek >= assignmentWeek)
+                    week = lessonWeek;
                 else
-                    week = assignment_week;
+                    week = assignmentWeek;
 
-                let week_list = [];
-                for(let i=1; i<=week; i++)
-                    week_list.push(i);
-
-                res.status(200).json({success: true, data: {unit_id: week_list}});
+                let unitData = [];
+                for (let i=1; i<=week; i++){
+                    let perWeekData = {};
+                    for (let x=0; x<assignmentWeekLen; x++){
+                        if(assignmentData[x]._id === i){
+                            Object.assign(perWeekData, assignmentData[x]);
+                            break;
+                        }
+                    }
+                    for (let y=0; y<lessonWeekLen; y++){
+                        if(lessonData[y]._id === i){
+                            Object.assign(perWeekData, lessonData[y]);
+                            break;
+                        }
+                    }
+                    unitData = [ ...unitData, {...perWeekData}]
+                }
+                
+                res.status(200).json({success: true, data: unitData});
 
             } catch (error) {
                 res.status(400).json({success: false, error: error})

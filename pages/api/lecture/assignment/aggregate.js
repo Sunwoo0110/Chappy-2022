@@ -13,6 +13,7 @@ export default async function handler(req, res) {
                 const assignments = await Assignment.aggregate(req.body.pipeline);
                 res.status(200).json({ success: true, data: assignments });
             } catch (error) {
+                console.log(error)
                 res.status(400).json({ success: false, error: error });
             }
             break;
