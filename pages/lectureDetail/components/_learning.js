@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import useSWR from "swr"
 import { useSelector, useDispatch } from 'react-redux';
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
@@ -5,6 +6,7 @@ import taskStyles from "../../../styles/lectureDetail/_task.module.css"
 import ReactPlayer from 'react-player/lazy';
 import { useState } from "react";
 import axios from "../../../lib/api";
+import * as weekActions from "../../../store/modules/week"
 
 const fetcher = async (url, queryParams='') => {
     if (typeof url != 'string')
@@ -31,11 +33,18 @@ const postFetcher = async (url, bodyData={}) => {
 }
 
 const LessonList = ({lecture_id}) => {
+    const dispatch = useDispatch();
     const user = useSelector(state => state.user);
     const user_id = user.id;
     
     const selectedWeek = useSelector(state => state.week);
     const learningWeek = selectedWeek.learning;
+    const setLearningWeek = useCallback( (week) => {
+        let payload = {
+            learning: week,
+        };
+        dispatch(weekActions.setLearning(payload));
+    }, [dispatch]);
 
     const bodyData = {
         pipeline: [
@@ -63,8 +72,20 @@ const LessonList = ({lecture_id}) => {
     if (!data) return <div>Loading...</div>
     if (data.data[0]==undefined) return <div>LessonList Not Existing</div>
 
+    const handleEntireClickEvent = () => {
+        setLearningWeek(0);
+    };
+
     return(
         <div>
+            {
+                learningWeek!=0 ?
+                <>
+                    <div className={taskStyles["whole-btn"]} onClick={() => handleEntireClickEvent()}>전체 강의보기</div>
+                </>
+                    :
+                    <></>
+            }
             {data.data.map((lesson) => (
                 <div key={lesson._id}>
                     {

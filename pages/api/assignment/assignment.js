@@ -1,6 +1,6 @@
 /** /pages/api/assignment/assignment.js **/
 import dbConnect from "../../../lib/dbConnect"
-import Assignment from "../../../models/Assignment"
+import Assignment from "../../../models/lecture/Assignment"
 
 export default async function handler(req, res) {
     const { method } = req;

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from 'react-redux';
+import useSWR from "swr"
 
 import styles from "../../../styles/lecture/_searchlecture.module.css";
 import {Search} from 'react-bootstrap-icons';
@@ -12,45 +14,65 @@ const fetcher = (url) => {
     })
 }
 
-
 const Searcher = () => {
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
 
     const [title, setTitle] = useState(0);
     const [data, setData] = useState([]);
 
     const clickHandler = async () => {
-
         var _open=document.getElementById('open').value;
         var _department=document.getElementById('department').value;
         var _major=document.getElementById('major').value;
         var _name=document.getElementById('name').value;
 
         document.getElementById('name').value = null; 
-        
-        let url='/api/lecture/info?is_ready=true&is_opened=true&'
+
+        var match={};
+        match['name'] = { $regex: _name };
+        match['is_ready'] = true;
+        match['is_opened'] = true;
         if(_open!==''){
-            url=url+"open_semester="+_open+"&";
+            match['open_semester'] = _open;
         }
         if(_department!==''){
-            url=url+"department="+_department+"&";
+            match['department'] = _department;
         }
         if(_major!==''){
-            url=url+"major="+_major+"&";
+            match['major'] = _major;
         }
-        if(_name!==''){
-            url=url+"name="+_name+"&";
-        }
-
-        await fetch(url, {
-            method: 'GET',
+        
+        await fetch(`/api/lecture/info/aggregate`, {
+            method: "POST",
+            body: JSON.stringify({pipeline: [{$match: match}]}),
             headers: {
-                "Content-Type": 'application/json',
+            "Content-type": "application/json; charset=UTF-8",
             },
         })
         .then(response => response.json())
         .then(response => {
             setData(response.data);
-        })        
+        })
+    }
+
+    const clickHandler2 = async (lecture_id) => {
+        var data={};
+        data['user_id'] = user_id;
+        data['lecture_id'] = lecture_id;
+        await fetch(`/api/aggregation/lecture/searchlecture`, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            },
+        })
+        .then(response => response.json())
+        .then(response => {
+            var checkerModal = document.getElementById('checker')
+            var modalBody = checkerModal.querySelector('#message')
+            modalBody.textContent = response.data
+        })
     }
 
     return (
@@ -118,12 +140,25 @@ const Searcher = () => {
                         </div>
                         <div className={styles.buttons}>
                             <button style={{fontSize: "15px", background: "#414E5A"}} class="btn btn-secondary" type="button">수업계획서</button>
-                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button">담기</button>
+                            <button style={{fontSize: "15px", background: "#0B51FF"}} class="btn btn-primary" type="button" onClick={()=>clickHandler2(lecture._id)} data-bs-toggle="modal" data-bs-target="#checker">담기</button>
+                            
                         </div>
                     </div>
                 )
             })
         }
+        <div class="modal fade" id="checker" tabindex="-1" aria-labelledby="checkerLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                        <div className="message" id="message">담는 중..</div>
+                        <div className={styles.buttons}>
+                            <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div >
     )
 

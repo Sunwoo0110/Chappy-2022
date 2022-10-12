@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSWR, { useSWRConfig } from "swr"
 import { useSelector, useDispatch } from 'react-redux';
-import { PlusSquare } from "react-bootstrap-icons"
+import { Bootstrap, PlusSquare } from "react-bootstrap-icons"
 import styles from "../../../styles/mypage/_mygrade.module.css"
+import Chart from 'chart.js/auto';
+ 
 
 import Title from "./_title"
 
@@ -16,11 +18,102 @@ const fetcher = (url) => {
     })
 }
 
-function Grade({setMode, mode}){
+function Grade(){
+    const semester = "2022년 1학기"
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const { data, error } = useSWR(`/api/aggregation/mypage/mygrade?user_id=${user_id}&semester=${semester}`, fetcher)
+
+    if (error) return <div>Getting Lectures Failed</div>
+    if (!data) return <div>Loading...</div>
+    
+    console.log("data.data: ",data.data)
+
+    var chart;
+    const loading = async () => {
+        if (chart !== undefined) {
+            console.log("destroy")
+            chart.destroy();
+        }
+        chart = new Chart(document.getElementById("myChart"), {
+            type: 'line',
+            data: {
+                labels: data.data.semesters,
+                datasets: [{
+                    data: data.data.grades,
+                    borderColor: "#0B51FF",
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: true
+                        }
+                    }
+                }
+            }
+        });
+    };
+
+    return(
+        <div className={styles.section_bg}>
+            <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
+                <div className={styles.section_title}>전체성적</div>
+                <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
+                </div>
+            </div>
+            <div className={styles.grade}>
+                <div className={styles.grade_item}>
+                    <div className={styles.grade_1}>전체평점</div>
+                    <div className={styles.grade_2}>{data.data.total}</div>
+                </div>
+                <div className={styles.grade_item}>
+                    <div className={styles.grade_1}>이번학기 평점</div>
+                    <div className={styles.grade_2}>{data.data.this_semester}</div>
+                </div>
+            </div>
+            <div style={{marginTop:"15px"}} className={styles.gradegraph}>
+                <div>성적 그래프</div>
+                <select style={{width:"15%"}} class="form-select form-select-sm" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected>학기별 보기</option>
+                    <option value="1">다른 옵션</option>
+                    <option value="2">뭐가 있지</option>
+                </select>
+            </div>
+            <canvas onClick={()=>loading()} style={{width:"100%", height:"300px"}} id="myChart" ></canvas>
+        </div>
+    )
+}
+
+function SubjectGrade({setMode, mode}){
+    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
     const user = useSelector(state => state.user);
     const user_id = user.id;
     const semester = "2022년 1학기"
     let d;
+
+    if(mode===1){
+        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`, fetcher);
+    }
+    else{
+        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}`, fetcher);
+    }
+    
+    if (d.error) return <div>Getting Lectures Failed</div>
+    if (!d.data) return <div>Loading...</div>
 
     const toMode1 = async () => {
         setMode(1);
@@ -33,73 +126,10 @@ function Grade({setMode, mode}){
     return(
         <div className={styles.section_bg}>
             <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
-                <div className={styles.section_title}>전체성적</div>
+                <div className={styles.section_title}>과목 성적통계</div>
                 <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
                 <button style={{borderRadius:20}} class={mode==1 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
                 <button style={{borderRadius:20}} class={mode==2 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
-                </div>
-            </div>
-            <div className={styles.grade}>
-                <div className={styles.grade_item}>
-                    <div className={styles.grade_1}>전체평점</div>
-                    <div className={styles.grade_2}>4.0</div>
-                </div>
-                <div className={styles.grade_item}>
-                    <div className={styles.grade_1}>이번학기 평점</div>
-                    <div className={styles.grade_2}>4.0</div>
-                </div>
-                <Link href="/mypage/myfeedback">
-                <div style={{cursor:"pointer"}} className={styles.grade_item}>
-                    <div className={styles.grade_1}>피드백</div>
-                    <div className={styles.grade_2}>50회</div>
-                </div>
-                </Link>
-            </div>
-            <div style={{marginTop:"15px"}} className={styles.gradegraph}>
-                <div>성적 그래프</div>
-                <select style={{width:"15%"}} class="form-select form-select-sm" id="floatingSelect" aria-label="Floating label select example">
-                    <option selected>학기별 보기</option>
-                    <option value="1">다른 옵션</option>
-                    <option value="2">뭐가 있지</option>
-                </select>
-            </div>
-            <div style={{background:"blue", width:"100%", height:"200px"}}>그래프</div>
-        </div>
-    )
-}
-
-function SubjectGrade({setMode2, mode2}){
-    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const user = useSelector(state => state.user);
-    const user_id = user.id;
-    const semester = "2022년 1학기"
-    let d;
-
-    if(mode2===1){
-        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`, fetcher);
-    }
-    else{
-        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}`, fetcher);
-    }
-    
-    if (d.error) return <div>Getting Lectures Failed</div>
-    if (!d.data) return <div>Loading...</div>
-
-    const toMode1 = async () => {
-        setMode2(1);
-    }
-
-    const toMode2 = async () => {
-        setMode2(2);
-    }
-
-    return(
-        <div className={styles.section_bg}>
-            <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
-                <div className={styles.section_title}>과목 성적통계</div>
-                <div style={{width:"50%", columnGap:"5%", display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                <button style={{borderRadius:20}} class={mode2==1 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode1()}>이번 학기 과목만 보기</button>
-                <button style={{borderRadius:20}} class={mode2==2 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
                 </div>
             </div>
             <div style={{width:"100%"}} class="row">
@@ -197,15 +227,14 @@ export default function MyGrade() {
     //mode 1: 이번 학기 과목만
     //mode 2: 모든 과목
     const [mode, setMode] = useState(1);
-    const [mode2, setMode2] = useState(1);
 
     return (
         <div className={styles.content}>
 
             <Title mode={2}/>
             
-            <Grade setMode={setMode} mode={mode}/>
-            <SubjectGrade setMode2={setMode2} mode2={mode2}/>
+            <Grade/>
+            <SubjectGrade setMode={setMode} mode={mode}/>
 
         </div>
     )

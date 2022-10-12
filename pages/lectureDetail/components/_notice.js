@@ -1,7 +1,9 @@
 import useSWR from "swr"
+import { AiFillPlusCircle } from "react-icons/ai";
 import commonStyles from "../../../styles/lectureDetail/LectureDetail.module.css";
 import noticeStyles from "../../../styles/lectureDetail/_notice.module.css"
 import axios from "../../../lib/api";
+import Link from "next/link";
 
 const fetcher = async (url, queryParams='') => {
     if (typeof url != 'string')
@@ -24,6 +26,13 @@ const NoticeList = ({lecture_id}) => {
     
     return(
         <div>
+            {/* 교수자일때만 나오게 처리 필요 */}
+            <Link as={`/lectureDetail/${lecture_id}/addnotice`}
+                href={{
+                    pathname: "/lectureDetail/[id]/addnotice",
+                }}>
+                <div className={noticeStyles["notice-add-btn"]}><AiFillPlusCircle/>공지 추가하기</div>
+            </Link>
             {data?.data.map((notice) => (
                 <div className={noticeStyles["notice-item"]} key={notice._id}>
                     <div className={noticeStyles["notice-item-type-new"]}>{notice.type}</div>

@@ -17,17 +17,10 @@ export default function Home() {
           Welcome to Cheppy
         </h1>
 
-        <h3>To Do</h3>
-        <ul>
-          <li key="1">API on Backend</li>
-          <li key="2">Front-end CSS</li>
-        </ul>
-
         <div className={styles.grid}>
-          <Link href="/assignment">
+          <Link href="/login">
             <a className={styles.card}>
-              <h2>Assignments &rarr;</h2>
-              <p>과제 ㄱㄱ.</p>
+              <h2>Login &rarr;</h2>
             </a>
           </Link>
         </div>

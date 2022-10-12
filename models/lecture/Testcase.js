@@ -1,6 +1,7 @@
 /** /models/Testcase.js **/
 
 const mongoose = require('mongoose');
+const db = mongoose.connection.useDb("lecture");
 
 const { Schema, Types } = mongoose;
 
@@ -34,6 +35,5 @@ const TestCaseSchema = new Schema(
 },
 )
 
-const TestCase = mongoose.models.TestCase || mongoose.model('TestCase', TestCaseSchema);
-
+const TestCase = db.models.TestCase || db.model('TestCase', TestCaseSchema);
 module.exports = TestCase;
