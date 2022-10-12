@@ -1,11 +1,12 @@
 import Editor from "@monaco-editor/react";
-import { useRef } from "react";
+import React, { Component, useRef, useState } from "react";
 
 import styles from "../../../styles/assignment/_codingbox.module.css"
 
-
 export default function CodingBox({ assignment, onInteract }) {
   const editorRef = useRef(null);
+  const [code, setCode] = useState(assignment?.reference_code);
+  const [file, setFile] = useState("")
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -13,7 +14,38 @@ export default function CodingBox({ assignment, onInteract }) {
   }
   const handleContentChange = (value, event) => {
     onInteract(null, value);
+    setCode(value);
   }
+
+  function openFile() {
+    var input = document.createElement("input");
+
+    input.type = "file";
+    input.accept = ".py";
+    input.click();
+    input.onchange = function (event) {
+      console.log(event)
+      // processFile(event.target.files[0]);
+      setFile(event.target.files[0])
+      processFile()
+    };
+    // input.click();
+
+    // console.log(input.onchange)
+}
+
+function processFile() {
+        
+  var reader = new FileReader();
+  
+  reader.onloadend = function () {
+      output.innerText = reader.result;
+      console.log(reader.result);
+      // setCode(reader.result);
+      editorRef.current.value = reader.result;
+  };
+  reader.readAsText(file);
+}
   
   function interaction (action) {
     onInteract(action, editorRef.current.getValue());
@@ -27,6 +59,7 @@ export default function CodingBox({ assignment, onInteract }) {
           onMount={handleEditorDidMount}
           onChange={handleContentChange}
           defaultValue={assignment?.reference_code}
+          value={code}
           options={{
             minimap: {
               enabled: false,
@@ -39,11 +72,12 @@ export default function CodingBox({ assignment, onInteract }) {
       <div className={styles.buttons}>
         <div style={{ width: "50%" }}>
           <button type="button" style={{ backgroundColor: "white", border: "none" }} >
-            <img src="/images/file.png" className={styles.image_button} alt="file" onClick={() => { openFile(); }} />
+            <img src="/images/file.png" className={styles.image_button} alt="file"
+            onClick={() => { openFile(); }} />
           </button>
           <button type="button" style={{ backgroundColor: "white", border: "none" }} >
-            <img src="/images/copy.png" className={styles.image_button} alt="file"
-              onClick={() => navigator.clipboard.writeText(code)} />
+            <img src="/images/copy.png" className={styles.image_button} alt="file" 
+              onClick={() => navigator.clipboard.writeText(editorRef.current.getValue())} />
           </button>
         </div>
         <div>

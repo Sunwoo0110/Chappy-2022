@@ -1,7 +1,7 @@
 import dbConnect from "../../../../lib/dbConnect";
 
 const TestCase = require("../../../../models/lecture/Testcase");
-const { runPython } = require("./runPython");
+// const { runPython } = require("./runPython");
 
 export default async function handler(req, res) {
     const { method } = req
