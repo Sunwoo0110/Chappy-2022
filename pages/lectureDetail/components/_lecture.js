@@ -33,19 +33,23 @@ export default function Lecture({lecture_id}) {
         <div className={lectureStyles.lecture}>
             <div className={lectureStyles["lecture-info"]}>
                 <div className={lectureStyles["lecture-info-title"]}>{data.data[0].name}</div>
-                <div className={lectureStyles["lecture-info-icons"]}>
+                {/* <div className={lectureStyles["lecture-info-icons"]}>
                     <AiOutlineMail size="24px"/>
                     <AiOutlineStar size="24px"/>
                     <div className={lectureStyles["lecture-info-icon"]}/>
-                </div>
+                </div> */}
             </div>
-            <div className={lectureStyles["lecture-progress"]}>
+            <div className={lectureStyles["lecture-info-desc-left"]}>{data.data[0].english_name}</div>
+            <div className={lectureStyles["lecture-info-desc-left"]}>{data.data[0].lecture_num}</div>
+            <div className={lectureStyles["lecture-info-desc-right"]}>{data.data[0].professor}</div>
+            <div className={lectureStyles["lecture-info-desc-right"]}>{data.data[0].lecture_date}</div>
+            {/* <div className={lectureStyles["lecture-progress"]}>
                 <div className={lectureStyles["lecture-progress-title"]}>수업진행도</div>
                 <div className={lectureStyles["lecture-progress-title"]}>90%</div>
             </div>
             <div className={lectureStyles["lecture-progressbar"]}>
                 <div style={progressbar_inner}/>                
-            </div>
+            </div> */}
         </div>
     );
 }
