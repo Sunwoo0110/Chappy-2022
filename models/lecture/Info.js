@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { stringifyQuery } = require('next/dist/server/server-route-utils');
 const db = mongoose.connection.useDb("lecture");
 
 const InfoSchema = new mongoose.Schema({
@@ -8,7 +9,7 @@ const InfoSchema = new mongoose.Schema({
     lecture_num: String,
     open_semester: String,
     description: String,
-    syllabus: Object,
+    syllabus: Buffer,
     feedback: Boolean,
     department: String,
     major: String,
