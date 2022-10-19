@@ -43,6 +43,7 @@ export default function Lecture({lecture_id}) {
             <div className={lectureStyles["lecture-info-desc-left"]}>{data.data[0].lecture_num}</div>
             <div className={lectureStyles["lecture-info-desc-right"]}>{data.data[0].professor}</div>
             <div className={lectureStyles["lecture-info-desc-right"]}>{data.data[0].lecture_date}</div>
+            <div className={lectureStyles["lecture-info-desc-right"]}>{data.data[0].classroom}</div>
             {/* <div className={lectureStyles["lecture-progress"]}>
                 <div className={lectureStyles["lecture-progress-title"]}>수업진행도</div>
                 <div className={lectureStyles["lecture-progress-title"]}>90%</div>
