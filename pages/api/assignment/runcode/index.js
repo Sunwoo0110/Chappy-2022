@@ -35,15 +35,19 @@ export default async function handler(req, res) {
       if (testNumber == undefined) {
         PythonShell.runString(code, null, (error, output_lines) => {
           if (error) {
+            console.log('error');
             console.log(error);
             res.status(400).json({ success: false, data: [], error: "runCode:error" })
             return;
           }
+
           let response = {
             result: "",
           }
           if (output_lines !== null) {
             response.result = output_lines.join("\n");
+          } else {
+            response.result = "출력이 없습니다.";
           }
           res.status(200).json(response);
         });
