@@ -9,7 +9,7 @@ import LeftSideBar from "./components/_leftsidebar";
 import CodingBox from "./components/_codingbox";
 import RightSideBar from "./components/_rightsidebar";
 
-import { HouseDoorFill } from 'react-bootstrap-icons';
+import { HouseDoorFill, ArrowLeft } from 'react-bootstrap-icons';
 import styles from "../../styles/assignment/CodingPage.module.css";
 
 import { useSelector } from "react-redux";
@@ -27,15 +27,13 @@ const NavBar = ({ assignment }) => {
   const router = useRouter();
   return <nav className={styles.navbar}>
     <div className={styles.navbar_left}>
-      <div >
         <div onClick={() => { router.back() }}>
-          <HouseDoorFill size={30} />
+          <ArrowLeft size={40} />
         </div>
-        <div>
+        <div style={{ marginLeft: "10px"}}>
           <Link href="/mypage">
-            <HouseDoorFill size={30} />
+            <HouseDoorFill size={30}/>
           </Link>
-        </div>
       </div>
     </div>
     <div className={styles.navbar_center}>

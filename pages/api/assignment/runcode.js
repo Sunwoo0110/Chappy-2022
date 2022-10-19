@@ -1,9 +1,8 @@
-import dbConnect from "../../../../lib/dbConnect";
+import dbConnect from "../../../lib/dbConnect";
 // https://github.com/extrabacon/python-shell
 import { PythonShell } from "python-shell";
-import TestCase from "../../../../models/lecture/Testcase"
+import TestCase from "../../../models/lecture/Testcase"
 import { Types } from "mongoose";
-// const { runPython } = require("./runPython");
 
 export default async function handler(req, res) {
   const { method } = req

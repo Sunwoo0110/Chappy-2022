@@ -1,12 +1,10 @@
 import Editor from "@monaco-editor/react";
-import React, { Component, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import styles from "../../../styles/assignment/_codingbox.module.css"
 
 export default function CodingBox({ assignment, onInteract }) {
   const editorRef = useRef(null);
-  const [code, setCode] = useState(assignment?.reference_code);
-  const [file, setFile] = useState("")
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -14,7 +12,6 @@ export default function CodingBox({ assignment, onInteract }) {
   }
   const handleContentChange = (value, event) => {
     onInteract(null, value);
-    setCode(value);
   }
 
   function openFile() {
@@ -22,30 +19,27 @@ export default function CodingBox({ assignment, onInteract }) {
 
     input.type = "file";
     input.accept = ".py";
-    input.click();
     input.onchange = function (event) {
-      console.log(event)
-      // processFile(event.target.files[0]);
-      setFile(event.target.files[0])
-      processFile()
+      console.log(event.target.files[0])
+      processFile(event.target.files[0]);
+      event.target.value = "";
     };
-    // input.click();
-
-    // console.log(input.onchange)
+    input.click();
+    // console.log(input.value)
 }
 
-function processFile() {
-        
-  var reader = new FileReader();
-  
-  reader.onloadend = function () {
-      output.innerText = reader.result;
-      console.log(reader.result);
-      // setCode(reader.result);
-      editorRef.current.value = reader.result;
-  };
-  reader.readAsText(file);
-}
+  function processFile(file) {
+
+    var reader = new FileReader();
+    
+    reader.onload = function () {
+        // output.innerText = reader.result;
+        console.log(reader.result);
+        // setCode(reader.result);
+        editorRef.current.setValue(reader.result);
+    };
+    reader.readAsText(file);
+  }
   
   function interaction (action) {
     onInteract(action, editorRef.current.getValue());
@@ -59,7 +53,6 @@ function processFile() {
           onMount={handleEditorDidMount}
           onChange={handleContentChange}
           defaultValue={assignment?.reference_code}
-          value={code}
           options={{
             minimap: {
               enabled: false,
@@ -71,7 +64,7 @@ function processFile() {
       </div>
       <div className={styles.buttons}>
         <div style={{ width: "50%" }}>
-          <button type="button" style={{ backgroundColor: "white", border: "none" }} >
+          <button type="button" style={{ backgroundColor: "white", border: "none" }}>
             <img src="/images/file.png" className={styles.image_button} alt="file"
             onClick={() => { openFile(); }} />
           </button>
