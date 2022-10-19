@@ -79,7 +79,7 @@ function StudentInfo_edit() {
                 <button style={{borderRadius:20}} class="btn btn-primary btn-sm" type="button" onClick={()=>onUpdate(user_id)}>수정하기</button>
             </div>
             <div className={styles.studentinfo}>
-                <div className={styles.studentinfo_image}>사진</div>
+                {/* <div className={styles.studentinfo_image}>사진</div> */}
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이름</div>

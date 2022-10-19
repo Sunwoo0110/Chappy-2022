@@ -171,8 +171,8 @@ export default function MyGrade() {
 
             <TestGrade/>
             <SubmittedTask/>
-            <TestGradeGraph/>
-            <DeductionFactor/>
+            {/* <TestGradeGraph/>
+            <DeductionFactor/> */}
             
         </div>
     )

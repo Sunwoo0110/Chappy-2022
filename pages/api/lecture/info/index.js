@@ -40,6 +40,7 @@ export default async function handler(req, res) {
 
                 //     res.status(200).json({ success: true, lectures: newUser.lectures });
                 // }
+                console.log("req.body: ",req.body);
                 const lecture=new Info(req.body);
                 lecture.save()
                 .then(()=>{
