@@ -23,7 +23,7 @@ const Adder = ({ lecture_id }) => {
     // if (error) return <div>Getting User Info Failed</div>
     // if (!data) return <div>Loading...</div>
 
-    const registerLecture = async () => {
+    const registerNotice = async () => {
 
         if(document.getElementById('title').value!=='' &&
         document.getElementById('notice_type').value!=='' &&
@@ -42,12 +42,18 @@ const Adder = ({ lecture_id }) => {
     
             mutate(`/api/lecture/notice`);
             console.log(document.getElementById('title').value, " added");
+            var checkerModal = document.getElementById('checker')
+            var modalBody = checkerModal.querySelector('#message')
+            modalBody.textContent = "\""+document.getElementById('title').value+"\" 등록 완료"
     
             document.getElementById('title').value = null; 
             document.getElementById('notice_type').value = null; 
             document.getElementById('description').value = null; 
         }
         else{
+            var checkerModal = document.getElementById('checker');
+            var modalBody = checkerModal.querySelector('#message');
+            modalBody.textContent = "모든 항목이 채워져야 합니다."
             console.log("모든 항목이 채워져야합니다.")
         }
     }
@@ -84,8 +90,22 @@ const Adder = ({ lecture_id }) => {
         </div>
 
         <div className={styles.buttons}>
-            <button style={{background: "#0B51FF", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} className="btn btn-primary" type="button" onClick={()=>registerLecture()}>등록하기</button>
+            <button style={{background: "#0B51FF", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} className="btn btn-primary" type="button" onClick={()=>registerNotice()} data-bs-toggle="modal" data-bs-target="#checker">등록하기</button>
         </div>
+
+        <div className="modal fade" id="checker" tabindex="-1" aria-labelledby="checkerLabel" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                        <div className="message" id="message">확인 중..</div>
+                        <div className={styles.buttons}>
+                            <button type="button" className="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div >
     )
 
