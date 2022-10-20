@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import commonStyles from "../../../styles/login/Login.module.css"
-import headerStyles from "../../../styles/login/_header.module.css"
+import commonStyles from "../../../styles/signup/Login.module.css"
+import headerStyles from "../../../styles/signup/_header.module.css"
 import { IoIosArrowBack } from "react-icons/io";
 
 export default function Header() {
@@ -13,8 +13,8 @@ export default function Header() {
                 메인으로 돌아가기
             </div>
             </Link>
-            <div className={headerStyles["login-txt"]}>로그인</div>
-            <div className={headerStyles["login-desc-txt"]}>로그인하고 당신의 코딩 생활을 시작하세요</div>
+            <div className={headerStyles["login-txt"]}>회원가입</div>
+            <div className={headerStyles["login-desc-txt"]}>채피와 함께하는 코딩 생활을 시작하세요</div>
         </div>
     )
 }

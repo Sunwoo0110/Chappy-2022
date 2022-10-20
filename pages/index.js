@@ -23,6 +23,11 @@ export default function Home() {
               <h2>Login &rarr;</h2>
             </a>
           </Link>
+          <Link href="/signup">
+            <a className={styles.card}>
+              <h2>Sign up &rarr;</h2>
+            </a>
+          </Link>
         </div>
       </main>
 

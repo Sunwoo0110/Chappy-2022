@@ -79,11 +79,20 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
             var checkerModal = document.getElementById('checker')
             var modalBody = checkerModal.querySelector('#message')
             modalBody.textContent = "모든 항목이 채워져야 합니다."
-            // console.log("모든 항목이 채워져야합니다.")
         }
     }
 
     const saveLecture = async () => {
+
+        // console.log("임시저장")
+        // console.log("document.getElementById('syllabus'): ",document.getElementById('syllabus').files)
+        // var reader = new FileReader();
+  
+        // reader.onload = function () {
+        //     // output.innerText = reader.result;
+        //     console.log("HING: ", reader.result);
+        // };
+        // reader.readAsText(document.getElementById('syllabus').files[0]);
 
         await axios.put('/api/lecture/info', {
             "name": document.getElementById('name').value ,
@@ -101,6 +110,7 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
             "is_opened": is_opened,
             "saved_at": new Date(),
             "user_list": [],
+            // "syllabus": reader.result,
             "classroom": document.getElementById('classroom').value,
         })
         .catch(error => {
@@ -220,12 +230,12 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
                 <input id="description" style={{height:"300px"}} type="text" class="form-control"/>
             </div>
         </div>
-        <div className={styles.row}>
+        {/* <div className={styles.row}>
             <div className={styles.row_index}>강의계획서</div>
             <div className={styles.row_input}>
-                <input type="file" class="form-control"/>
+                <input id="syllabus" type="file" class="form-control"/>
             </div>
-        </div>
+        </div> */}
 
         <div className={styles.feedback}>
             <div className={styles.feedback_text}>해당 과목의 피드백을 제공하시겠습니까?</div>
@@ -251,9 +261,7 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
             </div>
         </div>
     </div >
-    
     )
-
 }
 
 
