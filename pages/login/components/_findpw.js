@@ -74,7 +74,6 @@ export default function Login() {
                     className={loginStyles.input}
                     onChange={onChangeInputs}
                     value={pwd}
-                    type={"password"}
                 />
             </div>
             <div className={loginStyles["login-btn"]}>비밀번호 찾기</div>
