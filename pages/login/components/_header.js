@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import commonStyles from "../../../styles/login/Login.module.css"
 import headerStyles from "../../../styles/login/_header.module.css"
 import { IoIosArrowBack } from "react-icons/io";

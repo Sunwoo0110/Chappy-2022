@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { useCallback, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import commonStyles from "../../../styles/login/Login.module.css"
@@ -95,12 +97,16 @@ export default function Login() {
                     value={pwd}
                     type={"password"}
                 />
+                <Link href="/login/findpw">
                 <div className={loginStyles["pwd-find-txt"]}>비밀번호를 잊어버렸나요?</div>
+                </Link>
             </div>
             <div className={loginStyles["login-btn"]} onClick={onLogin}>로그인</div>
             <div className={loginStyles["join-content"]}>
                 <div className={loginStyles.desc}>아직 회원이 아니신가요?</div>
+                <Link href="/signup">
                 <div className={loginStyles["join-txt"]}>회원가입하기</div>
+                </Link>
             </div>
         </div>
     );
