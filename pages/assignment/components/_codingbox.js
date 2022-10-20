@@ -20,22 +20,16 @@ export default function CodingBox({ assignment, onInteract }) {
     input.type = "file";
     input.accept = ".py";
     input.onchange = function (event) {
-      console.log(event.target.files[0])
       processFile(event.target.files[0]);
       event.target.value = "";
     };
     input.click();
-    // console.log(input.value)
 }
 
   function processFile(file) {
-
     var reader = new FileReader();
-    
     reader.onload = function () {
-        // output.innerText = reader.result;
-        console.log(reader.result);
-        // setCode(reader.result);
+        // console.log(reader.result);
         editorRef.current.setValue(reader.result);
     };
     reader.readAsText(file);
