@@ -32,27 +32,6 @@ export default function Login() {
         dispatch(userActions.setUser(payload));
     }, [dispatch]);
 
-    // const setUserId = useCallback( async () => {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     await dispatch(userActions.setUser(payload));
-    // }, [dispatch, id]);
-
-    // async function setUserId() {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     return await dispatch(userActions.setUser(payload));
-    // }
-
-    // const setUserId = async () => {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     dispatch(userActions.setUser(payload));
-    // }
-
     async function onLogin() {
         console.log(userId);
         await fetch('/api/user/profile/login', {
@@ -89,7 +68,7 @@ export default function Login() {
                     onChange={onChangeInputs}
                     value={id}
                 />
-                <div className={loginStyles.statement}>비밀번호</div>
+                <div className={loginStyles.statement}>이메일</div>
                 <input 
                     name="pwd" 
                     className={loginStyles.input}
@@ -97,11 +76,8 @@ export default function Login() {
                     value={pwd}
                     type={"password"}
                 />
-                <Link href="/login/findpw">
-                <div className={loginStyles["pwd-find-txt"]}>비밀번호를 잊어버렸나요?</div>
-                </Link>
             </div>
-            <div className={loginStyles["login-btn"]} onClick={onLogin}>로그인</div>
+            <div className={loginStyles["login-btn"]}>비밀번호 찾기</div>
             <div className={loginStyles["join-content"]}>
                 <div className={loginStyles.desc}>아직 회원이 아니신가요?</div>
                 <Link href="/signup">

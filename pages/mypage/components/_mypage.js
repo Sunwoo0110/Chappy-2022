@@ -43,7 +43,7 @@ function StudentInfo() {
                 </Link>
             </div>
             <div className={styles.studentinfo}>
-                <div className={styles.studentinfo_image}>사진</div>
+                {/* <div className={styles.studentinfo_image}>사진</div> */}
                 <div style={{width:"30%"}}>
                     <div className={styles.studentinfo_data}>
                         <div className={styles.studentinfo_1}>이름</div>
@@ -112,7 +112,7 @@ function LearningInfo() {
                 <div className={styles.learninginfo}>
                     <div className={styles.section_title_bg}>
                         <div>이번학기 출석부</div>
-                        <div className={styles.moving_page}>과목별로 보기 ></div>
+                        {/* <div className={styles.moving_page}>과목별로 보기 ></div> */}
                     </div>
                     <div className={styles.attendance}>
                         <div className={styles.attendance_item}>
