@@ -35,7 +35,8 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
         document.getElementById('english_name').value!=='' &&
         document.getElementById('lecture_num').value!=='' &&
         document.getElementById('lecture_date').value!=='' &&
-        document.getElementById('description').value!==''){
+        document.getElementById('description').value!=='' &&
+        document.getElementById('classroom').value!=='' ){
             await axios.put('/api/lecture/info', {
                 "name": document.getElementById('name').value,
                 "english_name": document.getElementById('english_name').value,
@@ -52,6 +53,7 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
                 "is_opened": is_opened,
                 "saved_at": new Date(),
                 "user_list": [],
+                "classroom": document.getElementById('classroom').value,
             })
             .catch(error => {
                 console.log("failed");
@@ -69,6 +71,9 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
             document.getElementById('lecture_num').value = null; 
             document.getElementById('description').value = null; 
             document.getElementById('lecture_date').value = null;
+            document.getElementById('lecture_type').selectedIndex = 0;
+            document.getElementById('classroom').value = "i-Campus";
+            document.getElementById('classroom').readOnly = true;
         }
         else{
             var checkerModal = document.getElementById('checker')
@@ -106,6 +111,7 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
             "saved_at": new Date(),
             "user_list": [],
             // "syllabus": reader.result,
+            "classroom": document.getElementById('classroom').value,
         })
         .catch(error => {
             console.log("failed");
@@ -123,6 +129,9 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
         document.getElementById('lecture_num').value = null; 
         document.getElementById('description').value = null; 
         document.getElementById('lecture_date').value = null;
+        document.getElementById('lecture_type').selectedIndex = 0;
+        document.getElementById('classroom').value = "i-Campus";
+        document.getElementById('classroom').readOnly = true;
     }
 
     const giveFeedback = () => {
@@ -134,6 +143,17 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
         console.log("no feedback")
         setFeedback(false);
     };
+
+    const handelLectureTypeChange = (e) => {
+        if (e.target.value === "대면 강의"){
+            document.getElementById('classroom').value = "";
+            document.getElementById('classroom').readOnly = false;
+        }
+        else{
+            document.getElementById('classroom').value = "i-Campus";
+            document.getElementById('classroom').readOnly = true;
+        }
+    }
 
     return (
     <div className={styles.column}>
@@ -190,11 +210,18 @@ const Adder = ({ feedback, setFeedback, is_opened, setIsOpened}) => {
         <div className={styles.row}>
             <div className={styles.row_index}>수업형태</div>
             <div className={styles.row_input}>
-                <select class="form-select form-select-sm" id="lecture_type" aria-label="Floating label select example">
+                <select class="form-select form-select-sm" id="lecture_type" aria-label="Floating label select example" onChange={(e) => handelLectureTypeChange(e)}>
                     <option selected value="실시간 스트리밍 수업">실시간 스트리밍 수업</option>
                     <option value="녹화 강의">녹화 강의</option>
                     <option value="대면 강의">대면 강의</option>
                 </select>
+            </div>
+        </div>
+        <div className={styles.row}>
+            <div className={styles.row_index}>강의실</div>
+            <div className={styles.row_input}>
+                <input id="classroom" type="text" class="form-control"
+                defaultValue={"i-Campus"} readOnly/>
             </div>
         </div>
         <div className={styles.row}>

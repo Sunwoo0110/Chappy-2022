@@ -14,11 +14,47 @@ const fetcher = async (url, queryParams='') => {
         })
 }
 
+const postFetcher = async (url, bodyData={}) => {
+    if (typeof url != 'string')
+        return { data: [] }
+    return await axios({
+        method: 'post',
+        url: url,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: bodyData,
+    }).then((res) => {
+        return res.data
+    })
+}
+
 const NoticeList = ({lecture_id}) => {
-    const paramData = {
-        lecture_id: lecture_id,
+    const bodyData = {
+        pipeline: [
+            {
+                $match: {
+                    $expr: {
+                        $eq: [
+                            '$lecture_id' , 
+                            { $toObjectId: lecture_id } 
+                        ]
+                    },
+                },
+            },
+            {
+                $project: {
+                    description:0,
+                }
+            },
+            {
+                $sort: {
+                    created_at: -1,
+                }
+            }
+        ]
     };
-    const { data, error } = useSWR([`/api/lecture/notice`, paramData], fetcher);
+    const { data, error } = useSWR([`/api/lecture/notice/aggregate`, bodyData], postFetcher);
 
     if (error) return <div>Getting Notice Failed</div>
     if (!data) return <div>Loading...</div>

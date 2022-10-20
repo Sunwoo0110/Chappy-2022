@@ -25,6 +25,7 @@ const InfoSchema = new mongoose.Schema({
     },
     saved_at: Date,
     user_list: Array,
+    classroom: String,
 });
 
 const Info = db.models.Info || db.model('Info', InfoSchema, 'info');

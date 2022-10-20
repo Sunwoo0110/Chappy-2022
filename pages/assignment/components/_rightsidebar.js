@@ -94,6 +94,7 @@ function Final() {
   )
 }
 
+/** 실행 **/
 function Output({ code }) {
   const api_url_runcode = '/api/assignment/runcode'
   const [output, setOutput] = useState("실행중...");
