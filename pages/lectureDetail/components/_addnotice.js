@@ -23,7 +23,7 @@ const Adder = ({ lecture_id }) => {
     // if (error) return <div>Getting User Info Failed</div>
     // if (!data) return <div>Loading...</div>
 
-    const registerLecture = async () => {
+    const registerNotice = async () => {
 
         if(document.getElementById('title').value!=='' &&
         document.getElementById('notice_type').value!=='' &&
@@ -90,7 +90,7 @@ const Adder = ({ lecture_id }) => {
         </div>
 
         <div className={styles.buttons}>
-            <button style={{background: "#0B51FF", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} className="btn btn-primary" type="button" onClick={()=>registerLecture()} data-bs-toggle="modal" data-bs-target="#checker">등록하기</button>
+            <button style={{background: "#0B51FF", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} className="btn btn-primary" type="button" onClick={()=>registerNotice()} data-bs-toggle="modal" data-bs-target="#checker">등록하기</button>
         </div>
 
         <div className="modal fade" id="checker" tabindex="-1" aria-labelledby="checkerLabel" aria-hidden="true">
