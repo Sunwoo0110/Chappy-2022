@@ -31,10 +31,15 @@ export default function FindPW() {
         })
         .then(response => response.json())
         .then(response => {
-            // console.log("response.data[0]: ",response.data[0]);
+            console.log("response.data[0]: ",response.data[0]);
             var checkerModal = document.getElementById('checker')
             var modalBody = checkerModal.querySelector('#message')
-            modalBody.textContent = "비밀 번호: "+response.data[0].password;
+            if(response.data.length==0){
+                modalBody.textContent = "잘못된 ID 또는 잘못된 이메일입니다.";
+            }
+            else{
+                modalBody.textContent = "비밀 번호: "+response.data[0].password;
+            }            
         })        
         .catch(function(err) {
             console.log(err);
