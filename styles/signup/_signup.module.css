@@ -1,6 +1,7 @@
 .input-content {
     display: flex;
     flex-direction: column;
+    row-gap: 10px;
     /* justify-content: flex-end; */
     width: 35%;
     /* height: 43%; */

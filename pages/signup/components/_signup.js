@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import commonStyles from "../../../styles/signup/Login.module.css"
-import loginStyles from "../../../styles/signup/_login.module.css"
+import commonStyles from "../../../styles/signup/Signup.module.css"
+import loginStyles from "../../../styles/signup/_signup.module.css"
 import * as userActions from "../../../store/modules/user";
 
 export default function Signup() {
@@ -119,12 +119,12 @@ export default function Signup() {
                     value={id}
                 />
                 <div className={loginStyles.statement}>구분</div>
-                <input 
-                    name="type" 
-                    className={loginStyles.input}
-                    onChange={onChangeInputs}
-                    value={id}
-                />
+                <div className={loginStyles.select_input}>
+                    <select style={{height:'50px'}} class="form-select form-select-sm" id="type" aria-label="Floating label select example">
+                        <option selected value="0">학생</option>
+                        <option value="1">교수</option>
+                    </select>
+                </div>
             </div>
             <div className={loginStyles["login-btn"]}>회원가입</div>
         </div>

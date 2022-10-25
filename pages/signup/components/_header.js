@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import commonStyles from "../../../styles/signup/Login.module.css"
+import commonStyles from "../../../styles/signup/Signup.module.css"
 import headerStyles from "../../../styles/signup/_header.module.css"
 import { IoIosArrowBack } from "react-icons/io";
 
