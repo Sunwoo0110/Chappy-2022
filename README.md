@@ -8,3 +8,6 @@
 ## 2. 실행
 
     npm run dev
+    
+## 3. 빌드할 때 에러
+    rm -rf node_modules && rm package-lock.json && npm i

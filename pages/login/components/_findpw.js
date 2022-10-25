@@ -1,10 +1,8 @@
 import Link from "next/link";
 
-import { useCallback, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useState } from "react";
 import commonStyles from "../../../styles/login/Login.module.css"
 import loginStyles from "../../../styles/login/_login.module.css"
-import * as userActions from "../../../store/modules/user";
 
 export default function FindPW() {
     // const userId = useSelector(state => state.user);

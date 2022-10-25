@@ -20,7 +20,7 @@ export default function AddNotice(props) {
             <Header/>
             <div className={styles.main}>
                 <div className={styles.content}>
-                    <NoticeAdder/>
+                    <NoticeAdder lecture_id={lecture_id}/>
                 </div>
             </div>
             <Footer/>
