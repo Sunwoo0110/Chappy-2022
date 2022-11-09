@@ -58,6 +58,14 @@ const Adder = ({ lecture_id }) => {
         }
     }
 
+    const handleRegisterEvent = () => {
+        var checkerModal = document.getElementById('checker')
+        var modalBody = checkerModal.querySelector('#message')
+        if(modalBody.textContent.includes("등록 완료")){
+            window.history.back();
+        }
+    };
+
     return (
     <div className={styles.column}>
         <div className={styles.row}>
@@ -90,7 +98,7 @@ const Adder = ({ lecture_id }) => {
         </div>
 
         <div className={styles.buttons}>
-            <button style={{background: "#0B51FF", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} className="btn btn-primary" type="button" onClick={()=>registerNotice()} data-bs-toggle="modal" data-bs-target="#checker">등록하기</button>
+            <button style={{background: "#0B51FF", boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", width:"15%"}} className="btn btn-primary" type="button" onClick={()=>registerNotice()}  data-bs-toggle="modal" data-bs-target="#checker">등록하기</button>
         </div>
 
         <div className="modal fade" id="checker" tabindex="-1" aria-labelledby="checkerLabel" aria-hidden="true">
@@ -99,13 +107,12 @@ const Adder = ({ lecture_id }) => {
                     <div className="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
                         <div className="message" id="message">확인 중..</div>
                         <div className={styles.buttons}>
-                            <button type="button" className="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">확인</button>
+                            <button type="button" className="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal" onClick={()=>handleRegisterEvent()}>확인</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div >
     )
 

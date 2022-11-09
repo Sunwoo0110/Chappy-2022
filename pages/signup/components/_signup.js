@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import commonStyles from "../../../styles/signup/Login.module.css"
-import loginStyles from "../../../styles/signup/_login.module.css"
+import commonStyles from "../../../styles/signup/Signup.module.css"
+import loginStyles from "../../../styles/signup/_signup.module.css"
 import * as userActions from "../../../store/modules/user";
 
 export default function Signup() {
@@ -9,11 +9,17 @@ export default function Signup() {
     const userId = useSelector(state => state.user);
 
     const [inputs, setInputs] = useState({
-        id: '',
-        pwd: '',
+        name: '',
+        user_id: '', 
+        password: '', 
+        email: '', 
+        cell_number: '',
+        department: '', 
+        type: '',
+        semester: ''
     });
 
-    const {id, pwd} = inputs;
+    const {name, user_id, password, email, cell_number, department, type, semester} = inputs;
 
     const onChangeInputs = (e) => {
        const {name, value} = e.target;
@@ -33,24 +39,31 @@ export default function Signup() {
 
     async function onLogin() {
         console.log(userId);
-        await fetch('/api/user/profile/login', {
+        await fetch('/api/user/profile', {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json',
             },
             body: JSON.stringify({
-                "id": id,
-                "pwd": pwd,    
+                "name":name,
+                "user_id": user_id,
+                "password": password,   
+                "email":email,
+                "cell_number":cell_number,
+                "department":department,
+                "type":type,
+                "semester":semester,
+                "lecture_list":[],
             }),
         })
         .then(response => response.json())
         .then(response => {
             // console.log(response);
-            //로그인 성공
-            if(response.data!=-1){
-                setUserId(response.data);
-                window.location.href = "/lecture";
-            }
+
+            // if(response.data!=-1){
+            //     setUserId(response.data);
+            //     window.location.href = "/lecture";
+            // }
         })        
         .catch(function(err) {
             console.log(err);
@@ -65,21 +78,21 @@ export default function Signup() {
                     name="name" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={name}
                 />
                 <div className={loginStyles.statement}>ID</div>
                 <input 
-                    name="id" 
+                    name="user_id" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={user_id}
                 />
                 <div className={loginStyles.statement}>비밀번호</div>
                 <input 
-                    name="pwd" 
+                    name="password" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={pwd}
+                    value={password}
                     type={"password"}
                 />
                 <div className={loginStyles.statement}>비밀번호 확인</div>
@@ -95,36 +108,36 @@ export default function Signup() {
                     name="email" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={email}
                 />
                 <div className={loginStyles.statement}>연락처</div>
                 <input 
                     name="cell_number" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={pwd}
+                    value={cell_number}
                 />
                 <div className={loginStyles.statement}>학과</div>
                 <input 
                     name="department" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={department}
                 />
                 <div className={loginStyles.statement}>학기 수</div>
                 <input 
                     name="semester" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={semester}
                 />
                 <div className={loginStyles.statement}>구분</div>
-                <input 
-                    name="type" 
-                    className={loginStyles.input}
-                    onChange={onChangeInputs}
-                    value={id}
-                />
+                <div className={loginStyles.select_input}>
+                    <select style={{height:'50px'}} class="form-select form-select-sm" id="type" aria-label="Floating label select example">
+                        <option selected value="0">학생</option>
+                        <option value="1">교수</option>
+                    </select>
+                </div>
             </div>
             <div className={loginStyles["login-btn"]}>회원가입</div>
         </div>

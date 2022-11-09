@@ -8,8 +8,17 @@ import Footer from "../../components/_footer";
 import LeftSideBar from "../components/_leftsidebar";
 import MyGrade from "../components/_lecturemygrade";
 
-export default function Mygrade() {
+export function getServerSideProps({ params }) {
+    return {
+      props: {
+        params,
+      },
+    };
+}
+
+export default function Mygrade(props) {
     // 내 성적 관리
+    const lecture_id = props.params.id;
     return (
         <div className={styles.container}>
             <Header/>
@@ -18,7 +27,7 @@ export default function Mygrade() {
                     <LeftSideBar mode={2}/>
                 </div>
                 <div className={styles.content}>
-                    <MyGrade/>
+                    <MyGrade lecture_id={lecture_id}/>
                 </div>
             </div>
             <Footer/>
