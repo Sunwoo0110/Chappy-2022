@@ -70,6 +70,8 @@
     background: red;
     order: 1;
     width: 30%;
+    resize: horizontal;
+    overflow: auto;
 }
 
 .codingbox {
@@ -78,6 +80,8 @@
     flex-direction: column;
     order: 2;
     width: 40%;
+    resize: horizontal;
+    overflow: auto;
 }
 
 .rightsidebar {
@@ -86,6 +90,7 @@
     background: blue;
     order: 3;
     width: 30%;
+    flex: auto;
 }
 
 .image_button {
