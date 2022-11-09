@@ -120,9 +120,18 @@ export default function CodingPage(props) {
 
     console.log(action);
     if (action === 'runCode') {
-
+      submit(user_id, assignment, code)
+        .then(submission => {
+          console.log(`Submission ID: ${submission._id}`);
+          // grade(submission._id)
+        });
     } else if (action === 'runTestSuite') {
       setTestQueue(testsuite);
+      submit(user_id, assignment, code)
+        .then(submission => {
+          console.log(`Submission ID: ${submission._id}`);
+          // grade(submission._id)
+        });
     } else if (action === 'submit') {
       submit(user_id, assignment, code)
         .then(submission => {

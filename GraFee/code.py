@@ -1,4 +1,1 @@
-def main(lst):
-    newlist = []
-    
-    return newlist
+reference_code입니다.
