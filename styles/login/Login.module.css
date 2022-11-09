@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    /* height: 100vh; */
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    background: #414E5A;
+    color: #FFFFFF;
+    font-family: 'Apple SD Gothic Neo';
+    font-style: normal;
+    width: 100%;
+    /* height: 25%; */
+    height:250px;
+    /* height: 250px;    
+    height: 35vh; */
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #F8F8F8;
+    color: #4C4C4C;
+    font-family: 'Apple SD Gothic Neo';
+    font-style: normal;
+    width: 100%;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}

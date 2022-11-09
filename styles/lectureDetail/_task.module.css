@@ -1,0 +1,78 @@
+.task {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.task-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 30%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.task-item-done {   
+    width: 15px;
+    height: 15px;
+    background: #0B51FF;    
+    border: 1px solid #0B51FF;
+    border-radius: 15px;
+}
+
+.task-item-undone {   
+    width: 15px;
+    height: 15px;
+    border: 1px solid #0B51FF;
+    border-radius: 15px;
+}
+
+.task-item-title {
+    font-family: 'Apple SD Gothic Neo';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    text-align: start;    
+    color: #4C4C4C;
+    width: 78%;
+}
+
+.task-item-btn {
+    font-family: 'Apple SD Gothic Neo';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 15px;
+    line-height: 18px;
+    color: #FFFFFF;
+    text-align: center;    
+    background: #0B51FF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    padding: 1% 0;
+    width: 11%;
+    cursor: pointer;
+}
+
+.whole-btn {
+    font-family: 'Apple SD Gothic Neo';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 15px;
+    line-height: 18px;
+    color: #FFFFFF;
+    text-align: center;    
+    background: #0B51FF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    padding: 1% 0;
+    width: 13%;
+    cursor: pointer;
+}

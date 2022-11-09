@@ -1,0 +1,59 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    /* height: 100vh; */
+    /* background: #bdbdbd; */
+
+    /* overflow: hidden; */
+    
+    /* overflow-y:auto;  */
+    /* height: 100%; */
+}
+
+.main {
+    width: 100%;
+    /* height: 92%; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* background: #bdbdbd; */
+    column-gap: 1px;
+    margin-top: 60px;
+}
+
+.content {
+    display: flex;
+    background: white;
+    flex-direction: column;
+    width: 70%;
+    /* height: 100%; */
+    padding-top: 30px;
+    padding-bottom: 30px;
+    row-gap: 30px;
+}
+
+.greeting_box {
+    display: flex;
+    background: white;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    background: #F8F8F8;
+    border-radius: 5px;
+    
+}
+
+.greeting_name {
+    color: black;
+    font-weight: bold;
+    font-size: medium;
+}
+
+.greeting_week {
+    color: #0B51FF;
+    font-weight: bold;
+    font-size: medium;
+}

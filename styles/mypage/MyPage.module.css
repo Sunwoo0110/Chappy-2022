@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    /* height: 100vh; */
+    /* background: #bdbdbd; */
+
+    /* overflow: hidden; */
+    
+    /* overflow-y:auto;  */
+    /* height: 100%; */
+}
+
+.main {
+    width: 100%;
+    /* height: 92%; */
+    display: flex;
+    flex-direction: row;
+    background: #bdbdbd;
+    column-gap: 1px;
+    margin-top: 60px;
+}
+
+.leftsidebar {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    order: 1;
+    width: 25%;
+    /* height: 100%; */
+}
+
+.content {
+    display: flex;
+    background: white;
+    flex-direction: column;
+    order: 2;
+    width: 75%;
+    /* height: 100%; */
+}

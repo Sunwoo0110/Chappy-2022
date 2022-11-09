@@ -1,71 +1,91 @@
+import styles from "../../../styles/assignment/_sidebar.module.css"
+import { useSelector, useDispatch } from 'react-redux';
+import useSWR, { useSWRConfig } from "swr"
 
-const styles = {
-    leftsidebar: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-        background: 'tomato',
-        rowGap: '5px',
-    },
-    problem: {
-        display: 'flex',
-        flexDirection: 'column',
-        background: 'pink',
-    },
-    testcase: {
-        display: 'flex',
-        flexDirection: 'column',
-        background: 'pink',
-    },
+import * as validationActions from "../../../store/modules/validation";
+
+
+const fetcher = (url) => {
+  // console.log('URL:', url, typeof url)
+  if (typeof url != 'string') return { data: [] }
+  return fetch(url).then((res) => {
+    // console.log(res)
+    return res.json()
+  })
 }
 
-function Problem(props) {
+export default function LeftSideBar({ assignment, testsuite, onInteract }) {
+
+  function Problem(props) {
     return (
-        <div style={props.style}>
-            <h3>문제</h3>
-            <p>{props.data.description}</p>
-            <p>{props.data.example}</p>
-            <p>{props.data.constraint}</p>
+      <div className={styles.problem}>
+        <div className={styles.section_title}>문제와 제한사항</div>
+
+        <div style={{ overflowY: "scroll", height: "100%" }}>
+          <div className={styles.section_element}>문제</div>
+          <div className={styles.content}>{props.data.description}</div>
+
+          <div className={styles.section_element}>제한사항</div>
+          <div className={styles.content}>{props.data.constraint}</div>
+          {/* <p>{props.data.example}</p> */}
         </div>
+      </div>
     )
-}
+  }
 
-function Testcase(props) {
-    const testcases = props.data
-
+  function TestSuite(props) {
+    console.log('testsuite at left');
+    console.log(testsuite);
+    if (testsuite === undefined) {
+      return (
+        <div className={styles.testcase}>
+          <div className={styles.section_title}>테스트케이스</div>
+          <p>금방 옵니다~</p>
+        </div>
+      )
+    }
     return (
-        <div style={props.style}>
-            <h3>테스트케이스</h3>
-            <ul>
-                {testcases.map((tc) => {
-                    if (!tc.is_open) return
-                    return (
-                        <li key={testcases.indexOf(tc)}>
-                            <div>
-                                {tc.inputs}: {tc.expected_output}
-                                <button onClick={() => navigator.clipboard.writeText(`main(${tc.inputs})`)}>Copy</button>
-                            </div>
-                        </li>
-                    )
-                }
-                )}
-
-            </ul>
+      <div className={styles.testcase}>
+        <div className={styles.section_title}>테스트케이스</div>
+        <div style={{ overflowY: "scroll", height: "100%" }}>
+          <ul style={{ listStyle: "none", paddingLeft: "0px" }}>
+            {testsuite.map((testcase) => {
+              if (!testcase.is_open) return
+              return (
+                <li key={testsuite.indexOf(testcase)} style={{ listStyle: "none", paddingLeft: "0px" }}>
+                  <div className={styles.example_title}>
+                    {`테스트케이스 - ${testsuite.indexOf(testcase) + 1}`}
+                    <button type="button" className={styles.val_button} onClick={() => {
+                      const testNumber = testsuite.indexOf(testcase) + 1;
+                      onInteract(testNumber, testcase.input[0], testcase.output[0]);
+                    }}>검증</button>
+                    <button className={styles.val_button}></button>
+                  </div>
+                  <div className={styles.example_content}>
+                    <div className={styles.testcase_content}>
+                      <div style={{ padding: "5px" }}>{`Input: `}</div>
+                      <div style={{ padding: "5px" }}>{`${testcase.input[0]}`}</div>
+                    </div>
+                    <div className={styles.testcase_content}>
+                      <div style={{ padding: "5px" }}>{`Output: `}</div>
+                      <div style={{ padding: "5px" }}>{`${testcase.output[0]}`}</div>
+                    </div>
+                  </div>
+                </li>
+              )
+            }
+            )}
+          </ul>
         </div>
+      </div>
     )
-}
+  }
 
-export default function LeftSideBar({ assignment, testcase }) {
-
-    return (
-        <div style={styles.leftsidebar}>
-            <Problem
-                style={styles.problem}
-                data={assignment} />
-            <Testcase
-                style={styles.testcase}
-                data={testcase} />
-        </div>
-    )
+  return (
+    // <div style={styles.leftsidebar}>
+    <div className={styles.sidebar}>
+      <Problem data={assignment} />
+      <TestSuite />
+    </div>
+  )
 }
