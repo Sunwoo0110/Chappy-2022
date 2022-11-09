@@ -7,14 +7,14 @@ export default function Header() {
     return (
         <nav className={styles.navbar}>
             <div className={styles.navbar_left}>
-                <Link href="/">
+                <Link href="/lecture">
                     <HouseDoorFill color="blue" size={30}/>
                 </Link>
             </div>
             <div className={styles.navbar_center}>
-                <Link href="/lecture">
+                {/* <Link href="/lecture">
                     <div className={styles.navbar_menu}>강의목록</div>
-                </Link>
+                </Link> */}
                 <Link href="/mypage/myfeedback">
                 <div className={styles.navbar_menu}>나의 피드백</div>
                 </Link>
