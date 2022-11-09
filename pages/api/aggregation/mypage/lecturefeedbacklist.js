@@ -68,6 +68,7 @@ export default async function handler(req, res) {
                     fb["title"] = a.title;
                     let d= new Date(sub.submission_date);
                     fb["date"] = d.getFullYear()+"."+d.getMonth()+"."+d.getDate();
+                    fb["assignment_id"] = a._id;
                     myfeedback.push(fb);                    
                 }
 
