@@ -6,7 +6,16 @@ import commonStyles from "../../../styles/login/Login.module.css"
 import loginStyles from "../../../styles/login/_login.module.css"
 import * as userActions from "../../../store/modules/user";
 
+import { useSession, signIn, signOut } from "next-auth/react"
+
 export default function Login() {
+    const { data: session } = useSession()
+
+    if(session){
+        window.location.href = "/lecture";
+    }
+
+    console.log("session: ",session)
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
 
@@ -32,29 +41,15 @@ export default function Login() {
         dispatch(userActions.setUser(payload));
     }, [dispatch]);
 
-    // const setUserId = useCallback( async () => {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     await dispatch(userActions.setUser(payload));
-    // }, [dispatch, id]);
-
-    // async function setUserId() {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     return await dispatch(userActions.setUser(payload));
-    // }
-
-    // const setUserId = async () => {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     dispatch(userActions.setUser(payload));
-    // }
 
     async function onLogin() {
-        console.log(userId);
+        const response = await signIn("id-password-credential", {
+            id,
+            pwd,
+            redirect: false
+        });
+        console.log("response: ", response);
+
         await fetch('/api/user/profile/login', {
             method: 'POST',
             headers: {
