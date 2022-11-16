@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import useSWR, { useSWRConfig } from "swr"
-import { PlusSquare } from "react-bootstrap-icons"
+import { useSelector } from 'react-redux';
 import styles from "../../../styles/mypage/_mygrade.module.css"
 
 import Title from "./_title"
@@ -16,7 +16,17 @@ const fetcher = (url) => {
 }
 
 
-function TestGrade(){
+function TestGrade({lecture_id}){
+
+    const user = useSelector(state => state.user);
+    const user_id = user.id;
+    const { data, error } = useSWR(`/api/aggregation/mypage/lecturemygrade?user_id=${user_id}&lecture_id=${lecture_id}`, fetcher)
+
+    if (error) return <div>Getting Lectures Failed</div>
+    if (!data) return <div>Loading...</div>
+
+    console.log("data.data: ",data.data);
+
     return(
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
@@ -70,7 +80,7 @@ function TestGrade(){
     )
 }
 
-function SubmittedTask(){
+function SubmittedTask({lecture_id}){
     return(
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
@@ -157,23 +167,14 @@ function DeductionFactor(){
 // _6 환경설정
 // _7 문의하기
 
-export default function MyGrade() {
-    //mode 1: 이번 학기 과목만
-    //mode 2: 모든 과목
-    const [mode2, setMode2] = useState(1);
-
-    
-
+export default function MyGrade({lecture_id}) {
     return (
         <div className={styles.content}>
-
             <Title mode={2}/>
-
-            <TestGrade/>
-            <SubmittedTask/>
+            <TestGrade lecture_id={lecture_id}/>
+            <SubmittedTask lecture_id={lecture_id}/>
             {/* <TestGradeGraph/>
             <DeductionFactor/> */}
-            
         </div>
     )
 }

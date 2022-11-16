@@ -1,3 +1,6 @@
-print("hello world")
-
-## test 1234
+def main(lst):
+    newlist = []
+    for i in lst:
+        if i not in newlist:
+            newlist.append(i)
+    return newlist

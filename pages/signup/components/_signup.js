@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import commonStyles from "../../../styles/signup/Login.module.css"
-import loginStyles from "../../../styles/signup/_login.module.css"
+import commonStyles from "../../../styles/signup/Signup.module.css"
+import loginStyles from "../../../styles/signup/_signup.module.css"
 import * as userActions from "../../../store/modules/user";
 
 export default function Signup() {
