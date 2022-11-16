@@ -64,6 +64,13 @@ class TestSuite(dict):
             return 0
         return len(self) - self.count_passes
     
+    @property
+    def result(self) -> dict:
+        result_dict = {}
+        for tc_no, testcase in self.items():
+            result_dict[tc_no] = (testcase.input, testcase.expects, testcase.output)
+        return result_dict
+
     def sorted_testnums(self) -> list[int]:
         return sorted(self.keys())
     

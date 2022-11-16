@@ -14,6 +14,7 @@ export default async function handler(req, res) {
   switch (method) {
     case 'POST':
       const code = req.body?.code;
+      const mode = req.body?.mode;
       if (code == undefined || code == null) {
         res.status(400).json({ errorMessage: "There is no code to handle." });
       }
@@ -28,7 +29,7 @@ export default async function handler(req, res) {
         pythonOptions: ['-u'],
         scriptPath: graFeeHomeDir,
         args: [
-          '--mode', 'hint',
+          '--mode', mode,
           '--target', codePath,
           '--assignment_id', assignmentId,
           '--code', code,

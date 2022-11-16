@@ -4,3 +4,4 @@ def main(lst):
         if elem not in new_lst:
             new_lst.append(elem)
 
+    return new_lst
