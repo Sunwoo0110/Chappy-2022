@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     {/* <PersistGate persistor={store.__persistor} loading={<div>loading...</div>}>
       <Component {...pageProps} />
     </PersistGate> */}
-    <SessionProvider session={session}>
+    <SessionProvider session={session} refetchInterval={5 * 60}>
       <Component {...pageProps}/>
     </SessionProvider>
     </>

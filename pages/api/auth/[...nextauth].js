@@ -3,7 +3,7 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from "next-auth/providers/credentials"
 
 export default NextAuth({
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.SECRET,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -14,7 +14,7 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         // console.log("credentials: ",credentials)
-        const res = await fetch("http://localhost:3000/api/user/profile/login", {
+        const res = await fetch("http://localhost:3000/api/aggregation/login/login/", {
           method: 'POST',
           headers: {
               "Content-Type": 'application/json',
@@ -26,7 +26,7 @@ export default NextAuth({
         })
 
         const user = await res.json()
-
+        console.log("user.data: ",user.data)
         if (res.ok && user.data!=-1) {
           console.log("user: ",user)
           return user

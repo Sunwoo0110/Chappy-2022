@@ -6,8 +6,12 @@ import styles from '../styles/Home.module.css'
 import { useSession, signIn, signOut } from "next-auth/react"
 
 export default function Home() {
-  const { data: session } = useSession()
-  // console.log("home session: ",session)
+  const { data: session, status } = useSession()
+  const loading = status === "loading"
+  if (loading) {
+		return <div>loading...</div>;
+	};
+  console.log("home session: ",session)
   return (
     <div className={styles.container}>
       <Head>
