@@ -8,22 +8,22 @@ export default function FindPW() {
     // const userId = useSelector(state => state.user);
 
     const [inputs, setInputs] = useState({
-        id: '',
+        user_id: '',
         email: '',
     });
 
-    const {id, email} = inputs;
+    const {user_id, email} = inputs;
 
     const onChangeInputs = (e) => {
-       const {name, value} = e.target;
-       setInputs({
+        const {name, value} = e.target;
+        setInputs({
             ...inputs,
             [name]:value,
-       });
+        });
     };
 
     async function findPw() {
-        await fetch(`/api/user/profile?user_id=${id}&email=${email}`, {
+        await fetch(`/api/user/profile?user_id=${user_id}&email=${email}`, {
             method: 'GET',
             headers: {
                 "Content-Type": 'application/json',
@@ -51,10 +51,10 @@ export default function FindPW() {
             <div className={loginStyles["input-content"]}>
                 <div className={loginStyles.statement}>ID</div>
                 <input 
-                    name="id" 
+                    name="user_id" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={user_id}
                 />
                 <div className={loginStyles.statement}>이메일</div>
                 <input 

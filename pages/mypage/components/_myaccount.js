@@ -62,7 +62,7 @@ function StudentInfo_edit() {
         }
 
         await fetch(`/api/user/profile?_id=${user_id}`, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 "Content-Type": 'application/json',
             },
@@ -153,7 +153,7 @@ function ChangePassword() {
             }
     
             await fetch(`/api/user/profile?_id=${user_id}`, {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     "Content-Type": 'application/json',
                 },

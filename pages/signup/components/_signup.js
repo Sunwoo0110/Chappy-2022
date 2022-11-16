@@ -10,64 +10,77 @@ export default function Signup() {
 
     const [inputs, setInputs] = useState({
         name: '',
-        user_id: '', 
-        password: '', 
-        email: '', 
+        user_id: '',
+        password: '',
+        pwdcheck: '',
+        email: '',
         cell_number: '',
-        department: '', 
+        department: '',
+        semester: '',
         type: '',
-        semester: ''
     });
 
-    const {name, user_id, password, email, cell_number, department, type, semester} = inputs;
+    const {name, user_id, password, pwdcheck, email, cell_number, department, semester, type} = inputs;
 
     const onChangeInputs = (e) => {
-       const {name, value} = e.target;
-       setInputs({
+        const {name, value} = e.target;
+        setInputs({
             ...inputs,
             [name]:value,
-       });
+        });
     };
 
-    const setUserId = useCallback( (user_id) => {
-        let payload = {
-            id: user_id,
-        };
-        dispatch(userActions.setUser(payload));
-    }, [dispatch]);
+    // const setUserId = useCallback( (user_id) => {
+    //     let payload = {
+    //         id: user_id,
+    //     };
+    //     dispatch(userActions.setUser(payload));
+    // }, [dispatch]);
 
 
-    async function onLogin() {
-        console.log(userId);
-        await fetch('/api/user/profile', {
-            method: 'POST',
-            headers: {
-                "Content-Type": 'application/json',
-            },
-            body: JSON.stringify({
-                "name":name,
-                "user_id": user_id,
-                "password": password,   
-                "email":email,
-                "cell_number":cell_number,
-                "department":department,
-                "type":type,
-                "semester":semester,
-                "lecture_list":[],
-            }),
-        })
-        .then(response => response.json())
-        .then(response => {
-            // console.log(response);
+    async function Signup() {
+        // console.log(userId);
 
-            // if(response.data!=-1){
-            //     setUserId(response.data);
-            //     window.location.href = "/lecture";
-            // }
-        })        
-        .catch(function(err) {
-            console.log(err);
-        })
+        // 비밀번호 다름
+        if ( password !== pwdcheck ) {
+            alert("비밀 번호가 다릅니다");
+        } else {
+            await fetch('/api/aggregation/signup/signup', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'application/json',
+                },
+                body: JSON.stringify({
+                    "name": name,
+                    "user_id": user_id,
+                    "password": password,
+                    "email": email,
+                    "cell_number": cell_number,
+                    "department": department,
+                    "semester": parseInt(semester),
+                    "type": parseInt(type),
+                }),
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response.data);
+                var checkerModal = document.getElementById('checker')
+                var modalBody = checkerModal.querySelector('#message')
+                // 회원 가입 성공
+                if(response.data!=-1){
+                    // setUserId(response.data);
+                    modalBody.textContent = "회원 가입에 성공하였습니다!";            
+                    window.location.href = "/login";
+                } 
+                // 실패
+                else {
+                    modalBody.textContent = "회원 가입에 실패하였습니다";
+                }
+            })        
+            .catch(function(err) {
+                console.log(err);
+            })
+        }
     };
 
     return (
@@ -100,7 +113,7 @@ export default function Signup() {
                     name="pwdcheck" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={pwd}
+                    value={pwdcheck}
                     type={"password"}
                 />
                 <div className={loginStyles.statement}>이메일</div>
@@ -109,6 +122,7 @@ export default function Signup() {
                     className={loginStyles.input}
                     onChange={onChangeInputs}
                     value={email}
+                    type={"email"}
                 />
                 <div className={loginStyles.statement}>연락처</div>
                 <input 
@@ -116,6 +130,7 @@ export default function Signup() {
                     className={loginStyles.input}
                     onChange={onChangeInputs}
                     value={cell_number}
+                    type={"tel"}
                 />
                 <div className={loginStyles.statement}>학과</div>
                 <input 
@@ -132,14 +147,27 @@ export default function Signup() {
                     value={semester}
                 />
                 <div className={loginStyles.statement}>구분</div>
-                <div className={loginStyles.select_input}>
-                    <select style={{height:'50px'}} class="form-select form-select-sm" id="type" aria-label="Floating label select example">
-                        <option selected value="0">학생</option>
-                        <option value="1">교수</option>
-                    </select>
+                <input 
+                    name="type" 
+                    className={loginStyles.input}
+                    onChange={onChangeInputs}
+                    value={type}
+                />
+            </div>
+            <div className={loginStyles["login-btn"]} onClick={Signup} data-bs-toggle="modal" data-bs-target="#checker">회원가입</div>
+            <div class="modal fade" id="checker" tabindex="-1" aria-labelledby="checkerLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                            <div className="message" id="message">확인 중..</div>
+                            <div>
+                                <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">확인</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className={loginStyles["login-btn"]}>회원가입</div>
         </div>
+        
     );
 }

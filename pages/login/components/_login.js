@@ -27,11 +27,11 @@ export default function Login() {
     const {id, pwd} = inputs;
 
     const onChangeInputs = (e) => {
-       const {name, value} = e.target;
-       setInputs({
+        const {name, value} = e.target;
+        setInputs({
             ...inputs,
             [name]:value,
-       });
+        });
     };
 
     const setUserId = useCallback( (user_id) => {
@@ -41,16 +41,24 @@ export default function Login() {
         dispatch(userActions.setUser(payload));
     }, [dispatch]);
 
+    // const setUserId = useCallback( async () => {
+    //     let payload = {
+    //         id: id,
+    //     };
+    //     await dispatch(userActions.setUser(payload));
+    // }, [dispatch, id]);
 
     async function onLogin() {
+
         const response = await signIn("id-password-credential", {
             id,
             pwd,
             redirect: false
         });
         console.log("response: ", response);
-
-        await fetch('/api/user/profile/login', {
+        
+        console.log(userId);
+        await fetch('/api/aggregation/login/login', {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json',
@@ -74,6 +82,12 @@ export default function Login() {
         })
     };
 
+    const onSubmitSearch = (e) => {
+        if (e.key === "Enter") {
+            onLogin();
+        }
+    };
+
     return (
         <div className={commonStyles.main}>
             <div className={loginStyles["input-content"]}>
@@ -83,6 +97,7 @@ export default function Login() {
                     className={loginStyles.input}
                     onChange={onChangeInputs}
                     value={id}
+                    onKeyDown={onSubmitSearch}
                 />
                 <div className={loginStyles.statement}>비밀번호</div>
                 <input 
@@ -91,6 +106,7 @@ export default function Login() {
                     onChange={onChangeInputs}
                     value={pwd}
                     type={"password"}
+                    onKeyDown={onSubmitSearch}
                 />
                 <Link href="/login/findpw">
                 <div className={loginStyles["pwd-find-txt"]}>비밀번호를 잊어버렸나요?</div>

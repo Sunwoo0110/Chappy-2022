@@ -75,6 +75,12 @@ const Searcher = () => {
         })
     }
 
+    const onSubmitSearch = (e) => {
+        if (e.key === "Enter") {
+            clickHandler();
+        }
+    };
+
     return (
     <div className={styles.column}>
         <div className={styles.criteria}>
@@ -106,7 +112,8 @@ const Searcher = () => {
                 </select>
             </div>
             <div className={styles.criteria_3}>
-                <input id="name" placeholder="검색어를 입력해주세요" type="text" class="form-control" onChange={(e) => setTitle(e.target.value)}/>
+                <input id="name" placeholder="검색어를 입력해주세요" type="text" class="form-control" onChange={(e) => setTitle(e.target.value)}
+                onKeyDown={onSubmitSearch}/>
             </div>
             <div className={styles.criteria_4}>
                 <Search style={{cursor:"pointer"}} onClick={()=>clickHandler()}/>
