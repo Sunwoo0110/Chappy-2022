@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Bootstrap, PlusSquare } from "react-bootstrap-icons"
 import styles from "../../../styles/mypage/_mygrade.module.css"
 import Chart from 'chart.js/auto';
- 
+import { Line } from 'react-chartjs-2';
 
 import Title from "./_title"
 
@@ -29,44 +29,34 @@ function Grade(){
     
     console.log("data.data: ",data.data)
 
-    var chart;
-    const loading = async () => {
-        if (chart !== undefined) {
-            console.log("destroy")
-            chart.destroy();
-        }
-        chart = new Chart(document.getElementById("myChart"), {
-            type: 'line',
-            data: {
-                labels: data.data.semesters,
-                datasets: [{
-                    data: data.data.grades,
-                    borderColor: "#0B51FF",
-                    borderWidth: 2
-                }]
+    let d =  {
+        labels: data.data.semesters,
+        datasets: [{
+            data: data.data.grades,
+            borderColor: "#0B51FF",
+            borderWidth: 2
+        }]
+    };
+    let options= {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                }
             },
-            options: {
-                responsive: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        grid: {
-                            display: true
-                        }
-                    }
+            y: {
+                grid: {
+                    display: true
                 }
             }
-        });
-    };
+        }
+    }
 
     return(
         <div className={styles.section_bg}>
@@ -93,7 +83,7 @@ function Grade(){
                     <option value="2">뭐가 있지</option>
                 </select>
             </div>
-            <canvas onClick={()=>loading()} style={{width:"100%", height:"300px"}} id="myChart" ></canvas>
+            <Line type="line" data={d} options={options}/>
         </div>
     )
 }
