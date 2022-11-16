@@ -25,9 +25,12 @@ parser.add_argument('--mode', '-m', default='hint',
                     help="Generation mode for a given program")
 parser.add_argument('--target', '-t', default='code.py',
                     help="A path of target code from student")
-parser.add_argument('--assignment-id', '-a',
+parser.add_argument('--assignment_id', '-a',
                     required=True,
                     help="A path of target code from student")
+parser.add_argument('--code', '-c',
+                    help="A code of target program from student")
+
 args = parser.parse_args()
 
 HOME = os.path.dirname(os.path.dirname(__file__))
@@ -38,7 +41,10 @@ if __name__ == "__main__":
     assignment_id = ObjectId(args.assignment_id)
 
     # Prepare the target Program
-    code = open(args.target).read()
+    if args.code:
+        code = args.code
+    else:
+        code = open(args.target).read()
     program = Program(code)
 
     # Validate the program
@@ -90,3 +96,4 @@ if __name__ == "__main__":
     assert new_test_results.is_all_passed
 
     print(json.dumps(program_with_feedback.hint))
+

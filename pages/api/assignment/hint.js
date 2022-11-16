@@ -24,13 +24,14 @@ export default async function handler(req, res) {
 
       const options = {
         mode: 'text',
-        pythonPath: '/Users/jeonghohyeon/opt/anaconda3/envs/soty/bin/python',
+        pythonPath: '',
         pythonOptions: ['-u'],
         scriptPath: graFeeHomeDir,
         args: [
           '--mode', 'hint',
           '--target', codePath,
-          '--assignment-id', assignmentId,
+          '--assignment_id', assignmentId,
+          '--code', code,
         ],
       }
 
