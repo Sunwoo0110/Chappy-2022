@@ -6,51 +6,52 @@ import commonStyles from "../../../styles/login/Login.module.css"
 import loginStyles from "../../../styles/login/_login.module.css"
 import * as userActions from "../../../store/modules/user";
 
-export default function Login() {
+export default function FindPW() {
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
 
     const [inputs, setInputs] = useState({
-        id: '',
-        pwd: '',
+        user_id: '',
+        email: '',
     });
 
-    const {id, pwd} = inputs;
+    const {user_id, email} = inputs;
 
     const onChangeInputs = (e) => {
-       const {name, value} = e.target;
-       setInputs({
+        const {name, value} = e.target;
+        setInputs({
             ...inputs,
             [name]:value,
-       });
+        });
     };
 
-    const setUserId = useCallback( (user_id) => {
-        let payload = {
-            id: user_id,
-        };
-        dispatch(userActions.setUser(payload));
-    }, [dispatch]);
+    // const setUserId = useCallback( (user_id) => {
+    //     let payload = {
+    //         id: user_id,
+    //     };
+    //     dispatch(userActions.setUser(payload));
+    // }, [dispatch]);
 
-    async function onLogin() {
-        console.log(userId);
-        await fetch('/api/user/profile/login', {
+    async function FindPW() {
+        // console.log(userId);
+        await fetch('/api/aggregation/login/findpw', {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json',
             },
             body: JSON.stringify({
-                "id": id,
-                "pwd": pwd,    
+                "user_id": user_id,
+                "email": email,    
             }),
         })
         .then(response => response.json())
         .then(response => {
             // console.log(response);
-            //로그인 성공
+            // 비밀 번호 찾기 성공
             if(response.data!=-1){
-                setUserId(response.data);
-                window.location.href = "/lecture";
+                alert("비밀 번호는 " + response.data)
+            } else {
+                alert("회원 정보가 없습니다.")
             }
         })        
         .catch(function(err) {
@@ -63,21 +64,20 @@ export default function Login() {
             <div className={loginStyles["input-content"]}>
                 <div className={loginStyles.statement}>ID</div>
                 <input 
-                    name="id" 
+                    name="user_id" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={user_id}
                 />
                 <div className={loginStyles.statement}>이메일</div>
                 <input 
-                    name="pwd" 
+                    name="email" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={pwd}
-                    type={"password"}
+                    value={email}
                 />
             </div>
-            <div className={loginStyles["login-btn"]}>비밀번호 찾기</div>
+            <div className={loginStyles["login-btn"]} onClick={FindPW}>비밀번호 찾기</div>
             <div className={loginStyles["join-content"]}>
                 <div className={loginStyles.desc}>아직 회원이 아니신가요?</div>
                 <Link href="/signup">

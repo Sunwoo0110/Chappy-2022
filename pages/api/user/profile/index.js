@@ -20,17 +20,16 @@ export default async function handler(req, res) {
 
         case 'POST':
             try {
-                console.log(req.body.data)
-                const user = await Profile.create({
-                    name: req.body.data.name,
-                    user_id: req.body.data.user_id,
-                    password: req.body.data.pwd,
-                    email: req.body.data.email,
-                    cell_number: req.body.data.cell_number,
-                    department: req.body.data.department,
-                    semester: req.body.data.semester,
-                    type: req.body.data.type,
-                });
+                console.log(req.body.data) 
+                    // name: req.body.data.name,
+                    // user_id: req.body.data.user_id,
+                    // password: req.body.data.password,
+                    // email: req.body.data.email,
+                    // cell_number: req.body.data.cell_number,
+                    // department: req.body.data.department,
+                    // semester: req.body.data.semester,
+                    // type: req.body.data.type,
+                const user = await Profile.create(req.body.data);
                 res.status(200).json({ success: true, data: user })
             } catch (error) {
                 res.status(400).json({ success: false, error: error })

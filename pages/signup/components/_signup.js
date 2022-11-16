@@ -11,7 +11,7 @@ export default function Signup() {
     const [inputs, setInputs] = useState({
         name: '',
         user_id: '',
-        pwd: '',
+        password: '',
         pwdcheck: '',
         email: '',
         cell_number: '',
@@ -20,7 +20,7 @@ export default function Signup() {
         type: '',
     });
 
-    const {name, user_id, pwd, pwdcheck, email, cell_number, department, semester, type} = inputs;
+    const {name, user_id, password, pwdcheck, email, cell_number, department, semester, type} = inputs;
 
     const onChangeInputs = (e) => {
         const {name, value} = e.target;
@@ -42,7 +42,7 @@ export default function Signup() {
         // console.log(userId);
 
         // 비밀번호 다름
-        if ( pwd !== pwdcheck ) {
+        if ( password !== pwdcheck ) {
             alert("비밀 번호가 다릅니다");
         } else {
             await fetch('/api/aggregation/signup/signup', {
@@ -53,7 +53,7 @@ export default function Signup() {
                 body: JSON.stringify({
                     "name": name,
                     "user_id": user_id,
-                    "pwd": pwd,
+                    "password": password,
                     "email": email,
                     "cell_number": cell_number,
                     "department": department,
@@ -96,10 +96,10 @@ export default function Signup() {
                 />
                 <div className={loginStyles.statement}>비밀번호</div>
                 <input 
-                    name="pwd" 
+                    name="password" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={pwd}
+                    value={password}
                     type={"password"}
                 />
                 <div className={loginStyles.statement}>비밀번호 확인</div>
