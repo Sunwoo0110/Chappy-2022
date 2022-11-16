@@ -4,8 +4,9 @@ import React, { useEffect } from 'react';
 import { wrapper } from '../store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { useStore } from 'react-redux';
+import { SessionProvider } from "next-auth/react"
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const store = useStore((state) => state);
 
   useEffect(() => {
@@ -16,9 +17,14 @@ function MyApp({ Component, pageProps }) {
    typeof document !== undefined ? require("bootstrap/dist/js/bootstrap") : null;
  }, []);
   return(
-    <PersistGate persistor={store.__persistor} loading={<div>loading...</div>}>
+    <>
+    {/* <PersistGate persistor={store.__persistor} loading={<div>loading...</div>}>
       <Component {...pageProps} />
-    </PersistGate>
+    </PersistGate> */}
+    <SessionProvider session={session}>
+      <Component {...pageProps}/>
+    </SessionProvider>
+    </>
   ) 
 }
 

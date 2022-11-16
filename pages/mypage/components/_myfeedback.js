@@ -36,7 +36,7 @@ function TotalFeedback(){
                     <div className={styles.feedback_2}>{data.data.checked_feedback}개</div>
                 </div>
                 <div className={styles.feedback_item}>
-                    <div className={styles.feedback_1}>놓친 시험</div>
+                    <div className={styles.feedback_1}>놓친 과제</div>
                     <div className={styles.feedback_3}>{data.data.missed}개</div>
                 </div>
             </div>

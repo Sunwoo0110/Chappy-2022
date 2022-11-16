@@ -12,6 +12,8 @@ import styles from "../../styles/lecture/Lecture.module.css";
 import LectureList from "./components/_lecturelist";
 import Deadline from "./components/_deadline";
 
+import { useSession, signIn, signOut } from "next-auth/react"
+
 
 const fetcher = (url) => {
     // console.log('URL:', url, typeof url)
@@ -24,6 +26,13 @@ const fetcher = (url) => {
 
 
 export default function Index() {
+    const router = useRouter();
+    const { data: session } = useSession()
+    // if(!session){
+    //     router.push('/')
+    // }
+    
+
     const user = useSelector(state => state.user);
     const user_id = user.id;
     const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
@@ -31,7 +40,7 @@ export default function Index() {
     if (error) return <div>Getting Info Failed</div>
     if (!data) return <div>Loading...</div>
 
-    const router = useRouter();
+    
 
     async function toAddLecture() {
         router.push('/lecture/addlecture')
