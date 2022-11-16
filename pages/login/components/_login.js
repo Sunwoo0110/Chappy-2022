@@ -9,13 +9,6 @@ import * as userActions from "../../../store/modules/user";
 import { useSession, signIn, signOut } from "next-auth/react"
 
 export default function Login() {
-    const { data: session } = useSession()
-
-    if(session){
-        window.location.href = "/lecture";
-    }
-
-    console.log("session: ",session)
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
 
@@ -41,12 +34,18 @@ export default function Login() {
         dispatch(userActions.setUser(payload));
     }, [dispatch]);
 
-    // const setUserId = useCallback( async () => {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     await dispatch(userActions.setUser(payload));
-    // }, [dispatch, id]);
+    //===================================
+
+    const { data: session, status } = useSession();
+    const loading = status === "loading";
+    if (loading) {
+		return (<div>loading...</div>);
+	};
+    if(session){
+        window.location.href = "/lecture";
+    }
+
+    console.log("session: ",session)
 
     async function onLogin() {
 
@@ -56,6 +55,7 @@ export default function Login() {
             redirect: false
         });
         console.log("response: ", response);
+        window.location.href = "/lecture";
         
         console.log(userId);
         await fetch('/api/aggregation/login/login', {
@@ -74,7 +74,8 @@ export default function Login() {
             //로그인 성공
             if(response.data!=-1){
                 setUserId(response.data);
-                window.location.href = "/lecture";
+                console.log("로그인 성공")
+                // window.location.href = "/lecture";
             }
         })        
         .catch(function(err) {
