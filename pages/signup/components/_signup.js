@@ -9,52 +9,72 @@ export default function Signup() {
     const userId = useSelector(state => state.user);
 
     const [inputs, setInputs] = useState({
-        id: '',
+        name: '',
+        user_id: '',
         pwd: '',
+        pwdcheck: '',
+        email: '',
+        cell_number: '',
+        department: '',
+        semester: '',
+        type: '',
     });
 
-    const {id, pwd} = inputs;
+    const {name, user_id, pwd, pwdcheck, email, cell_number, department, semester, type} = inputs;
 
     const onChangeInputs = (e) => {
-       const {name, value} = e.target;
-       setInputs({
+        const {name, value} = e.target;
+        setInputs({
             ...inputs,
             [name]:value,
-       });
+        });
     };
 
-    const setUserId = useCallback( (user_id) => {
-        let payload = {
-            id: user_id,
-        };
-        dispatch(userActions.setUser(payload));
-    }, [dispatch]);
+    // const setUserId = useCallback( (user_id) => {
+    //     let payload = {
+    //         id: user_id,
+    //     };
+    //     dispatch(userActions.setUser(payload));
+    // }, [dispatch]);
 
 
-    async function onLogin() {
-        console.log(userId);
-        await fetch('/api/user/profile/login', {
-            method: 'POST',
-            headers: {
-                "Content-Type": 'application/json',
-            },
-            body: JSON.stringify({
-                "id": id,
-                "pwd": pwd,    
-            }),
-        })
-        .then(response => response.json())
-        .then(response => {
-            // console.log(response);
-            //로그인 성공
-            if(response.data!=-1){
-                setUserId(response.data);
-                window.location.href = "/lecture";
-            }
-        })        
-        .catch(function(err) {
-            console.log(err);
-        })
+    async function Signup() {
+        // console.log(userId);
+
+        // 비밀번호 다름
+        if ( pwd !== pwdcheck ) {
+            alert("비밀 번호가 다릅니다");
+        } else {
+            await fetch('/api/aggregation/signup/signup', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'application/json',
+                },
+                body: JSON.stringify({
+                    "name": name,
+                    "user_id": user_id,
+                    "pwd": pwd,
+                    "email": email,
+                    "cell_number": cell_number,
+                    "department": department,
+                    "semester": parseInt(semester),
+                    "type": parseInt(type),
+                }),
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response.data);
+                // 회원 가입 성공
+                if(response.data!=-1){
+                    // setUserId(response.data);
+                    alert("회원 가입 성공");
+                    swindow.location.href = "/login";
+                }
+            })        
+            .catch(function(err) {
+                console.log(err);
+            })
+        }
     };
 
     return (
@@ -65,14 +85,14 @@ export default function Signup() {
                     name="name" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={name}
                 />
                 <div className={loginStyles.statement}>ID</div>
                 <input 
-                    name="id" 
+                    name="user_id" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={user_id}
                 />
                 <div className={loginStyles.statement}>비밀번호</div>
                 <input 
@@ -87,7 +107,7 @@ export default function Signup() {
                     name="pwdcheck" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={pwd}
+                    value={pwdcheck}
                     type={"password"}
                 />
                 <div className={loginStyles.statement}>이메일</div>
@@ -95,38 +115,40 @@ export default function Signup() {
                     name="email" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={email}
+                    type={"email"}
                 />
                 <div className={loginStyles.statement}>연락처</div>
                 <input 
                     name="cell_number" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={pwd}
+                    value={cell_number}
+                    type={"tel"}
                 />
                 <div className={loginStyles.statement}>학과</div>
                 <input 
                     name="department" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={department}
                 />
                 <div className={loginStyles.statement}>학기 수</div>
                 <input 
                     name="semester" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={semester}
                 />
                 <div className={loginStyles.statement}>구분</div>
                 <input 
                     name="type" 
                     className={loginStyles.input}
                     onChange={onChangeInputs}
-                    value={id}
+                    value={type}
                 />
             </div>
-            <div className={loginStyles["login-btn"]}>회원가입</div>
+            <div className={loginStyles["login-btn"]} onClick={Signup}>회원가입</div>
         </div>
     );
 }

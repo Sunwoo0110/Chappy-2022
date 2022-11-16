@@ -18,11 +18,11 @@ export default function Login() {
     const {id, pwd} = inputs;
 
     const onChangeInputs = (e) => {
-       const {name, value} = e.target;
-       setInputs({
+        const {name, value} = e.target;
+        setInputs({
             ...inputs,
             [name]:value,
-       });
+        });
     };
 
     const setUserId = useCallback( (user_id) => {
@@ -55,7 +55,7 @@ export default function Login() {
 
     async function onLogin() {
         console.log(userId);
-        await fetch('/api/user/profile/login', {
+        await fetch('/api/aggregation/login/login', {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json',
