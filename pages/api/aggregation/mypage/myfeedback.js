@@ -20,6 +20,7 @@ export default async function handler(req, res) {
                 var lecID = users.data.data[0].lecture_list;
                 // console.log("lecID: ", lecID)
 
+
                 const assignments = await axios.get('/api/lecture/assignment', {
                     params: {
                         lecture_id: {$in: lecID},
@@ -64,10 +65,23 @@ export default async function handler(req, res) {
                     checked_feedbacks=checked_feedbacks.data.data;
                 }
 
+                let missed=0;
+                const submissionsRef = await Promise.all(submissions.data.data.map( async (submission) => {
+                    return submission.ref_id;
+                }))
+
+                // console.log("submissionsRef: ",submissionsRef)
+                for(let assignment of assignments.data.data){
+                    if(!submissionsRef.includes(assignment._id)){
+                        // console.log("assignment._id: ",assignment._id)
+                        missed+=1;
+                    }
+                }
+
                 let myfeedback = {};
                 myfeedback["total_feedback"] = feedbacks.length;
                 myfeedback["checked_feedback"] = checked_feedbacks.length;
-                myfeedback["missed"] = assignmentsID.length-submissionsID.length;
+                myfeedback["missed"] = missed;
 
                 // console.log("myfeedback: ",myfeedback)
                 res.status(200).json({ success: true, data: myfeedback});

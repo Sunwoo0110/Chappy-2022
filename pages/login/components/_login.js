@@ -6,7 +6,16 @@ import commonStyles from "../../../styles/login/Login.module.css"
 import loginStyles from "../../../styles/login/_login.module.css"
 import * as userActions from "../../../store/modules/user";
 
+import { useSession, signIn, signOut } from "next-auth/react"
+
 export default function Login() {
+    const { data: session } = useSession()
+
+    if(session){
+        window.location.href = "/lecture";
+    }
+
+    console.log("session: ",session)
     const dispatch = useDispatch();
     const userId = useSelector(state => state.user);
 
@@ -40,6 +49,14 @@ export default function Login() {
     // }, [dispatch, id]);
 
     async function onLogin() {
+
+        const response = await signIn("id-password-credential", {
+            id,
+            pwd,
+            redirect: false
+        });
+        console.log("response: ", response);
+        
         console.log(userId);
         await fetch('/api/aggregation/login/login', {
             method: 'POST',
