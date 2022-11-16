@@ -64,11 +64,17 @@ export default function Signup() {
             .then(response => response.json())
             .then(response => {
                 console.log(response.data);
+                var checkerModal = document.getElementById('checker')
+                var modalBody = checkerModal.querySelector('#message')
                 // 회원 가입 성공
                 if(response.data!=-1){
                     // setUserId(response.data);
-                    alert("회원 가입 성공");
-                    swindow.location.href = "/login";
+                    modalBody.textContent = "회원 가입에 성공하였습니다!";            
+                    window.location.href = "/login";
+                } 
+                // 실패
+                else {
+                    modalBody.textContent = "회원 가입에 실패하였습니다";
                 }
             })        
             .catch(function(err) {
@@ -148,7 +154,20 @@ export default function Signup() {
                     value={type}
                 />
             </div>
-            <div className={loginStyles["login-btn"]} onClick={Signup}>회원가입</div>
+            <div className={loginStyles["login-btn"]} onClick={Signup} data-bs-toggle="modal" data-bs-target="#checker">회원가입</div>
+            <div class="modal fade" id="checker" tabindex="-1" aria-labelledby="checkerLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body" style={{display:"flex", flexDirection:"column",alignItems:"center", rowGap:"5px",margin:"30px"}}>
+                            <div className="message" id="message">확인 중..</div>
+                            <div>
+                                <button type="button" class="btn btn-secondary" style={{flexGrow: "1", flexBasis: "1px",background: "#114AFF"}} data-bs-dismiss="modal">확인</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
     );
 }

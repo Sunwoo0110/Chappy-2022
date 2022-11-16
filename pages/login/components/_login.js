@@ -39,20 +39,6 @@ export default function Login() {
     //     await dispatch(userActions.setUser(payload));
     // }, [dispatch, id]);
 
-    // async function setUserId() {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     return await dispatch(userActions.setUser(payload));
-    // }
-
-    // const setUserId = async () => {
-    //     let payload = {
-    //         id: id,
-    //     };
-    //     dispatch(userActions.setUser(payload));
-    // }
-
     async function onLogin() {
         console.log(userId);
         await fetch('/api/aggregation/login/login', {
@@ -79,6 +65,12 @@ export default function Login() {
         })
     };
 
+    const onSubmitSearch = (e) => {
+        if (e.key === "Enter") {
+            onLogin();
+        }
+    };
+
     return (
         <div className={commonStyles.main}>
             <div className={loginStyles["input-content"]}>
@@ -88,6 +80,7 @@ export default function Login() {
                     className={loginStyles.input}
                     onChange={onChangeInputs}
                     value={id}
+                    onKeyDown={onSubmitSearch}
                 />
                 <div className={loginStyles.statement}>비밀번호</div>
                 <input 
@@ -96,6 +89,7 @@ export default function Login() {
                     onChange={onChangeInputs}
                     value={pwd}
                     type={"password"}
+                    onKeyDown={onSubmitSearch}
                 />
                 <Link href="/login/findpw">
                 <div className={loginStyles["pwd-find-txt"]}>비밀번호를 잊어버렸나요?</div>
