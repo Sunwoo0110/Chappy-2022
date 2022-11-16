@@ -31,7 +31,7 @@ function TestGrade({lecture_id}){
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
                 <div className={styles.section_title}>시험성적통계</div>
-                <div className={styles.section_title}>></div>
+                <div className={styles.section_title}>{">"}</div>
                 <div className={styles.section_title}>{data.data.lecture_name}</div>
             </div>
             <div className={styles.testgrade}>

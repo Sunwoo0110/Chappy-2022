@@ -1,5 +1,6 @@
 import styles from "../../../styles/mypage/_myfeedback.module.css"
 import Title from "./_title"
+import Link from "next/link";
 
 import { useSelector } from 'react-redux';
 import useSWR, { useSWRConfig } from "swr"
@@ -28,7 +29,7 @@ function SubjectFeedback({lecture_id}){
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
                 <div className={styles.section_title}>나의 피드백</div>
-                <div className={styles.section_title}>></div>
+                <div className={styles.section_title}></div>
                 <div className={styles.section_title}>{data.data.name}</div>
             </div>
             <div className={styles.feedback}>
@@ -57,7 +58,7 @@ function FeedbackList({lecture_id}){
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
 
-    // console.log("data.data: ",data.data)
+    console.log("data.data: ",data.data)
     return(
         <div className={styles.section_bg}>
             <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
@@ -69,7 +70,7 @@ function FeedbackList({lecture_id}){
                 <div className={styles.objection_1}>과제 및 시험</div>
                 <div className={styles.objection_2}>과목</div>
                 <div className={styles.objection_2}>제출날짜</div>
-                <div className={styles.objection_2}>피드백확인</div>
+                <div className={styles.objection_2}>피드백 보기</div>
             </div>
 
             {
@@ -80,9 +81,16 @@ function FeedbackList({lecture_id}){
                                 <div className={styles.objection_1}>{feedback.title}</div>
                                 <div className={styles.objection_2}>{feedback.lecture}</div>
                                 <div className={styles.objection_2}>{feedback.date}</div>
-                                <div className={styles.objection_2}>
-                                    <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:5}} class="btn btn-primary" type="button">피드백 보기</button>
-                                </div>
+                                <Link as={`/assignment/${feedback.assignment_id}`}
+                                    href={{
+                                        pathname: "/assignment/[assignmentId]",
+                                        query: { data: JSON.stringify(feedback.assignment_id) },
+                                    }}>
+                                        <div className={styles.objection_2}>
+                                            <button style={{fontSize:"small", display:"flex", alignItems:"center",height:"100%", borderRadius:5}} class="btn btn-primary" type="button">
+                                            피드백 보기</button>
+                                        </div>
+                                </Link>
                             </div>
                         </div>
                     )
