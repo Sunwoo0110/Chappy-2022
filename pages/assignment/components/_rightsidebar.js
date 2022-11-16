@@ -1,5 +1,5 @@
 import styles from "../../../styles/assignment/_sidebar.module.css";
-import { ResponsivePie } from '@nivo/pie'
+// import { ResponsivePie } from '@nivo/pie'
 import { useState, useEffect } from 'react';
 
 /** 제출 성적 **/
@@ -19,7 +19,7 @@ function Final() {
         <h3>Overall Score</h3>
         <div style={{ width: '100%', height: '75%' }}>
           <h5 style={{ top: "0px" }}>{"총점\n58"}</h5>
-          <ResponsivePie
+          {/* <ResponsivePie
             data={[
               { id: '기능', value: 88 },
               { id: '효율', value: 58 },
@@ -46,7 +46,7 @@ function Final() {
             arcLabel={function (e) { return e.id + "\n" + e.value }}
             borderColor="white"
             activeOuterRadiusOffset={8}
-          />
+          /> */}
         </div>
       </div>
       <div className={styles.buttons}>
