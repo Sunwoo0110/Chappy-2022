@@ -13,6 +13,7 @@ import LectureList from "./components/_lecturelist";
 import Deadline from "./components/_deadline";
 
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useEffect } from "react";
 
 
 const fetcher = (url) => {
@@ -27,20 +28,21 @@ const fetcher = (url) => {
 
 export default function Index() {
     const router = useRouter();
-    const { data: session } = useSession()
-    // if(!session){
-    //     router.push('/')
-    // }
+    const { data: session, status } = useSession()
+    const loading = status === "loading";
+    if (!loading) {
+		if(!session){ //session없으면(로그아웃이면) 홈으로 이동
+            window.location.href = "/";
+        }
+	};
+    console.log("session: ", session)
     
-
     const user = useSelector(state => state.user);
     const user_id = user.id;
     const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher)
 
     if (error) return <div>Getting Info Failed</div>
     if (!data) return <div>Loading...</div>
-
-    
 
     async function toAddLecture() {
         router.push('/lecture/addlecture')

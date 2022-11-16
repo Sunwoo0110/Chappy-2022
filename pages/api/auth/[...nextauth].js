@@ -26,10 +26,9 @@ export default NextAuth({
         })
 
         const user = await res.json()
-        console.log("user.data: ",user.data)
+        console.log("user.data: ",typeof(user.data))
         if (res.ok && user.data!=-1) {
-          console.log("user: ",user)
-          return user
+          return { name: user.data }
         }
         throw new Error("login failed");
       }

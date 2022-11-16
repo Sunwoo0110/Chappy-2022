@@ -27,7 +27,7 @@ export default function Header() {
             <div className={styles.navbar_right}>
                 <PersonCircle style={{cursor:"pointer"}} color="blue" size={30} data-bs-toggle="dropdown" aria-expanded="false"/>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/" onClick={() => signOut()}>로그아웃</a></li>
+                    <li><a class="dropdown-item" onClick={() => signOut()}>로그아웃</a></li>
                     <li><a class="dropdown-item" href="/mypage">마이페이지</a></li>
                     <li><a class="dropdown-item" href="/mypage">환경설정</a></li>
                 </ul>

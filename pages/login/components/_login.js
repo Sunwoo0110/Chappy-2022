@@ -41,9 +41,9 @@ export default function Login() {
     if (loading) {
 		return (<div>loading...</div>);
 	};
-    // if(session){
-    //     window.location.href = "/lecture";
-    // }
+    if(session){
+        window.location.href = "/lecture";
+    }
 
     console.log("session: ",session)
 
@@ -55,6 +55,7 @@ export default function Login() {
             redirect: false
         });
         console.log("response: ", response);
+        window.location.href = "/lecture";
         
         console.log(userId);
         await fetch('/api/aggregation/login/login', {
