@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 
 import styles from "../../../styles/assignment/_codingbox.module.css"
 
-export default function CodingBox({ assignment, onInteract }) {
+export default function CodingBox({ assignment, onInteract, basecode }) {
   const editorRef = useRef(null);
 
   const handleEditorDidMount = (editor, monaco) => {
@@ -46,7 +46,8 @@ export default function CodingBox({ assignment, onInteract }) {
           language="python"
           onMount={handleEditorDidMount}
           onChange={handleContentChange}
-          defaultValue={assignment?.reference_code}
+          defaultValue={basecode}
+          value={basecode}
           options={{
             minimap: {
               enabled: false,
