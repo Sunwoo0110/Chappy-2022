@@ -90,6 +90,7 @@ export default function CodingPage(props) {
   const router = useRouter();
   const [action, setAction] = useState("init");
   const [code, setCode] = useState("");
+  const [baseCode, setBaseCode] = useState("");
   const [testsuite, setTestsuite] = useState([]);
   const [testQueue, setTestQueue] = useState([]);
 
@@ -107,9 +108,18 @@ export default function CodingPage(props) {
       headers: { "Content-Type": 'application/json', },
     });
     const result = await response.json();
-    console.log("TS")
-    console.log(result)
+    // console.log("TS")
+    // console.log(result)
     setTestsuite(result.data);
+
+    const api_url_basecode = `/api/aggregation/codingPage/basecode?user_id=${user_id}&assignment_id=${assignment._id}`
+    const req = await fetch(api_url_basecode, {
+      method: 'GET',
+      headers: { "Content-Type": 'application/json', },
+    });
+    const res = await req.json();
+    setBaseCode(res.data);
+    console.log(res.data);
   }, [assignment]);
 
   const submissionHandler = async (action, code) => {
@@ -120,9 +130,18 @@ export default function CodingPage(props) {
 
     console.log(action);
     if (action === 'runCode') {
-
+      submit(user_id, assignment, code)
+        .then(submission => {
+          console.log(`Submission ID: ${submission._id}`);
+          // grade(submission._id)
+        });
     } else if (action === 'runTestSuite') {
       setTestQueue(testsuite);
+      submit(user_id, assignment, code)
+        .then(submission => {
+          console.log(`Submission ID: ${submission._id}`);
+          // grade(submission._id)
+        });
     } else if (action === 'submit') {
       submit(user_id, assignment, code)
         .then(submission => {
@@ -160,6 +179,7 @@ export default function CodingPage(props) {
           <CodingBox
             assignment={assignment}
             onInteract={submissionHandler}
+            basecode = {baseCode}
           />
         </div>
         <div className={styles.rightsidebar}>
