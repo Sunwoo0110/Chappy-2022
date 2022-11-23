@@ -262,7 +262,7 @@ function Hint({ code, testcase }) {
   )
 }
 
-export default function RightSideBar({ action, code, testsuite }) {
+export default function RightSideBar({ action, code, testsuite, close }) {
   // console.log('code');
   // console.log(code);
   console.log('testsuite');
@@ -289,6 +289,11 @@ export default function RightSideBar({ action, code, testsuite }) {
           />
         </> : null}
       {action === 'submit' ?
+        <Final
+          code={code}
+          testsuite={testsuite}
+        /> : null}
+      {close === true ? 
         <Final
           code={code}
           testsuite={testsuite}

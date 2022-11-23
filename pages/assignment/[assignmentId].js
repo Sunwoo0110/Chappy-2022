@@ -25,6 +25,8 @@ const fetcher = (url) => {
 
 const NavBar = ({ assignment }) => {
   const router = useRouter();
+
+  // 남은 시간 하드코딩
   return <nav className={styles.navbar}>
     <div className={styles.navbar_left}>
         <div onClick={() => { router.back() }}>
@@ -38,7 +40,7 @@ const NavBar = ({ assignment }) => {
     </div>
     <div className={styles.navbar_center}>
       <div className={styles.navbar_title}>{assignment?.lectureName}</div>
-      <div className={styles.navbar_title}>week 1: {assignment?.title}</div>
+      <div className={styles.navbar_title}>week {assignment?.weeks}: {assignment?.title}</div>
     </div>
     <div className={styles.navbar_right}>
       <div className={styles.navbar_title}>2일 13분 30분 남았습니다</div>
@@ -93,6 +95,7 @@ export default function CodingPage(props) {
   const [baseCode, setBaseCode] = useState("");
   const [testsuite, setTestsuite] = useState([]);
   const [testQueue, setTestQueue] = useState([]);
+  const [close, setClose] = useState(false);
 
   const { assignmentId } = router.query;
   const api_url_assignment = `/api/assignment/${assignmentId}`;
@@ -103,23 +106,32 @@ export default function CodingPage(props) {
   useEffect(async () => {
     if (assignment === undefined) return;
     const api_url_testsuite = `/api/assignment/testcases?assignmentId=${assignment._id}`
-    const response = await fetch(api_url_testsuite, {
+    const res_testsuite = await fetch(api_url_testsuite, {
       method: 'GET',
       headers: { "Content-Type": 'application/json', },
     });
-    const result = await response.json();
+    const result_testsuite = await res_testsuite.json();
     // console.log("TS")
     // console.log(result)
-    setTestsuite(result.data);
+    setTestsuite(res_testsuite.data);
 
     const api_url_basecode = `/api/aggregation/codingPage/basecode?user_id=${user_id}&assignment_id=${assignment._id}`
-    const req = await fetch(api_url_basecode, {
+    const req_basecode = await fetch(api_url_basecode, {
       method: 'GET',
       headers: { "Content-Type": 'application/json', },
     });
-    const res = await req.json();
-    setBaseCode(res.data);
-    console.log(res.data);
+    const res_basecode = await req_basecode.json();
+    setBaseCode(res_basecode.data);
+    console.log(res_basecode.data);
+
+    const api_url_deadline= `/api/aggregation/codingPage/deadline?assignment_id=${assignment._id}`
+    const req_deadline = await fetch(api_url_deadline, {
+      method: 'GET',
+      headers: { "Content-Type": 'application/json', },
+    });
+    const res_deadline = await req_deadline.json();
+    setClose(res_deadline.data);
+    console.log(res_deadline.data);
   }, [assignment]);
 
   const submissionHandler = async (action, code) => {
@@ -180,6 +192,7 @@ export default function CodingPage(props) {
             assignment={assignment}
             onInteract={submissionHandler}
             basecode = {baseCode}
+            close = {close}
           />
         </div>
         <div className={styles.rightsidebar}>
@@ -187,6 +200,7 @@ export default function CodingPage(props) {
             action={action}
             code={code}
             testsuite={testQueue}
+            close = {close}
           />
         </div>
       </div>

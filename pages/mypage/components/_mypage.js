@@ -39,7 +39,7 @@ function StudentInfo() {
             <div className={styles.section_title_bg}>
                 <div className={styles.section_title}>학생정보</div>
                 <Link href="/mypage/myaccount">
-                <div className={styles.moving_page}>계정관리에서 수정하기 ></div>
+                <div className={styles.moving_page}>{"계정관리에서 수정하기 >"}</div>
                 </Link>
             </div>
             <div className={styles.studentinfo}>
