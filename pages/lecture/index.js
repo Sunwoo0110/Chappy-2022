@@ -31,6 +31,7 @@ export default function Index() {
     var user_id = '';
     var user_type = 9;
     const [data, setData] = useState('');
+    const [week, setWeek] = useState(1);
 
     // const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher);
 
@@ -50,6 +51,20 @@ export default function Index() {
                 // console.log("asdf:",result.data)
                 setData(result.data[0])
                 // console.log(data)
+            }
+
+            const startDay = '2022-08-29'
+            const response2 = await fetch(`/api/aggregation/lecture/getweek?start_day=${startDay}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": 'application/json',
+                },
+                });
+            const result2 = await response2.json();
+            if (result2?.success !== true) {
+                console.log("실행에 실패했습니다 ㅜㅜ");
+            } else {
+                setWeek(result2.data)
             }
         }        
     }, [user_id, status]);
@@ -76,7 +91,7 @@ export default function Index() {
                         <div className={styles.content}>
                             <div className={styles.greeting_box}>
                                 <div className={styles.greeting_name}>어서오세요 {data.name}님!</div>
-                                <div className={styles.greeting_week}>지금은 4주차입니다</div>
+                                <div className={styles.greeting_week}>지금은 {week}주차입니다</div>
                             </div>
                             <div style={{display:"flex", flexDirection:"row", columnGap:"5%"}}>
                                 <LectureList/>
