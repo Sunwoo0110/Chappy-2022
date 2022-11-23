@@ -55,7 +55,7 @@ export default async function handler(req, res) {
                 var lectures = users.data.data[0].lecture_list;
                 let newlectures = lectures.filter((e) => e !== req.query.lecture_id);
 
-                await axios.post('/api/user/profile', {
+                await axios.patch('/api/user/profile', {
                     lecture_list: newlectures,
                 },
                 {

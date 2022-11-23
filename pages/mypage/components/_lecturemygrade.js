@@ -25,55 +25,41 @@ function TestGrade({lecture_id}){
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
 
-    console.log("data.data: ",data.data);
+    // console.log("data.data: ",data.data);
 
     return(
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
                 <div className={styles.section_title}>시험성적통계</div>
-                <div className={styles.section_title}></div>
-                <div className={styles.section_title}>알고리즘</div>
+                <div className={styles.section_title}>{">"}</div>
+                <div className={styles.section_title}>{data.data.lecture_name}</div>
             </div>
             <div className={styles.testgrade}>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>계획된 시험</div>
-                    <div className={styles.testgrade_blue}>18개</div>
+                    <div className={styles.testgrade_blue}>{data.data.exam}개</div>
                 </div>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>진행한 시험</div>
-                    <div className={styles.testgrade_blue}>6개</div>
+                    <div className={styles.testgrade_blue}>{data.data.done_exam}개</div>
                 </div>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>놓친시험</div>
-                    <div className={styles.testgrade_red}>1개</div>
+                    <div className={styles.testgrade_red}>{data.data.missed_exam}개</div>
                 </div>
             </div>
             <div className={styles.testgrade}>
                 <div className={styles.testgrade_item}>
-                    <div className={styles.testgrade_black}>주차과제</div>
-                    <div className={styles.testgrade_blue}>98%</div>
+                    <div className={styles.testgrade_black}>과제</div>
+                    <div className={styles.testgrade_blue}>{data.data.assignment}%</div>
                 </div>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>중간고사</div>
-                    <div className={styles.testgrade_blue}>채점중</div>
+                    <div className={styles.testgrade_blue}>{data.data.midterm}</div>
                 </div>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>기말고사</div>
-                    <div className={styles.testgrade_grey}>미진행</div>
-                </div>
-            </div>
-            <div className={styles.testgrade}>
-                <div className={styles.testgrade_item}>
-                    <div className={styles.testgrade_black}>발표</div>
-                    <div className={styles.testgrade_grey}>없음</div>
-                </div>
-                <div className={styles.testgrade_item}>
-                    <div className={styles.testgrade_black}>과제</div>
-                    <div className={styles.testgrade_blue}>100%</div>
-                </div>
-                <div className={styles.testgrade_item}>
-                    <div className={styles.testgrade_black}>평소학습</div>
-                    <div className={styles.testgrade_grey}>없음</div>
+                    <div className={styles.testgrade_blue}>{data.data.endterm}</div>
                 </div>
             </div>
         </div>
@@ -81,6 +67,14 @@ function TestGrade({lecture_id}){
 }
 
 function SubmittedTask({lecture_id}){
+        const user = useSelector(state => state.user);
+        const user_id = user.id;
+        const { data, error } = useSWR(`/api/aggregation/mypage/submitted_assignments?user_id=${user_id}&lecture_id=${lecture_id}`, fetcher)
+
+        if (error) return <div>Getting Lectures Failed</div>
+        if (!data) return <div>Loading...</div>
+
+        console.log("data.data2: ",data.data);
     return(
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
@@ -89,7 +83,7 @@ function SubmittedTask({lecture_id}){
 
             <div style={{width:"100%"}} class="shadow-sm">
             <div className={styles.submitted}>
-                <div className={styles.submitted_1}>과목</div>
+                <div className={styles.submitted_1}>제목</div>
                 <div className={styles.submitted_2}>날짜</div>
                 <div className={styles.submitted_2}>교수자</div>
                 <div className={styles.submitted_2}>채점진행</div>
@@ -98,20 +92,19 @@ function SubmittedTask({lecture_id}){
             </div>
 
             <div style={{width:"100%"}}>
-            <div className={styles.submitted}>
-                <div className={styles.submitted_1}>알고리즘 중간고사</div>
-                <div className={styles.submitted_2}>2021.04.18</div>
-                <div className={styles.submitted_2}>홍길동</div>
-                <div className={styles.submitted_2}>진행중</div>
-                <div className={styles.submitted_2}>--</div>
-            </div>
-            <div className={styles.submitted}>
-                <div className={styles.submitted_1}>알고리즘 주차과제: 9주차</div>
-                <div className={styles.submitted_2}>2021.04.18</div>
-                <div className={styles.submitted_2}>홍길동</div>
-                <div className={styles.submitted_2}>채점완료</div>
-                <div className={styles.submitted_2}>100/100</div>
-            </div>
+            {
+                data.data.map((sub) => {
+                    return (
+                        <div className={styles.submitted}>
+                            <div className={styles.submitted_1}>{sub.title}</div>
+                            <div className={styles.submitted_2}>{sub.date}</div>
+                            <div className={styles.submitted_2}>{sub.professor}</div>
+                            <div className={styles.submitted_2}>{sub.state}</div>
+                            <div className={styles.submitted_2}>{sub.grade}</div>
+                        </div>
+                    )
+                })
+            }
             </div>
         </div>
     )

@@ -20,7 +20,7 @@ export default async function handler(req, res) {
                 const exams = await axios.get('/api/lecture/assignment', {
                     params: {
                         lecture_id: lecture.data.data[0]._id,
-                        type: 1, //시험
+                        type: {$in:[1,2,3]}, //시험
                         is_ready: true, //임시저장 제외하기 위한 조건
                     }
                 });

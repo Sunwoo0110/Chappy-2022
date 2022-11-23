@@ -3,7 +3,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
+import { useSession, signIn, signOut } from "next-auth/react"
+
 export default function Home() {
+  const { data: session, status } = useSession()
+  const loading = status === "loading"
+  if (loading) {
+		return <div>loading...</div>;
+	};
+  console.log("home session: ",session)
   return (
     <div className={styles.container}>
       <Head>
@@ -18,11 +26,22 @@ export default function Home() {
         </h1>
 
         <div className={styles.grid}>
-          <Link href="/login">
+        {
+            session ?
+            <a className={styles.card} onClick={() => signOut()}>
+              <h2>Logout &rarr;</h2>
+            </a>
+            :
+            <a className={styles.card} onClick={() => signIn()}>
+              <h2>Login &rarr;</h2>
+            </a>
+            
+        }
+          {/* <Link href="/login">
             <a className={styles.card}>
               <h2>Login &rarr;</h2>
             </a>
-          </Link>
+          </Link> */}
           <Link href="/signup">
             <a className={styles.card}>
               <h2>Sign up &rarr;</h2>
