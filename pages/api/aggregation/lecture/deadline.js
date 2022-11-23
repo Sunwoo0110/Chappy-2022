@@ -49,7 +49,7 @@ export default async function handler(req, res) {
                     if(a.closing_at < b.closing_at) return -1;
                     if(a.closing_at === b.closing_at) return 0;
                 });
-                console.log("deadlines: ",deadlines)
+                // console.log("deadlines: ",deadlines)
                 res.status(200).json({ success: true, data: deadlines });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
