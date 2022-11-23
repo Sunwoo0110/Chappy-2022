@@ -194,8 +194,42 @@ function TestResult({ code, testcase }) {
   )
 }
 
+function GradeResults({ code, testcase }) {
+  const api_url_grade = '/api/assignment/run'
+  const [output, setOutput] = useState("채점중...");
+
+  useEffect(async () => {
+    const response = await fetch(api_url_grade, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+      body: JSON.stringify({
+        code: code,
+        mode: 'grade',
+      }),
+    });
+    const result = await response.json();
+    let output;
+    if (result?.success !== undefined) {
+      output = "채점에 실패했습니다 ㅜㅜ";
+    } else {
+      output = result.data;
+    }
+    setOutput(output);
+  }, [code, testcase]);
+  return (
+    <div className={styles.feedback}>
+      <h3 className={styles.section_title}>채점 결과</h3>
+      <div style={{ height: "100%", margin: "10px" }}>
+        {output}
+      </div>
+    </div>
+  )
+}
+
 function Hint({ code, testcase }) {
-  const api_url_hint = '/api/assignment/hint'
+  const api_url_hint = '/api/assignment/run'
   const [output, setOutput] = useState("힌트를 만들고 있습니다 :)");
 
   useEffect(async () => {
@@ -206,6 +240,7 @@ function Hint({ code, testcase }) {
       },
       body: JSON.stringify({
         code: code,
+        mode: 'hint',
       }),
     });
     const result = await response.json();
@@ -244,7 +279,7 @@ export default function RightSideBar({ action, code, testsuite }) {
         /> : null}
       {action === 'runTestSuite' ?
         <>
-          <TestResults
+          <GradeResults
             code={code}
             testsuite={testsuite}
           />
