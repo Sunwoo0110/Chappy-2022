@@ -3,8 +3,8 @@
     display: flex;
     padding-left: 5%;
     padding-right: 5%;
-    padding-top: 30px;
-    padding-bottom: 5%;
+    padding-top: 20px;
+    padding-bottom: 2%;
 }
 
 .footer_1 {
@@ -32,5 +32,5 @@
     flex-direction: column;
     row-gap: 15px;
     padding-left: 5%;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
 }

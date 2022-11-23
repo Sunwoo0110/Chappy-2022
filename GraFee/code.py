@@ -1,7 +1,5 @@
-def main(lst):
-    new_lst = []
-    for elem in lst:
-        if elem not in new_lst:
-            new_lst.append(elem)
-    return new_lst
-print(main([1,2,3,3,3,3,3,3]))
+def solution(num1, num2):
+    answer = num1 / num2
+    return answer
+
+pr
