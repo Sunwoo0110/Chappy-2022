@@ -26,9 +26,9 @@ export default NextAuth({
         })
 
         const user = await res.json()
-        console.log("user.data: ",typeof(user.data))
-        if (res.ok && user.data!=-1) {
-          return { name: user.data }
+        console.log("nextauth user: ", user)
+        if (res.ok && user.id!=-1) {
+          return { name: user.id, image:user.type } //일단 name에 user OID, image에 user type 넘겨줌
         }
         throw new Error("login failed");
       }
@@ -36,7 +36,7 @@ export default NextAuth({
   ],
   // callbacks: {
   //   async jwt({ token, user }) {
-  //     token.id = user.data
+  //     // token.id = user.data
   //     console.log("token: ",token)
   //     return token
   //   },

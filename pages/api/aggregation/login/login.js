@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
                 if(user.length==1){
                     const user_id = user[0]._id.toString();
-                    res.status(200).json({succes: true, data: user_id});
+                    res.status(200).json({succes: true, id: user_id, type: user[0].type});
                 }
                 else{
                     res.status(200).json({succes: true, data: -1})
