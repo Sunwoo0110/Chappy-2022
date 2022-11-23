@@ -13,6 +13,10 @@ import { HouseDoorFill, ArrowLeft } from 'react-bootstrap-icons';
 import styles from "../../styles/assignment/CodingPage.module.css";
 
 import { useSelector } from "react-redux";
+import moment from 'moment';
+import Moment from "react-moment";
+import 'moment/locale/ko';
+import { useInterval } from 'react-use';
 
 const fetcher = (url) => {
   // console.log('URL:', url, typeof url)
@@ -25,7 +29,16 @@ const fetcher = (url) => {
 
 const NavBar = ({ assignment }) => {
   const router = useRouter();
-  return <nav className={styles.navbar}>
+  let curDateTime = moment();
+  let endDateTime = moment(assignment.closing_at);
+  let timer = moment.duration(endDateTime.diff(curDateTime));
+
+  const [seconds, setSeconds] = useState(Date.now());
+  useInterval(() => {
+    setSeconds(Date.now());
+  }, 1000);
+
+return <nav className={styles.navbar}>
     <div className={styles.navbar_left}>
         <div onClick={() => { router.back() }}>
           <ArrowLeft size={40} />
@@ -41,7 +54,12 @@ const NavBar = ({ assignment }) => {
       <div className={styles.navbar_title}>week 1: {assignment?.title}</div>
     </div>
     <div className={styles.navbar_right}>
-      <div className={styles.navbar_title}>2일 13분 30분 남았습니다</div>
+      {timer.valueOf()>=0 &&
+        <div className={styles.navbar_title}>{timer.format("dd일 hh시간 mm분 ss초 남았습니다")}</div>            
+      }
+      {timer.valueOf()<0 &&
+        <div className={styles.navbar_title}>제출 기한이 종료되었습니다.</div>            
+      }      
       <button type="button" style={{ backgroundColor: "#414E5A", border: "none" }} >
         <img src="/images/setting.png" className={styles.image_button} alt="file" onClick={() => { }} />
       </button>
