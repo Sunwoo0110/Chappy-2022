@@ -39,6 +39,11 @@ export default function CodingBox({ assignment, onInteract, basecode }) {
     onInteract(action, editorRef.current.getValue());
   }
 
+  function initialization() {
+    editorRef.current.setValue("");
+  }
+
+
   return (
     <div className={styles.codingbox}>
       <div className={styles.border}>
@@ -86,6 +91,11 @@ export default function CodingBox({ assignment, onInteract, basecode }) {
             제출</button>
         </div>
       </div>
+      <button type="button"
+            className="btn btn-secondary"
+            style={{ marginLeft: "13px", backgroundColor: "#414E5A", fontSize: "12px", width: "80px" }}
+            onClick={() => initialization()}>
+            초기화</button>
     </div>
   )
 }
