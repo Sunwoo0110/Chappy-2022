@@ -26,7 +26,7 @@ export default NextAuth({
         })
 
         const user = await res.json()
-        console.log("nextauth user: ", user)
+        // console.log("nextauth user: ", user)
         if (res.ok && user.id!=-1) {
           return { name: user.id, image:user.type } //일단 name에 user OID, image에 user type 넘겨줌
         }
