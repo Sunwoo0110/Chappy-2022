@@ -34,8 +34,6 @@ export default function Login() {
         dispatch(userActions.setUser(payload));
     }, [dispatch]);
 
-    //===================================
-
     const { data: session, status } = useSession();
     const loading = status === "loading";
     if (loading) {

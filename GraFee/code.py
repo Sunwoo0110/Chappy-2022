@@ -4,3 +4,4 @@ def main(lst):
         if i not in newlist:
             newlist.append(i)
     return newlist
+print("hello world")
