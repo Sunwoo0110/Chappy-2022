@@ -53,6 +53,25 @@
     color: black;
     border-radius: 5px;
     font-size: 10px;
+
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.navbar_title_desc {
+    padding: 5px; 
+    width: 100%;
+    margin: 5px;
+    text-align: center;
+    background: #FFFFFF;
+    color: black;
+    border-radius: 5px;
+    font-size: 10px;
+
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .main {
