@@ -31,6 +31,7 @@ export default function Index() {
     var user_id = '';
     var user_type = 9;
     const [data, setData] = useState('');
+
     // const { data, error } = useSWR(`/api/user/profile?_id=${user_id}`, fetcher);
 
     useEffect(async () => {
@@ -46,7 +47,7 @@ export default function Index() {
             if (result?.success !== true) {
                 console.log("실행에 실패했습니다 ㅜㅜ");
             } else {
-                // console.log(result.data)
+                // console.log("asdf:",result.data)
                 setData(result.data[0])
                 // console.log(data)
             }
@@ -85,7 +86,7 @@ export default function Index() {
                                         <button style={{borderRadius:20, width:"100%"}} class="btn btn-primary" type="button" onClick={()=>toAddLecture()}>강의 등록하기</button>
                                         :<></>
                                     }
-                                    <Deadline/>
+                                    <Deadline lectures={data.lecture_list}/>
                                 </div>
                             </div>
                         </div>
