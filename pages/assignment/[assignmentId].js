@@ -51,7 +51,7 @@ return <nav className={styles.navbar}>
     </div>
     <div className={styles.navbar_center}>
       <div className={styles.navbar_title}>{assignment?.lectureName}</div>
-      <div className={styles.navbar_title}>week 1: {assignment?.title}</div>
+      <div className={styles.navbar_title}>week {assignment.weeks}: {assignment?.title}</div>
     </div>
     <div className={styles.navbar_right}>
       {timer.valueOf()>=0 &&
