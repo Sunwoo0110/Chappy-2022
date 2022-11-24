@@ -13,6 +13,10 @@ import { HouseDoorFill, ArrowLeft } from 'react-bootstrap-icons';
 import styles from "../../styles/assignment/CodingPage.module.css";
 
 import { useSelector } from "react-redux";
+import moment from 'moment';
+import Moment from "react-moment";
+import 'moment/locale/ko';
+import { useInterval } from 'react-use';
 
 const fetcher = (url) => {
   // console.log('URL:', url, typeof url)
@@ -24,8 +28,30 @@ const fetcher = (url) => {
 }
 
 const NavBar = ({ assignment }) => {
+  const { data, error } = useSWR(`/api/aggregation/codingPage/moveassignment?assignment_id=${assignment._id}&weeks=${assignment.weeks}&type=${assignment.type}`, fetcher);
+
   const router = useRouter();
-  return <nav className={styles.navbar}>
+  let curDateTime = moment();
+  let endDateTime = moment(assignment.closing_at);
+  let timer = moment.duration(endDateTime.diff(curDateTime));
+
+  const [seconds, setSeconds] = useState(Date.now());
+  useInterval(() => {
+    setSeconds(Date.now());
+  }, 1000);
+
+  const onMovingEvent = (movingAssignmentId) => {
+    console.log(movingAssignmentId)
+    router.push({
+      pathname: `/assignment/${movingAssignmentId}`,
+      query: { data: JSON.stringify(movingAssignmentId) },
+    }, undefined, { scroll: false });  };
+
+  if (error) return <div>Getting AssignmentList Failed</div>
+  if (!data) return <div>Loading...</div>
+
+  return( 
+  <nav className={styles.navbar}>
     <div className={styles.navbar_left}>
         <div onClick={() => { router.back() }}>
           <ArrowLeft size={40} />
@@ -38,16 +64,35 @@ const NavBar = ({ assignment }) => {
     </div>
     <div className={styles.navbar_center}>
       <div className={styles.navbar_title}>{assignment?.lectureName}</div>
-      <div className={styles.navbar_title}>week 1: {assignment?.title}</div>
+      {/* <div className={styles.navbar_title}>week {assignment.weeks}: {assignment?.title}</div> */}
+      <div className={styles.navbar_title_desc}>
+        {(data.data.pastAssignmentId == undefined)
+          ? <div> </div>  
+          : 
+            <div style={{marginLeft:"5px", cursor: "pointer"}} onClick={() => onMovingEvent(data.data.pastAssignmentId)}>◀</div> 
+        }
+        <div>week {assignment.weeks}: {assignment?.title}</div>
+        {(data.data.nextAssignmentId == undefined)
+          ? <div> </div> 
+          : 
+            <div style={{marginRight:"5px", cursor: "pointer"}} onClick={() => onMovingEvent(data.data.nextAssignmentId)}>▶</div>  
+        }
+      </div>
     </div>
     <div className={styles.navbar_right}>
-      <div className={styles.navbar_title}>2일 13분 30분 남았습니다</div>
+      {timer.valueOf()>=0 &&
+        <div className={styles.navbar_title}>{timer.format("dd일 hh시간 mm분 ss초 남았습니다")}</div>            
+      }
+      {timer.valueOf()<0 &&
+        <div className={styles.navbar_title}>제출 기한이 종료되었습니다.</div>            
+      }      
       <button type="button" style={{ backgroundColor: "#414E5A", border: "none" }} >
         <img src="/images/setting.png" className={styles.image_button} alt="file" onClick={() => { }} />
       </button>
     </div>
   </nav>
-};
+  )
+}; 
 
 async function submit(user_id, assignment, code) {
   console.log(`user_id: ${user_id}`);
@@ -93,6 +138,7 @@ export default function CodingPage(props) {
   const [baseCode, setBaseCode] = useState("");
   const [testsuite, setTestsuite] = useState([]);
   const [testQueue, setTestQueue] = useState([]);
+  const [close, setClose] = useState(false);
 
   const { assignmentId } = router.query;
   const api_url_assignment = `/api/assignment/${assignmentId}`;
@@ -103,23 +149,32 @@ export default function CodingPage(props) {
   useEffect(async () => {
     if (assignment === undefined) return;
     const api_url_testsuite = `/api/assignment/testcases?assignmentId=${assignment._id}`
-    const response = await fetch(api_url_testsuite, {
+    const res_testsuite = await fetch(api_url_testsuite, {
       method: 'GET',
       headers: { "Content-Type": 'application/json', },
     });
-    const result = await response.json();
+    const result_testsuite = await res_testsuite.json();
     // console.log("TS")
     // console.log(result)
-    setTestsuite(result.data);
+    setTestsuite(res_testsuite.data);
 
     const api_url_basecode = `/api/aggregation/codingPage/basecode?user_id=${user_id}&assignment_id=${assignment._id}`
-    const req = await fetch(api_url_basecode, {
+    const req_basecode = await fetch(api_url_basecode, {
       method: 'GET',
       headers: { "Content-Type": 'application/json', },
     });
-    const res = await req.json();
-    setBaseCode(res.data);
-    console.log(res.data);
+    const res_basecode = await req_basecode.json();
+    setBaseCode(res_basecode.data);
+    console.log(res_basecode.data);
+
+    const api_url_deadline= `/api/aggregation/codingPage/deadline?assignment_id=${assignment._id}`
+    const req_deadline = await fetch(api_url_deadline, {
+      method: 'GET',
+      headers: { "Content-Type": 'application/json', },
+    });
+    const res_deadline = await req_deadline.json();
+    setClose(res_deadline.data);
+    console.log(res_deadline.data);
   }, [assignment]);
 
   const submissionHandler = async (action, code) => {
@@ -180,6 +235,7 @@ export default function CodingPage(props) {
             assignment={assignment}
             onInteract={submissionHandler}
             basecode = {baseCode}
+            close = {close}
           />
         </div>
         <div className={styles.rightsidebar}>
@@ -187,6 +243,7 @@ export default function CodingPage(props) {
             action={action}
             code={code}
             testsuite={testQueue}
+            close = {close}
           />
         </div>
       </div>

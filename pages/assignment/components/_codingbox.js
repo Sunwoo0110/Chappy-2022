@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 
 import styles from "../../../styles/assignment/_codingbox.module.css"
 
-export default function CodingBox({ assignment, onInteract, basecode }) {
+export default function CodingBox({ assignment, onInteract, basecode, close }) {
   const editorRef = useRef(null);
 
   const handleEditorDidMount = (editor, monaco) => {
@@ -39,6 +39,11 @@ export default function CodingBox({ assignment, onInteract, basecode }) {
     onInteract(action, editorRef.current.getValue());
   }
 
+  function initialization() {
+    editorRef.current.setValue("");
+  }
+
+
   return (
     <div className={styles.codingbox}>
       <div className={styles.border}>
@@ -69,23 +74,34 @@ export default function CodingBox({ assignment, onInteract, basecode }) {
           </button>
         </div>
         <div>
-          <button type="button"
-            className="btn btn-secondary"
-            style={{ backgroundColor: "#414E5A", fontSize: "12px" }}
-            onClick={() => interaction('runCode')}>
-            실행</button>
-          <button type="button"
-            className="btn btn-secondary"
-            style={{ marginLeft: "5px", backgroundColor: "#414E5A", fontSize: "12px" }}
-            onClick={() => interaction('runTestSuite')}>
-            채점</button>
-          <button type="button"
-            className="btn btn-primary"
-            style={{ marginLeft: "10px", backgroundColor: "#0B51FF", fontSize: "12px" }}
-            onClick={() => interaction('submit')}>
-            제출</button>
+          {
+            close === false ? 
+            <div>
+              <button type="button"
+                className="btn btn-secondary"
+                style={{ backgroundColor: "#414E5A", fontSize: "12px" }}
+                onClick={() => interaction('runCode')}>
+                실행</button>
+              <button type="button"
+                className="btn btn-secondary"
+                style={{ marginLeft: "5px", backgroundColor: "#414E5A", fontSize: "12px" }}
+                onClick={() => interaction('runTestSuite')}>
+                채점</button>
+              <button type="button"
+                className="btn btn-primary"
+                style={{ marginLeft: "10px", backgroundColor: "#0B51FF", fontSize: "12px" }}
+                onClick={() => interaction('submit')}>
+                제출</button>
+            </div>
+            : <div>{"데드라인 지남"}</div>
+          }
         </div>
       </div>
+      <button type="button"
+            className="btn btn-secondary"
+            style={{ marginLeft: "13px", backgroundColor: "#414E5A", fontSize: "12px", width: "80px" }}
+            onClick={() => initialization()}>
+            초기화</button>
     </div>
   )
 }
