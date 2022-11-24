@@ -1,0 +1,73 @@
+.input-content {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-end; */
+    width: 35%;
+    /* height: 43%; */
+}
+
+.statement {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.pwd-find-txt {
+    display: flex;
+    justify-content: flex-end;
+    color: #0B51FF;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18px;
+    cursor: pointer;
+}
+
+.desc {
+    color: #263542;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;    
+}
+
+.join-txt {
+    color: #0B51FF;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    margin-left: 20px;    
+    cursor: pointer;
+}
+
+.input {
+    background: #FFFFFF;
+    color: #414E5A;
+    font-family: 'D2Coding';
+    box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    border: none;    
+    outline: none;
+    width: 100%;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5%;
+}
+
+.login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0B51FF;
+    color: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    width: 35%;
+    height: 50px;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+}

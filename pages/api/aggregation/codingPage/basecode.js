@@ -40,11 +40,13 @@ export default async function handler(req, res) {
                 }))
                 
                 if (submissionID.length === 0) {
-                    basecode = assignment.data.data[0].refernence_code
+                    basecode = assignment.data.data[0].base_code
                 } else {
                     // basecode = latestSub.data.data[0].user_code
                     basecode = min.user_code
                 }
+
+                console.log("basecode: " + assignment.data.data[0].base_code)
 
                 res.status(200).json({ success: true, data: basecode });
             } catch (error) {

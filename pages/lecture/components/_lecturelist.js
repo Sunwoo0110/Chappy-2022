@@ -49,9 +49,8 @@ function MyLectureList( {mode} ) {
                         <div className={styles.lecture}>
                             <div className={styles.lecture_name}>
                                 <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                <div className={styles.lecture_name_2}>
+                                <div className={styles.lecture_name_2}></div>
                                 <div className={styles.lecture_open}>{lecture.open_semester}</div>
-                                </div>
                             </div>
                             <div className={styles.lecture_prof}>{lecture.professor}</div>
                             <div className={styles.lecture_id}>{lecture.lecture_num}</div>

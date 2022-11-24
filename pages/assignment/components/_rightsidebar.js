@@ -1,6 +1,10 @@
 import styles from "../../../styles/assignment/_sidebar.module.css";
 // import { ResponsivePie } from '@nivo/pie'
 import { useState, useEffect } from 'react';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 /** 제출 성적 **/
 function Final() {
@@ -12,6 +16,70 @@ function Final() {
     },
   };
 
+  let d =  {
+    plugins: ["기능", "효율", "가독성"],       
+    labels: ["기능", "효율", "가독성"],
+    datasets: [{
+        data: [1, 2, 3],
+        borderColor: "#000000",
+        borderWidth: 2,
+        cutout: "60%",  
+        label: '라벨',
+        backgroundColor: ["#00B0F0", "#92D050", "#FFC000"],
+        hoverBackgroundColor: ["#00B0F0", "#92D050", "#FFC000"],
+        hoverBorderColor: "#ff",   
+    }]
+};
+let options= {
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+      title: {
+        display: true,
+        text: "Overall Score"
+      },
+      datalabels: {
+        display: true,
+        formatter: (value,ctx) => {
+            let total = 0
+            for(let i = 0 ;i<3; i++ ){
+              total += ctx.dataset.data[i]
+            }
+            let result = (value / total ) *100
+            if(value == 0){
+                return '';
+            }else{
+                return result.toFixed(1) + '%';
+            }
+        },
+        color: '#FFC000',
+        backgroundColor: '#FFC000',
+        weight: 'bold',
+        textShadowBlur: 10,
+        textShadowColor : 'black',
+      },
+      doughnutlabel: {
+        labels: [{
+          text: "test",
+          font: {
+            size: 20,
+            weight: 'bold'
+          }
+        }, {
+          text: 'total'
+        }]
+      }
+    },
+    // onClick: function(evt, element) {
+    //   console.log(evt, element);
+    //   console.log("click 도넛 index : ", element[0].index);
+    //   console.log(labelData[element[0].index]);
+    //   Doughnut(element[0].index);
+    // }
+}
+
   return (
     <div className={styles.outputs}>
       <h3 className={styles.section_title}>제출 결과</h3>
@@ -19,6 +87,7 @@ function Final() {
         <h3>Overall Score</h3>
         <div style={{ width: '100%', height: '75%' }}>
           <h5 style={{ top: "0px" }}>{"총점\n58"}</h5>
+          <Doughnut type="doughnut" data={d} options={options} plugins={d.plugins} />
           {/* <ResponsivePie
             data={[
               { id: '기능', value: 88 },
@@ -262,7 +331,7 @@ function Hint({ code, testcase }) {
   )
 }
 
-export default function RightSideBar({ action, code, testsuite }) {
+export default function RightSideBar({ action, code, testsuite, close }) {
   // console.log('code');
   // console.log(code);
   console.log('testsuite');
@@ -289,6 +358,11 @@ export default function RightSideBar({ action, code, testsuite }) {
           />
         </> : null}
       {action === 'submit' ?
+        <Final
+          code={code}
+          testsuite={testsuite}
+        /> : null}
+      {close === true ? 
         <Final
           code={code}
           testsuite={testsuite}
