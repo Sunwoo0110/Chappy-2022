@@ -13,6 +13,10 @@ import { HouseDoorFill, ArrowLeft } from 'react-bootstrap-icons';
 import styles from "../../styles/assignment/CodingPage.module.css";
 
 import { useSelector } from "react-redux";
+import moment from 'moment';
+import Moment from "react-moment";
+import 'moment/locale/ko';
+import { useInterval } from 'react-use';
 
 const fetcher = (url) => {
   // console.log('URL:', url, typeof url)
@@ -24,10 +28,30 @@ const fetcher = (url) => {
 }
 
 const NavBar = ({ assignment }) => {
-  const router = useRouter();
+  const { data, error } = useSWR(`/api/aggregation/codingPage/moveassignment?assignment_id=${assignment._id}&weeks=${assignment.weeks}&type=${assignment.type}`, fetcher);
 
-  // 남은 시간 하드코딩
-  return <nav className={styles.navbar}>
+  const router = useRouter();
+  let curDateTime = moment();
+  let endDateTime = moment(assignment.closing_at);
+  let timer = moment.duration(endDateTime.diff(curDateTime));
+
+  const [seconds, setSeconds] = useState(Date.now());
+  useInterval(() => {
+    setSeconds(Date.now());
+  }, 1000);
+
+  const onMovingEvent = (movingAssignmentId) => {
+    console.log(movingAssignmentId)
+    router.push({
+      pathname: `/assignment/${movingAssignmentId}`,
+      query: { data: JSON.stringify(movingAssignmentId) },
+    }, undefined, { scroll: false });  };
+
+  if (error) return <div>Getting AssignmentList Failed</div>
+  if (!data) return <div>Loading...</div>
+
+  return( 
+  <nav className={styles.navbar}>
     <div className={styles.navbar_left}>
         <div onClick={() => { router.back() }}>
           <ArrowLeft size={40} />
@@ -40,16 +64,35 @@ const NavBar = ({ assignment }) => {
     </div>
     <div className={styles.navbar_center}>
       <div className={styles.navbar_title}>{assignment?.lectureName}</div>
-      <div className={styles.navbar_title}>week {assignment?.weeks}: {assignment?.title}</div>
+      {/* <div className={styles.navbar_title}>week {assignment.weeks}: {assignment?.title}</div> */}
+      <div className={styles.navbar_title_desc}>
+        {(data.data.pastAssignmentId == undefined)
+          ? <div> </div>  
+          : 
+            <div style={{marginLeft:"5px", cursor: "pointer"}} onClick={() => onMovingEvent(data.data.pastAssignmentId)}>◀</div> 
+        }
+        <div>week {assignment.weeks}: {assignment?.title}</div>
+        {(data.data.nextAssignmentId == undefined)
+          ? <div> </div> 
+          : 
+            <div style={{marginRight:"5px", cursor: "pointer"}} onClick={() => onMovingEvent(data.data.nextAssignmentId)}>▶</div>  
+        }
+      </div>
     </div>
     <div className={styles.navbar_right}>
-      <div className={styles.navbar_title}>2일 13분 30분 남았습니다</div>
+      {timer.valueOf()>=0 &&
+        <div className={styles.navbar_title}>{timer.format("dd일 hh시간 mm분 ss초 남았습니다")}</div>            
+      }
+      {timer.valueOf()<0 &&
+        <div className={styles.navbar_title}>제출 기한이 종료되었습니다.</div>            
+      }      
       <button type="button" style={{ backgroundColor: "#414E5A", border: "none" }} >
         <img src="/images/setting.png" className={styles.image_button} alt="file" onClick={() => { }} />
       </button>
     </div>
   </nav>
-};
+  )
+}; 
 
 async function submit(user_id, assignment, code) {
   console.log(`user_id: ${user_id}`);

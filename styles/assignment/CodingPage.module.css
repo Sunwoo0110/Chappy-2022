@@ -53,6 +53,25 @@
     color: black;
     border-radius: 5px;
     font-size: 10px;
+
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.navbar_title_desc {
+    padding: 5px; 
+    width: 100%;
+    margin: 5px;
+    text-align: center;
+    background: #FFFFFF;
+    color: black;
+    border-radius: 5px;
+    font-size: 10px;
+
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .main {
@@ -70,6 +89,8 @@
     background: red;
     order: 1;
     width: 30%;
+    resize: horizontal;
+    overflow: auto;
 }
 
 .codingbox {
@@ -78,6 +99,8 @@
     flex-direction: column;
     order: 2;
     width: 40%;
+    resize: horizontal;
+    overflow: auto;
 }
 
 .rightsidebar {
@@ -86,6 +109,7 @@
     background: blue;
     order: 3;
     width: 30%;
+    flex: auto;
 }
 
 .image_button {
