@@ -17,21 +17,28 @@ export default async function handler(req, res) {
                     }
                 });
                 let lectures=users.data.data[0].lecture_list;
-                // console.log("lectures: ",lectures)
+                console.log("lectures: ",lectures)
 
-                const assignments = await axios.get('/api/lecture/assignment', {
-                    params: {
-                        lecture_id: {$in: lectures},
-                        is_ready: true, //임시저장 제외하기 위한 조건
-                        type: 0, //과제
-                        closing_at:{$gte : new Date()} //오늘(포함) 이후 마감
-                        // $project: { weeks : 0, },
-                    }
-                });
-                var assignmentsID = await Promise.all(assignments.data.data.map( async (assignment) => {
-                    return assignment._id;
-                }))
-                // console.log("assignmentsID: ", assignmentsID)
+                let assignmentsID=[];
+                let assignments=[];
+                if(lectures.length===0){
+                }
+                else{
+                    assignments = await axios.get('/api/lecture/assignment', {
+                        params: {
+                            lecture_id: {$in: lectures},
+                            is_ready: true, //임시저장 제외하기 위한 조건
+                            type: 0, //과제
+                            closing_at:{$gte : new Date()} //오늘(포함) 이후 마감
+                            // $project: { weeks : 0, },
+                        }
+                    });
+                    assignments=assignments.data.data;
+                    assignmentsID = await Promise.all(assignments.data.data.map( async (assignment) => {
+                        return assignment._id;
+                    }))
+                }
+                console.log("assignmentsID: ", assignmentsID)
 
                 let deadlines = [];
                 for(let assignment of assignments.data.data){

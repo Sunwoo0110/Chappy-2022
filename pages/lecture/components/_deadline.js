@@ -26,6 +26,7 @@ function Deadlines({lectures}) {
 
     useEffect(async () => {
         if (status === "authenticated" && user_id != '') {
+            console.log("id: ",user_id)
             const response = await fetch(`/api/aggregation/lecture/deadline?user_id=${user_id}&open_semester=${semester}`, {
             method: 'GET',
             headers: {
