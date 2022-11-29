@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { useState } from "react";
 import { CardText, MegaphoneFill, Star } from "react-bootstrap-icons";
-import useSWR from "swr"
-import { useSelector } from 'react-redux';
+import { useSession } from "next-auth/react"
+import { useState, useEffect } from "react";
 
 import styles from "../../../styles/lecture/_lecturelist.module.css";
 
@@ -16,69 +15,94 @@ const fetcher = (url) => {
 }
 
 function MyLectureList( {mode} ) {
-    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-
-    const user = useSelector(state => state.user);
-    const user_id = user.id;
     const semester="2022년 1학기"
-    let d;
+    const { data: session, status } = useSession();
+    var user_id = '';
+    let url='';
+    const [data, setData] = useState(null);
+    
+    useEffect(async () => {
+        if (status === "authenticated" && user_id != '') {
+            if(mode===1){
+                url=`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`;
+            }
+            else{
+                url=`/api/aggregation/mypage/mylectures?user_id=${user_id}`;
+            }
+            const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json',
+            },
+            });
+            const result = await response.json();
+            
+            if (result?.success !== true) {
+                console.log("실행에 실패했습니다 ㅜㅜ");
+            } else {
+                setData(result?.lectures)
+            }
+        }        
+    }, [user_id, status, mode]);
 
-    if(mode===1){
-        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`, fetcher);
+    if (status === "loading") {
+        return <>Loading...</>
+    } else if (status === "unauthenticated") {
+        window.location.href = "/";
+    } else {
+        user_id = session.user.name; 
     }
-    else{
-        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}`, fetcher);
-    }
-
-    if (d.error) return <div>Getting Lectures Failed</div>
-    if (!d.data) return <div>Loading...</div>
 
     return (
-        <div style={{width:"100%"}} class="row">
-        {
-            d.data.lectures.map((lecture) => {
-                return (
-                    <Link as={`/lectureDetail/${lecture._id}`}
-                        href={{
-                            pathname: "/lectureDetail/[id]",
-                            query: { id: lecture._id,
-                                    mode: 0 },
-                        }}>
-                    <div style={{marginBottom:"20px"}} class="col-6">
-                    <div className={styles.lecture_bg}>
-                        <div className={styles.lecture}>
-                            <div className={styles.lecture_name}>
-                                <div className={styles.lecture_name_1}>{lecture.name}</div>
-                                <div className={styles.lecture_name_2}></div>
-                                <div className={styles.lecture_open}>{lecture.open_semester}</div>
+        <div>
+            {
+                status === "authenticated" ?
+                <div style={{width:"100%"}} class="row">{
+                    data?.map((lecture) => {
+                        return (
+                            <Link as={`/lectureDetail/${lecture._id}`}
+                                href={{
+                                    pathname: "/lectureDetail/[id]",
+                                    query: { id: lecture._id,
+                                            mode: 0 },
+                                }}>
+                            <div style={{marginBottom:"20px"}} class="col-6">
+                            <div className={styles.lecture_bg}>
+                                <div className={styles.lecture}>
+                                    <div className={styles.lecture_name}>
+                                        <div className={styles.lecture_name_1}>{lecture.name}</div>
+                                        <div className={styles.lecture_name_2}>{}</div>
+                                        <div className={styles.lecture_open}>{lecture.open_semester}</div>
+                                    </div>
+                                    <div className={styles.lecture_prof}>{lecture.professor}</div>
+                                    <div className={styles.lecture_id}>{lecture.lecture_num}</div>
+                                    <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
+                                        <Link as={`/lectureDetail/${lecture._id}`}
+                                            href={{
+                                                pathname: "/lectureDetail/[id]",
+                                                query: { id: lecture._id,
+                                                        mode: 1 },
+                                            }}>
+                                            <MegaphoneFill size={30}/>
+                                        </Link>
+                                        <Link as={`/lectureDetail/${lecture._id}`}
+                                            href={{
+                                                pathname: "/lectureDetail/[id]",
+                                                query: { id: lecture._id,
+                                                        mode: 3 },
+                                            }}>
+                                            <CardText size={30}/>
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
-                            <div className={styles.lecture_prof}>{lecture.professor}</div>
-                            <div className={styles.lecture_id}>{lecture.lecture_num}</div>
-                            <div style={{justifyContent:"flex-end", columnGap:"10%"}} className={styles.lecture_icon}>
-                                <Link as={`/lectureDetail/${lecture._id}`}
-                                    href={{
-                                        pathname: "/lectureDetail/[id]",
-                                        query: { id: lecture._id,
-                                                mode: 1 },
-                                    }}>
-                                    <MegaphoneFill size={30}/>
-                                </Link>
-                                <Link as={`/lectureDetail/${lecture._id}`}
-                                    href={{
-                                        pathname: "/lectureDetail/[id]",
-                                        query: { id: lecture._id,
-                                                mode: 3 },
-                                    }}>
-                                    <CardText size={30}/>
-                                </Link>
                             </div>
-                        </div>
-                    </div>
-                    </div>
-                    </Link>
-                )
-            })
-        }
+                            </Link>
+                        )
+                    })
+                }</div> 
+                : <div>Loading...</div>
+            }
         </div>
     )
 }

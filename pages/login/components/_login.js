@@ -70,8 +70,8 @@ export default function Login() {
         .then(response => {
             // console.log(response);
             //로그인 성공
-            if(response.data!=-1){
-                setUserId(response.data);
+            if(response.id!=-1){
+                setUserId(response.id);
                 console.log("로그인 성공")
                 // window.location.href = "/lecture";
             }
