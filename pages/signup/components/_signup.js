@@ -74,11 +74,14 @@ export default function Signup() {
                 } 
                 // 실패
                 else {
-                    modalBody.textContent = "회원 가입에 실패하였습니다. 모든 항목을 채워주세요.";
+                    if(response.error == "duplicated user exists")
+                        modalBody.textContent = "회원 가입에 실패하였습니다. 중복된 아이디입니다.";
+                    else
+                        modalBody.textContent = "회원 가입에 실패하였습니다. 모든 항목을 채워주세요.";
                 }
             })        
             .catch(function(err) {
-                console.log(err);
+                // console.log(err);
             })
         }
     };
