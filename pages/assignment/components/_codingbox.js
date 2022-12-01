@@ -40,7 +40,7 @@ export default function CodingBox({ assignment, onInteract, basecode, close }) {
   }
 
   function initialization() {
-    editorRef.current.setValue("");
+    editorRef.current.setValue(basecode);
   }
 
 

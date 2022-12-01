@@ -15,8 +15,9 @@ const fetcher = (url) => {
 const ThisWeekList = ({lecture_id}) => {
     const user = useSelector(state => state.user);
     const user_id = user.id;
+    const startDay = '2022-08-29';
 
-    const { data, error } = useSWR(`/api/aggregation/lectureDetail/assignment/this_week?lecture_id=${lecture_id}&user_id=${user_id}`, fetcher);
+    const { data, error } = useSWR(`/api/aggregation/lectureDetail/assignment/this_week?lecture_id=${lecture_id}&user_id=${user_id}&start_day=${startDay}`, fetcher);
 
     if (error) return <div>Getting ThisWeekList Failed</div>
     if (!data) return <div>Loading...</div>
