@@ -1,25 +1,24 @@
 import { useState } from "react";
-import { useSelector } from 'react-redux';
-import useSWR from "swr"
+import { useSession } from "next-auth/react"
 
 import styles from "../../../styles/lecture/_searchlecture.module.css";
 import {Search} from 'react-bootstrap-icons';
 
-const fetcher = (url) => {
-    // console.log('URL:', url, typeof url)
-    if (typeof url != 'string') return { data: [] }
-    return fetch(url).then((res) => {
-        // console.log(res)
-        return res.json()
-    })
-}
-
 const Searcher = () => {
-    const user = useSelector(state => state.user);
-    const user_id = user.id;
 
     const [title, setTitle] = useState(0);
     const [data, setData] = useState([]);
+
+    const { data: session, status } = useSession()
+    var user_id = '';
+
+    if (status === "loading") {
+        return <>Loading...</>
+    } else if (status === "unauthenticated") {
+        window.location.href = "/login";
+    } else {
+        user_id = session.user.name;
+    }
 
     const clickHandler = async () => {
         var _open=document.getElementById('open').value;

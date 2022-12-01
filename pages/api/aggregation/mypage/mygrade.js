@@ -74,8 +74,18 @@ export default async function handler(req, res) {
                 // console.log("y_grades: ", y_grades);
 
                 let grade = {};
-                grade["total"] = total_grade/total_credit;
-                grade["this_semester"] = y_grades[x_semesters.indexOf(req.query.semester)];
+                if(total_credit===0){
+                    grade["total"] = "정보 없음";
+                }
+                else{
+                    grade["total"] = total_grade/total_credit; 
+                }
+                if(isNaN(y_grades[x_semesters.indexOf(req.query.semester)])){
+                    grade["this_semester"] = "정보 없음";
+                }
+                else{
+                    grade["this_semester"] = y_grades[x_semesters.indexOf(req.query.semester)];
+                }
                 grade["semesters"] = x_semesters;
                 grade["grades"] = y_grades;
 

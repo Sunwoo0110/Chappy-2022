@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import useSWR, { mutate, useSWRConfig } from "swr"
 import { useRouter } from "next/router"
@@ -12,18 +12,6 @@ import LectureList from "./components/_lecturelist";
 import Deadline from "./components/_deadline";
 
 import { useSession } from "next-auth/react"
-import { useEffect } from "react";
-
-
-const fetcher = (url) => {
-    // console.log('URL:', url, typeof url)
-    if (typeof url != 'string') return { data: [] }
-    return fetch(url).then((res) => {
-        // console.log(res)
-        return res.json()
-    })
-}
-
 
 export default function Index() {
     const router = useRouter();
@@ -37,6 +25,9 @@ export default function Index() {
 
     useEffect(async () => {
         if (status === "authenticated" && user_id != '') {
+            console.log("status" , status)
+            console.log("session.user" , session.user)
+            console.log("userid" , user_id)
             const response = await fetch(`/api/user/profile?_id=${user_id}`, {
             method: 'GET',
             headers: {
@@ -46,7 +37,7 @@ export default function Index() {
             const result = await response.json();
             
             if (result?.success !== true) {
-                console.log("실행에 실패했습니다 ㅜㅜ");
+                console.log("실행에 실패했습니다1 ㅜㅜ");
             } else {
                 // console.log("asdf:",result.data)
                 setData(result.data[0])
@@ -62,7 +53,7 @@ export default function Index() {
                 });
             const result2 = await response2.json();
             if (result2?.success !== true) {
-                console.log("실행에 실패했습니다 ㅜㅜ");
+                console.log("실행에 실패했습니다2 ㅜㅜ");
             } else {
                 setWeek(result2.data)
             }
@@ -72,7 +63,7 @@ export default function Index() {
     if (status === "loading") {
         return <>Loading...</>
     } else if (status === "unauthenticated") {
-        window.location.href = "/";
+        window.location.href = "/login";
     } else {
         user_id = session.user.name; 
         user_type = session.user.image;    
@@ -81,10 +72,11 @@ export default function Index() {
     async function toAddLecture() {
         router.push('/lecture/addlecture')
     }
+    console.log("LLLL: ",data)
 
     return (
         <div>{
-            status === "authenticated" ?
+            Array.isArray(data) ?
                 <div className={styles.container}>
                     <Header/>
                     <div className={styles.main}>

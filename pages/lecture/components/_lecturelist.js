@@ -48,7 +48,7 @@ function MyLectureList( {mode} ) {
     if (status === "loading") {
         return <>Loading...</>
     } else if (status === "unauthenticated") {
-        window.location.href = "/";
+        window.location.href = "/login";
     } else {
         user_id = session.user.name; 
     }
@@ -56,7 +56,7 @@ function MyLectureList( {mode} ) {
     return (
         <div>
             {
-                status === "authenticated" ?
+                Array.isArray(data) ?
                 <div style={{width:"100%"}} class="row">{
                     data?.map((lecture) => {
                         return (

@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
         case 'POST':
             try {
-                console.log(req.body.data) 
+                console.log(req.body) 
                     // name: req.body.data.name,
                     // user_id: req.body.data.user_id,
                     // password: req.body.data.password,

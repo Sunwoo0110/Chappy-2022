@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import useSWR, { useSWRConfig } from "swr"
 import { useSelector } from 'react-redux';
+import { useSession } from "next-auth/react"
 import styles from "../../../styles/mypage/_mygrade.module.css"
 
 import Title from "./_title"
@@ -18,48 +19,82 @@ const fetcher = (url) => {
 
 function TestGrade({lecture_id}){
 
-    const user = useSelector(state => state.user);
-    const user_id = user.id;
-    const { data, error } = useSWR(`/api/aggregation/mypage/lecturemygrade?user_id=${user_id}&lecture_id=${lecture_id}`, fetcher)
+    // const user = useSelector(state => state.user);
+    // const user_id = user.id;
+    // const { data, error } = useSWR(`/api/aggregation/mypage/lecturemygrade?user_id=${user_id}&lecture_id=${lecture_id}`, fetcher)
 
-    if (error) return <div>Getting Lectures Failed</div>
-    if (!data) return <div>Loading...</div>
+    // if (error) return <div>Getting Lectures Failed</div>
+    // if (!data) return <div>Loading...</div>
 
     // console.log("data.data: ",data.data);
+
+
+    const { data: session, status } = useSession()
+    var user_id = '';
+    const [data, setData] = useState('');
+
+    useEffect(async () => {
+        if (status === "authenticated" && user_id != '') {
+            const response = await fetch(`/api/aggregation/mypage/lecturemygrade?user_id=${user_id}&lecture_id=${lecture_id}`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json',
+            },
+            });
+            const result = await response.json();
+            
+            if (result?.success !== true) {
+                console.log("실행에 실패했습니다 ㅜㅜ");
+            } else {
+                // console.log("asdf:",result.data)
+                setData(result.data)
+                // console.log(data)
+            }
+        }        
+    }, [user_id, status]);
+
+    if (status === "loading") {
+        return <>Loading...</>
+    } else if (status === "unauthenticated") {
+        window.location.href = "/login";
+    } else {
+        user_id = session.user.name;
+    }
+
 
     return(
         <div className={styles.section_bg}>
             <div className={styles.section_title_bg}>
                 <div className={styles.section_title}>시험성적통계</div>
                 <div className={styles.section_title}>{">"}</div>
-                <div className={styles.section_title}>{data.data.lecture_name}</div>
+                <div className={styles.section_title}>{data.lecture_name}</div>
             </div>
             <div className={styles.testgrade}>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>계획된 시험</div>
-                    <div className={styles.testgrade_blue}>{data.data.exam}개</div>
+                    <div className={styles.testgrade_blue}>{data.exam}개</div>
                 </div>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>진행한 시험</div>
-                    <div className={styles.testgrade_blue}>{data.data.done_exam}개</div>
+                    <div className={styles.testgrade_blue}>{data.done_exam}개</div>
                 </div>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>놓친시험</div>
-                    <div className={styles.testgrade_red}>{data.data.missed_exam}개</div>
+                    <div className={styles.testgrade_red}>{data.missed_exam}개</div>
                 </div>
             </div>
             <div className={styles.testgrade}>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>과제</div>
-                    <div className={styles.testgrade_blue}>{data.data.assignment}%</div>
+                    <div className={styles.testgrade_blue}>{data.assignment}%</div>
                 </div>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>중간고사</div>
-                    <div className={styles.testgrade_blue}>{data.data.midterm}</div>
+                    <div className={styles.testgrade_blue}>{data.midterm}</div>
                 </div>
                 <div className={styles.testgrade_item}>
                     <div className={styles.testgrade_black}>기말고사</div>
-                    <div className={styles.testgrade_blue}>{data.data.endterm}</div>
+                    <div className={styles.testgrade_blue}>{data.endterm}</div>
                 </div>
             </div>
         </div>

@@ -22,6 +22,7 @@ export default async function handler(req, res) {
                 let assignmentsID=[];
                 let assignments=[];
                 if(lectures.length===0){
+                    console.log("no lectures")
                 }
                 else{
                     assignments = await axios.get('/api/lecture/assignment', {
@@ -34,14 +35,14 @@ export default async function handler(req, res) {
                         }
                     });
                     assignments=assignments.data.data;
-                    assignmentsID = await Promise.all(assignments.data.data.map( async (assignment) => {
+                    assignmentsID = await Promise.all(assignments.map( async (assignment) => {
                         return assignment._id;
                     }))
                 }
                 console.log("assignmentsID: ", assignmentsID)
 
                 let deadlines = [];
-                for(let assignment of assignments.data.data){
+                for(let assignment of assignments){
                     let deadline = {};
                     deadline["title"] = assignment.title;
                     let d= new Date(assignment.closing_at);

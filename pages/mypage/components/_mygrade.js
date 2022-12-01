@@ -1,38 +1,51 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import useSWR, { useSWRConfig } from "swr"
-import { useSelector, useDispatch } from 'react-redux';
-import { Bootstrap, PlusSquare } from "react-bootstrap-icons"
 import styles from "../../../styles/mypage/_mygrade.module.css"
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
+import { useSession } from "next-auth/react"
 
 import Title from "./_title"
 
-const fetcher = (url) => {
-    // console.log('URL:', url, typeof url)
-    if (typeof url != 'string') return { data: [] }
-    return fetch(url).then((res) => {
-        // console.log(res)
-        return res.json()
-    })
-}
-
 function Grade(){
     const semester = "2022년 1학기"
-    const user = useSelector(state => state.user);
-    const user_id = user.id;
-    const { data, error } = useSWR(`/api/aggregation/mypage/mygrade?user_id=${user_id}&semester=${semester}`, fetcher)
 
-    if (error) return <div>Getting Lectures Failed</div>
-    if (!data) return <div>Loading...</div>
-    
-    console.log("data.data: ",data.data)
+    const { data: session, status } = useSession()
+    var user_id = '';
+    const [data, setData] = useState('');
+
+    useEffect(async () => {
+        if (status === "authenticated" && user_id != '') {
+            const response = await fetch(`/api/aggregation/mypage/mygrade?user_id=${user_id}&semester=${semester}`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json',
+            },
+            });
+            const result = await response.json();
+            
+            if (result?.success !== true) {
+                console.log("실행에 실패했습니다 ㅜㅜ");
+            } else {
+                // console.log("asdf:",result.data)
+                setData(result.data)
+                // console.log(data)
+            }
+        }        
+    }, [user_id, status]);
+
+    if (status === "loading") {
+        return <>Loading...</>
+    } else if (status === "unauthenticated") {
+        window.location.href = "/login";
+    } else {
+        user_id = session.user.name;
+    }
 
     let d =  {
-        labels: data.data.semesters,
+        labels: data.semesters,
         datasets: [{
-            data: data.data.grades,
+            data: data.grades,
             borderColor: "#0B51FF",
             borderWidth: 2
         }]
@@ -68,11 +81,11 @@ function Grade(){
             <div className={styles.grade}>
                 <div className={styles.grade_item}>
                     <div className={styles.grade_1}>전체평점</div>
-                    <div className={styles.grade_2}>{data.data.total}</div>
+                    <div className={styles.grade_2}>{data.total}</div>
                 </div>
                 <div className={styles.grade_item}>
                     <div className={styles.grade_1}>이번학기 평점</div>
-                    <div className={styles.grade_2}>{data.data.this_semester}</div>
+                    <div className={styles.grade_2}>{data.this_semester}</div>
                 </div>
             </div>
             <div style={{marginTop:"15px"}} className={styles.gradegraph}>
@@ -88,22 +101,47 @@ function Grade(){
     )
 }
 
-function SubjectGrade({setMode, mode}){
-    // const user_id = "62ff6f624b99ac8a2bcbd015" // user _id
-    const user = useSelector(state => state.user);
-    const user_id = user.id;
-    const semester = "2022년 1학기"
-    let d;
 
-    if(mode===1){
-        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`, fetcher);
-    }
-    else{
-        d = useSWR(`/api/aggregation/mypage/mylectures?user_id=${user_id}`, fetcher);
-    }
+function SubjectGrade({setMode, mode}){
+    const semester="2022년 1학기"
+    const { data: session, status } = useSession();
+    var user_id = '';
+    let url='';
+    const [data, setData] = useState([]);
     
-    if (d.error) return <div>Getting Lectures Failed</div>
-    if (!d.data) return <div>Loading...</div>
+    useEffect(async () => {
+        if (status === "authenticated" && user_id != '') {
+            if(mode===1){
+                url=`/api/aggregation/mypage/mylectures?user_id=${user_id}&open_semester=${semester}`;
+            }
+            else{
+                url=`/api/aggregation/mypage/mylectures?user_id=${user_id}`;
+            }
+            const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json',
+            },
+            });
+            const result = await response.json();
+            
+            if (result?.success !== true) {
+                console.log("실행에 실패했습니다 ㅜㅜ");
+            } else {
+                console.log("^^^^^: ",result?.lectures)
+                setData(result?.lectures)
+            }
+        }
+    }, [user_id, status, mode]);
+
+    if (status === "loading") {
+        return <>Loading...</>
+    } else if (status === "unauthenticated") {
+        window.location.href = "/login";
+    } else {
+        user_id = session.user.name; 
+    }
+
 
     const toMode1 = async () => {
         setMode(1);
@@ -112,7 +150,7 @@ function SubjectGrade({setMode, mode}){
     const toMode2 = async () => {
         setMode(2);
     }
-
+    console.log("Data:: ",data)
     return(
         <div className={styles.section_bg}>
             <div style={{justifyContent:"space-between"}} className={styles.section_title_bg}>
@@ -122,9 +160,12 @@ function SubjectGrade({setMode, mode}){
                 <button style={{borderRadius:20}} class={mode==2 ? "btn btn-secondary btn-sm" : "btn btn-outline-secondary btn-sm"} type="button" onClick={()=>toMode2()}>모든 과목 보기</button>
                 </div>
             </div>
-            <div style={{width:"100%"}} class="row">
-                {
-                    d.data.lectures.map((lecture) => {
+
+            <div style={{width:"100%"}}>
+            {
+                status === "authenticated" ?
+                <div style={{width:"100%"}} class="row">{
+                    data?.map((lecture) => {
                         return (
                             <Link as={`/mypage/mygrade/${lecture._id}`}
                                 href={{
@@ -144,7 +185,9 @@ function SubjectGrade({setMode, mode}){
                             </Link>
                         )
                     })
-                }
+                }</div> 
+                : <div>Loading...</div>
+            }
             </div>
         </div>
     )
@@ -225,7 +268,6 @@ export default function MyGrade() {
             
             <Grade/>
             <SubjectGrade setMode={setMode} mode={mode}/>
-
         </div>
     )
 }

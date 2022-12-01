@@ -17,7 +17,6 @@ const fetcher = (url) => {
 }
 
 function Deadlines({lectures}) {
-    console.log("lectures: ",lectures)
     const semester="2022년 1학기"
     const { data: session, status } = useSession();
     var user_id = '';
@@ -38,7 +37,6 @@ function Deadlines({lectures}) {
             if (result?.success !== true) {
                 console.log("실행에 실패했습니다 ㅜㅜ");
             } else {
-                console.log("result.data: ",result.data)
                 setData(result?.data)
             }
         }        

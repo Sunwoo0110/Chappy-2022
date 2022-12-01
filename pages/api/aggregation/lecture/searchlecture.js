@@ -12,6 +12,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'POST':
             try {
+                console.log("msg1: ")
                 let cnt=0;
                 let userDataBody = {
                     pipeline: [
@@ -42,10 +43,12 @@ export default async function handler(req, res) {
                     data: userDataBody
                 })
                 var lecID = users.data.data[0].lecture_list;
+                console.log("lecID: ",lecID)
+                console.log("req.body.lecture_id: ",req.body.lecture_id)
                 if(!lecID.includes(req.body.lecture_id)){
                     lecID.push(req.body.lecture_id);
-                    await axios({
-                        method: 'post',
+                    const temp = await axios({
+                        method: 'patch',
                         url: '/api/user/profile',
                         headers: {
                             'Content-Type': 'application/json'
@@ -57,7 +60,7 @@ export default async function handler(req, res) {
                 else{
                     cnt++;
                 }
-
+                console.log("lecID: ",lecID)
 
                 let lectureDataBody = {
                     pipeline: [
@@ -108,7 +111,8 @@ export default async function handler(req, res) {
                 if(cnt===2){
                     msg="이미 담은 강의입니다."
                 }
-                console.log("msg: ",msg)
+                console.log("msg: ")
+                console.log(msg)
                 res.status(200).json({ success: true, data: msg });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });
