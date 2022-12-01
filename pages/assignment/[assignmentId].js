@@ -149,13 +149,13 @@ export default function CodingPage(props) {
   useEffect(async () => {
     if (assignment === undefined) return;
     const api_url_testsuite = `/api/assignment/testcases?assignmentId=${assignment._id}`
-    const res_testsuite = await fetch(api_url_testsuite, {
+    const req_testsuite = await fetch(api_url_testsuite, {
       method: 'GET',
       headers: { "Content-Type": 'application/json', },
     });
-    const result_testsuite = await res_testsuite.json();
+    const res_testsuite = await req_testsuite.json();
     // console.log("TS")
-    // console.log(result)
+    // console.log(res_testsuite)
     setTestsuite(res_testsuite.data);
 
     const api_url_basecode = `/api/aggregation/codingPage/basecode?user_id=${user_id}&assignment_id=${assignment._id}`
@@ -165,7 +165,7 @@ export default function CodingPage(props) {
     });
     const res_basecode = await req_basecode.json();
     setBaseCode(res_basecode.data);
-    console.log(res_basecode.data);
+    // console.log(res_basecode.data);
 
     const api_url_deadline= `/api/aggregation/codingPage/deadline?assignment_id=${assignment._id}`
     const req_deadline = await fetch(api_url_deadline, {
@@ -174,7 +174,7 @@ export default function CodingPage(props) {
     });
     const res_deadline = await req_deadline.json();
     setClose(res_deadline.data);
-    console.log(res_deadline.data);
+    // console.log(res_deadline.data);
   }, [assignment]);
 
   const submissionHandler = async (action, code) => {

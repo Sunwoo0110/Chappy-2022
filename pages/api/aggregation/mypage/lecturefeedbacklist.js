@@ -59,6 +59,7 @@ export default async function handler(req, res) {
                 }
                 // console.log("feedbacks: ", feedbacks)
 
+
                 let myfeedback = [];
                 for(let f of feedbacks){
                     let fb = {};
@@ -66,8 +67,27 @@ export default async function handler(req, res) {
                     let sub=submissions.find(s=>s._id===f.submission_id)
                     let a=assignments.data.data.find(a=>a._id===sub.ref_id)
                     fb["title"] = a.title;
-                    let d= new Date(sub.submission_date);
-                    fb["date"] = d.getFullYear()+"."+d.getMonth()+"."+d.getDate();
+
+                    const latest_subs = await axios.get('api/submission/submission', {
+                        params: {
+                            user_id: sub.user_id,
+                            ref_id: sub.ref_id
+                        }
+                    })
+
+                    var min = latest_subs.data.data[0]
+                    var findLatest = await Promise.all(latest_subs.data.data.map( async (submission) => {
+                        if (submission.submission_date > min.submission_date ) {
+                            min = submission
+                        }
+                        return submission._id;
+                    }))
+                    // console.log("min")
+                    // console.log(min)
+                    // console.log(min.submission_date)
+                    let d= new Date(min.submission_date);
+                    // console.log(d)
+                    fb["date"] = d.getFullYear()+"."+(d.getMonth()+1)+"."+d.getDate();
                     fb["assignment_id"] = a._id;
                     myfeedback.push(fb);                    
                 }
