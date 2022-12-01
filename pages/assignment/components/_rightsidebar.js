@@ -88,34 +88,6 @@ let options= {
         <div style={{ width: '100%', height: '75%' }}>
           <h5 style={{ top: "0px" }}>{"총점\n58"}</h5>
           <Doughnut type="doughnut" data={d} options={options} plugins={d.plugins} />
-          {/* <ResponsivePie
-            data={[
-              { id: '기능', value: 88 },
-              { id: '효율', value: 58 },
-              { id: '가독성', value: 32 },
-            ]}
-            margin={{ top: 0, right: 0, bottom: 10, left: 0 }}
-            innerRadius={0.5}
-            padAngle={1.0}
-            cornerRadius={0}
-            colors={['#00B0F0', '#92D050', '#FFC000', '#FFFFFF']}
-            borderWidth={2}
-            enableArcLinkLabels={false}
-            theme={{
-              labels: {
-                text: {
-                  fontSize: 12,
-                  fill: '#000000',
-                },
-              },
-            }}
-            onClick={handle.padClick}
-            endAngle={270}
-            fit={true}
-            arcLabel={function (e) { return e.id + "\n" + e.value }}
-            borderColor="white"
-            activeOuterRadiusOffset={8}
-          /> */}
         </div>
       </div>
       <div className={styles.buttons}>
