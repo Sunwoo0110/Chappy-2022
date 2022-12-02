@@ -11,6 +11,7 @@ function Final({ code, testsuite }) {
   const api_url_hint = '/api/assignment/run'
   const [output, setOutput] = useState("평가중...)");
 
+  const [total_score, setTotalScore] = useState("평가중...)");
   const [func_score, setFuncScore] = useState("평가중...)");
   const [func_msg, setFuncMSG] = useState("평가중...)");
   const [effi_score, setEffiScore] = useState("평가중...)");
@@ -35,6 +36,7 @@ function Final({ code, testsuite }) {
     const result = await response.json();
     let output;
 
+    let total_score;
     let func_score;
     let func_msg;
     let effi_score;
@@ -70,7 +72,15 @@ function Final({ code, testsuite }) {
           read_msg = JSON.stringify(results["msg"]);
         }
       }
-
+      
+      total_score = parseInt(
+        (
+        parseInt(func_score) 
+        + parseInt(effi_score) 
+        + parseInt(read_score)) 
+        / 3
+      )
+      setTotalScore(total_score)
       setFuncScore(func_score);
       setFuncMSG(func_msg);
       setEffiScore(effi_score)
@@ -161,9 +171,8 @@ function Final({ code, testsuite }) {
     <div className={styles.outputs}>
       <h3 className={styles.section_title}>제출 결과</h3>
       <div className={styles.problem}>
-        <h3>Overall Score</h3>
+        <h3>Overall Score: {total_score}</h3>
         <div style={{ width: '100%', height: '75%' }}>
-          <h5 style={{ top: "0px" }}>{"총점\n58"}</h5>
           <Doughnut type="doughnut" data={d} options={options} plugins={d.plugins} />
         </div>
       </div>
