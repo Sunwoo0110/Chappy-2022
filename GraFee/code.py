@@ -1,5 +1,6 @@
-def solution(num1, num2):
-    answer = num1 / num2
-    return answer
-
-pr
+def main(lst):
+    newlist = []
+    for elem in lst:
+        if elem not in newlist:
+            newlist.append(elem)
+    return newlist

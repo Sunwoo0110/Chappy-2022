@@ -17,3 +17,8 @@
 ## 3. 빌드할 때 에러
 
     rm -rf node_modules && rm package-lock.json && npm i
+    
+    
+## 4. 버전
+
+    node : v18.12.0
