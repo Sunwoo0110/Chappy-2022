@@ -6,7 +6,25 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
-                let week = 1; //week어떻게 보여줄건지,,??
+                const startDay = req.query.start_day
+                let week = 1;
+
+                const weekResponse = await axios({
+                    method: 'get',
+                    url: '/api/aggregation/lecture/getweek',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    params: {
+                        'start_day': startDay,
+                    }
+                })
+                if (weekResponse.data?.success !== true) {
+                    res.status(400).json({success: false, error: "weekResponse error"});
+                } 
+                else {
+                    week = weekResponse.data.data;
+                }                    
                 
                 const lessons = await axios.get('/api/lecture/lesson', {
                     params: {
@@ -35,7 +53,6 @@ export default async function handler(req, res) {
                     attendancePerLesson["attendance"] = attendances.data.data[i].attendance[req.query.user_id];
                     attendancInfoLessons.push(attendancePerLesson);
                 }
-                
                 res.status(200).json({success: true, data: attendancInfoLessons})
 
             } catch (error) {

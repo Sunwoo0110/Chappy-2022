@@ -76,16 +76,18 @@ const NoticeList = ({lecture_id}) => {
 const TaskList = ({lecture_id}) => {
     const user = useSelector(state => state.user);
     const user_id = user.id;
+    const startDay = '2022-08-29';
 
     const paramData = {
         lecture_id: lecture_id,
         user_id: user_id,
     };
-    const { data, error } = useSWR([`/api/aggregation/lectureDetail/lesson/this_week`, paramData], fetcher)
+    const { data, error } = useSWR([`/api/aggregation/lectureDetail/lesson/this_week?start_day=${startDay}`, paramData], fetcher)
 
     if (error) return <div>Getting Tasks Failed</div>
     if (!data) return <div>Loading...</div>
     if (data.data==-1) return <div>Task Not Existing</div>
+    if (data.data.length == 0) return <div>Task Not Existing</div>
 
     return(
         <div>
