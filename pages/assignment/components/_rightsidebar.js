@@ -9,17 +9,17 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 /** 제출 성적 **/
 function Final({ code, testsuite }) {
   const api_url_hint = '/api/assignment/run'
-  const [output, setOutput] = useState("평가중...)");
+  const [output, setOutput] = useState("평가중...");
 
-  const [total_score, setTotalScore] = useState("평가중...)");
-  const [func_score, setFuncScore] = useState("평가중...)");
+  const [total_score, setTotalScore] = useState("평가중...");
+  const [func_score, setFuncScore] = useState("");
   const [func_msg, setFuncMSG] = useState([]);
-  const [effi_score, setEffiScore] = useState("평가중...)");
-  const [loc_score, setLOCScore] = useState("평가중...)");
-  const [rw_score, setRWScore] = useState("평가중...)");
-  const [cf_score, setCFScore] = useState("평가중...)");
-  const [df_score, setDFScore] = useState("평가중...)");
-  const [read_score, setReadScore] = useState("평가중...)");
+  const [effi_score, setEffiScore] = useState("");
+  const [loc_score, setLOCScore] = useState("");
+  const [rw_score, setRWScore] = useState("");
+  const [cf_score, setCFScore] = useState("");
+  const [df_score, setDFScore] = useState("");
+  const [read_score, setReadScore] = useState("");
   const [read_msg, setReadMSG] = useState([]);
 
   const [check, setCheck] = useState(false);
