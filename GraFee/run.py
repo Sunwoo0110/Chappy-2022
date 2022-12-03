@@ -7,6 +7,7 @@ import constant as const
 import config as conf
 from core import FeedbackGenerator
 from core import ReferenceFinder
+from core import Grader
 from models.Program import Program
 from models.TestSuite import TestSuite
 from utils.Logger import logger
@@ -39,12 +40,13 @@ if __name__ == "__main__":
     # configuration
     database = Database(conf.db_uri)
     assignment_id = ObjectId(args.assignment_id)
+    code_file = args.target
 
     # Prepare the target Program
     if args.code:
         code = args.code
     else:
-        code = open(args.target).read()
+        code = open(code_file).read()
     program = Program(code)
 
     # Validate the program
@@ -104,4 +106,42 @@ if __name__ == "__main__":
         assert new_test_results.is_all_passed
 
         print(json.dumps(program_with_feedback.hint))
+    
+    elif args.mode == 'submit':
+        reference = \
+            ReferenceFinder.search(
+                database=database,
+                submission=program,
+                test_results=test_results,
+                assignment_id=assignment_id)
+        assert reference is not None
+
+        refer_file = 'GraFee/reference.py'
+        with open(refer_file, 'w') as w:
+            w.write(reference.code)
+
+        # func_point, effic_point, read_point
+        func_score, \
+        effic_score, loc_score, rw_score, cf_score, df_score, \
+        readable_score, err_msg_list = \
+        Grader.grade(test_results, code_file, refer_file)
+
+        submit_result = {}
+        submit_result['Functional'] = {
+            'score' : func_score,
+            'msg' : test_results.result
+        }
+        submit_result['Efficiency'] = {
+            'score' : effic_score,
+            'Line of code' : loc_score,
+            'Reservation Word' : rw_score,
+            'Control Flow' : cf_score,
+            'Data Flow' : df_score
+        }
+        submit_result['Readability'] = {
+            'score' : readable_score,
+            'msg' : err_msg_list
+        }
+        
+        print(json.dumps(submit_result))
 

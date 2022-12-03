@@ -7,7 +7,94 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 /** 제출 성적 **/
-function Final() {
+function Final({ code, testsuite }) {
+  const api_url_hint = '/api/assignment/run'
+  const [output, setOutput] = useState("평가중...)");
+
+  const [total_score, setTotalScore] = useState("평가중...)");
+  const [func_score, setFuncScore] = useState("평가중...)");
+  const [func_msg, setFuncMSG] = useState("평가중...)");
+  const [effi_score, setEffiScore] = useState("평가중...)");
+  const [loc_score, setLOCScore] = useState("평가중...)");
+  const [rw_score, setRWScore] = useState("평가중...)");
+  const [cf_score, setCFScore] = useState("평가중...)");
+  const [df_score, setDFScore] = useState("평가중...)");
+  const [read_score, setReadScore] = useState("평가중...)");
+  const [read_msg, setReadMSG] = useState("평가중...)");
+
+  useEffect(async () => {
+    const response = await fetch(api_url_hint, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+      },
+      body: JSON.stringify({
+        code: code,
+        mode: 'submit',
+      }),
+    });
+    const result = await response.json();
+    let output;
+
+    let total_score;
+    let func_score;
+    let func_msg;
+    let effi_score;
+    let loc_score;
+    let rw_score;
+    let cf_score;
+    let df_score;
+    let read_score;
+    let read_msg;
+    
+    if (result?.success !== undefined) {
+      output = "실행에 실패했습니다 ㅜㅜ";
+      setOutput(output);
+    } else {
+      output = result.data;
+      var output_json = JSON.parse(output);
+      var keys = Object.keys(output_json);
+      for (var i=0; i<keys.length; i++) {
+        var key = keys[i];
+        var results = output_json[key];
+
+        if (key == "Functional") {
+          func_score = results["score"];
+          func_msg = JSON.stringify(results["msg"]);
+        } else if(key == "Efficiency") {
+          effi_score = results["score"]
+          loc_score = results["Line of code"];
+          rw_score = results["Reservation Word"];
+          cf_score = results["Control Flow"];
+          df_score = results["Data Flow"];
+        } else {
+          read_score = results["score"];
+          read_msg = JSON.stringify(results["msg"]);
+        }
+      }
+      
+      total_score = parseInt(
+        (
+        parseInt(func_score) 
+        + parseInt(effi_score) 
+        + parseInt(read_score)) 
+        / 3
+      )
+      setTotalScore(total_score)
+      setFuncScore(func_score);
+      setFuncMSG(func_msg);
+      setEffiScore(effi_score)
+      setLOCScore(loc_score);
+      setRWScore(rw_score);
+      setCFScore(cf_score);
+      setDFScore(df_score);
+      setReadScore(read_score);
+      setReadMSG(read_msg)
+
+    }
+    
+  }, [code, testsuite]);
+
   const [type, setType] = useState(1);
 
   const handle = {
@@ -29,93 +116,64 @@ function Final() {
         hoverBackgroundColor: ["#00B0F0", "#92D050", "#FFC000"],
         hoverBorderColor: "#ff",   
     }]
-};
-let options= {
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'bottom',
-      },
-      title: {
-        display: true,
-        text: "Overall Score"
-      },
-      datalabels: {
-        display: true,
-        formatter: (value,ctx) => {
-            let total = 0
-            for(let i = 0 ;i<3; i++ ){
-              total += ctx.dataset.data[i]
-            }
-            let result = (value / total ) *100
-            if(value == 0){
-                return '';
-            }else{
-                return result.toFixed(1) + '%';
-            }
+  };
+  let options= {
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
         },
-        color: '#FFC000',
-        backgroundColor: '#FFC000',
-        weight: 'bold',
-        textShadowBlur: 10,
-        textShadowColor : 'black',
+        title: {
+          display: true,
+          text: "Overall Score"
+        },
+        datalabels: {
+          display: true,
+          formatter: (value,ctx) => {
+              let total = 0
+              for(let i = 0 ;i<3; i++ ){
+                total += ctx.dataset.data[i]
+              }
+              let result = (value / total ) *100
+              if(value == 0){
+                  return '';
+              }else{
+                  return result.toFixed(1) + '%';
+              }
+          },
+          color: '#FFC000',
+          backgroundColor: '#FFC000',
+          weight: 'bold',
+          textShadowBlur: 10,
+          textShadowColor : 'black',
+        },
+        doughnutlabel: {
+          labels: [{
+            text: "test",
+            font: {
+              size: 20,
+              weight: 'bold'
+            }
+          }, {
+            text: 'total'
+          }]
+        }
       },
-      doughnutlabel: {
-        labels: [{
-          text: "test",
-          font: {
-            size: 20,
-            weight: 'bold'
-          }
-        }, {
-          text: 'total'
-        }]
-      }
-    },
-    // onClick: function(evt, element) {
-    //   console.log(evt, element);
-    //   console.log("click 도넛 index : ", element[0].index);
-    //   console.log(labelData[element[0].index]);
-    //   Doughnut(element[0].index);
-    // }
-}
+      // onClick: function(evt, element) {
+      //   console.log(evt, element);
+      //   console.log("click 도넛 index : ", element[0].index);
+      //   console.log(labelData[element[0].index]);
+      //   Doughnut(element[0].index);
+      // }
+  }
 
   return (
     <div className={styles.outputs}>
       <h3 className={styles.section_title}>제출 결과</h3>
       <div className={styles.problem}>
-        <h3>Overall Score</h3>
+        <h3>Overall Score: {total_score}</h3>
         <div style={{ width: '100%', height: '75%' }}>
-          <h5 style={{ top: "0px" }}>{"총점\n58"}</h5>
           <Doughnut type="doughnut" data={d} options={options} plugins={d.plugins} />
-          {/* <ResponsivePie
-            data={[
-              { id: '기능', value: 88 },
-              { id: '효율', value: 58 },
-              { id: '가독성', value: 32 },
-            ]}
-            margin={{ top: 0, right: 0, bottom: 10, left: 0 }}
-            innerRadius={0.5}
-            padAngle={1.0}
-            cornerRadius={0}
-            colors={['#00B0F0', '#92D050', '#FFC000', '#FFFFFF']}
-            borderWidth={2}
-            enableArcLinkLabels={false}
-            theme={{
-              labels: {
-                text: {
-                  fontSize: 12,
-                  fill: '#000000',
-                },
-              },
-            }}
-            onClick={handle.padClick}
-            endAngle={270}
-            fit={true}
-            arcLabel={function (e) { return e.id + "\n" + e.value }}
-            borderColor="white"
-            activeOuterRadiusOffset={8}
-          /> */}
         </div>
       </div>
       <div className={styles.buttons}>
@@ -127,38 +185,24 @@ let options= {
         {
           type === 1 ?
             <div style={{ backgroundColor: "#00B0F0", height: "100%" }}>
-              기능 점수
+              기능 점수 : {func_score} <br></br>
+              {func_msg}
             </div>
             : type === 2 ?
               <div style={{ backgroundColor: "#92D050", height: "100%" }}>
-                효율 점수
+                효율 점수 : {effi_score} <br></br>
+                Line of Code: {loc_score} <br></br>
+                Reservation Word: {rw_score} <br></br>
+                Control Flow: {cf_score} <br></br>
+                Data Flow: {df_score}
               </div>
               :
               <div style={{ backgroundColor: "#FFC000", height: "100%" }}>
-                가독성 점수
+                가독성 점수 : {read_score} <br></br>
+                {read_msg}
               </div>
         }
-
       </div>
-      {/* <h4>{`${user}님의 채점 결과는 ${result}입니다`}</h4>
-            <h4>{`총점: ${runValue.score}`}</h4>
-            <div style={{overflowY: "scroll", height:"100%"}}>
-            <ul>
-                {results.map((rt) => {
-                    ++number;
-                    return (
-                        <li key={results.indexOf(rt)}>
-                            <div className={styles.content}>
-                                <h4>{`테스트케이스 ${number}번: ${rt.success}`}</h4>
-                                <h4>{`입력값:  ${rt.input}`}</h4>
-                                <h4>{`출력값:  ${rt.output}`}</h4>
-                            </div>
-                        </li>
-                    )
-                }
-                )}
-            </ul>
-            </div> */}
     </div>
   )
 }
@@ -263,7 +307,7 @@ function TestResult({ code, testcase }) {
   )
 }
 
-function GradeResults({ code, testcase }) {
+function GradeResults({ code, testsuite }) {
   const api_url_grade = '/api/assignment/run'
   const [output, setOutput] = useState("채점중...");
 
@@ -286,7 +330,7 @@ function GradeResults({ code, testcase }) {
       output = result.data;
     }
     setOutput(output);
-  }, [code, testcase]);
+  }, [code, testsuite]);
   return (
     <div className={styles.feedback}>
       <h3 className={styles.section_title}>채점 결과</h3>

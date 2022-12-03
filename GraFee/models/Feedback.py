@@ -59,9 +59,10 @@ class Feedback:
 
             hint_message = self.make_hint_message(operation, line, meta)
             
-            if line_num not in hint:
-                hint[line_num] = []
-            hint[line_num].append(hint_message)
+            if hint_message.strip():
+                if line_num not in hint:
+                    hint[line_num] = []
+                hint[line_num].append(hint_message)
             
             if operation != self.OP_INSERT:
                 line_num += 1

@@ -9,15 +9,15 @@ export default function Signup() {
     const userId = useSelector(state => state.user);
 
     const [inputs, setInputs] = useState({
-        name: '',
-        user_id: '',
-        password: '',
-        pwdcheck: '',
-        email: '',
-        cell_number: '',
-        department: '',
-        semester: '',
-        type: '',
+        name: null,
+        user_id: null,
+        password: null,
+        pwdcheck: null,
+        email: null,
+        cell_number: null,
+        department: null,
+        semester: null,
+        type: null,
     });
 
     const {name, user_id, password, pwdcheck, email, cell_number, department, semester, type} = inputs;
@@ -67,18 +67,21 @@ export default function Signup() {
                 var checkerModal = document.getElementById('checker')
                 var modalBody = checkerModal.querySelector('#message')
                 // 회원 가입 성공
-                if(response.data!=-1){
+                if(response.success == true){
                     // setUserId(response.data);
                     modalBody.textContent = "회원 가입에 성공하였습니다!";            
                     window.location.href = "/login";
                 } 
                 // 실패
                 else {
-                    modalBody.textContent = "회원 가입에 실패하였습니다";
+                    if(response.error == "duplicated user exists")
+                        modalBody.textContent = "회원 가입에 실패하였습니다. 중복된 아이디입니다.";
+                    else
+                        modalBody.textContent = "회원 가입에 실패하였습니다. 모든 항목을 채워주세요.";
                 }
             })        
             .catch(function(err) {
-                console.log(err);
+                // console.log(err);
             })
         }
     };
