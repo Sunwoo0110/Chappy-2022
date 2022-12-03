@@ -1,6 +1,7 @@
 def main(lst):
     newlist = []
-    for elem in lst:
-        if elem not in newlist:
-            newlist.append(elem)
+    for value in lst:
+        if value not in newlist:
+            newlist.append(value)
     return newlist
+    

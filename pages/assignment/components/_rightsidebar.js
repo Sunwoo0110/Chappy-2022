@@ -9,18 +9,20 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 /** 제출 성적 **/
 function Final({ code, testsuite }) {
   const api_url_hint = '/api/assignment/run'
-  const [output, setOutput] = useState("평가중...)");
+  const [output, setOutput] = useState("평가중...");
 
-  const [total_score, setTotalScore] = useState("평가중...)");
-  const [func_score, setFuncScore] = useState("평가중...)");
-  const [func_msg, setFuncMSG] = useState("평가중...)");
-  const [effi_score, setEffiScore] = useState("평가중...)");
-  const [loc_score, setLOCScore] = useState("평가중...)");
-  const [rw_score, setRWScore] = useState("평가중...)");
-  const [cf_score, setCFScore] = useState("평가중...)");
-  const [df_score, setDFScore] = useState("평가중...)");
-  const [read_score, setReadScore] = useState("평가중...)");
-  const [read_msg, setReadMSG] = useState("평가중...)");
+  const [total_score, setTotalScore] = useState("평가중...");
+  const [func_score, setFuncScore] = useState("");
+  const [func_msg, setFuncMSG] = useState([]);
+  const [effi_score, setEffiScore] = useState("");
+  const [loc_score, setLOCScore] = useState("");
+  const [rw_score, setRWScore] = useState("");
+  const [cf_score, setCFScore] = useState("");
+  const [df_score, setDFScore] = useState("");
+  const [read_score, setReadScore] = useState("");
+  const [read_msg, setReadMSG] = useState([]);
+
+  const [check, setCheck] = useState(false);
 
   useEffect(async () => {
     const response = await fetch(api_url_hint, {
@@ -38,14 +40,14 @@ function Final({ code, testsuite }) {
 
     let total_score;
     let func_score;
-    let func_msg;
+    let func_msg=[];
     let effi_score;
     let loc_score;
     let rw_score;
     let cf_score;
     let df_score;
     let read_score;
-    let read_msg;
+    let read_msg=[];
     
     if (result?.success !== undefined) {
       output = "실행에 실패했습니다 ㅜㅜ";
@@ -54,13 +56,21 @@ function Final({ code, testsuite }) {
       output = result.data;
       var output_json = JSON.parse(output);
       var keys = Object.keys(output_json);
+
+      console.log("json" + output)
       for (var i=0; i<keys.length; i++) {
         var key = keys[i];
         var results = output_json[key];
 
         if (key == "Functional") {
           func_score = results["score"];
-          func_msg = JSON.stringify(results["msg"]);
+          // func_msg = JSON.stringify(results["msg"]);
+          setFuncMSG([])
+          
+          for (var j=1; j<=Object.keys(results["msg"]).length; ++j) {
+            var num = new String(j)
+            func_msg.push(results["msg"][num])
+          }
         } else if(key == "Efficiency") {
           effi_score = results["score"]
           loc_score = results["Line of code"];
@@ -69,7 +79,11 @@ function Final({ code, testsuite }) {
           df_score = results["Data Flow"];
         } else {
           read_score = results["score"];
-          read_msg = JSON.stringify(results["msg"]);
+
+          for (var j=1; j<=Object.keys(results["msg"]).length; ++j) {
+            read_msg.push(results["msg"][j-1])
+          }
+          // read_msg = JSON.stringify(results["msg"]);
         }
       }
       
@@ -89,7 +103,9 @@ function Final({ code, testsuite }) {
       setCFScore(cf_score);
       setDFScore(df_score);
       setReadScore(read_score);
-      setReadMSG(read_msg)
+      setReadMSG(read_msg);
+
+      setCheck(true);
 
     }
     
@@ -107,7 +123,7 @@ function Final({ code, testsuite }) {
     plugins: ["기능", "효율", "가독성"],       
     labels: ["기능", "효율", "가독성"],
     datasets: [{
-        data: [1, 2, 3],
+        data: [func_score, effi_score, read_score],
         borderColor: "#000000",
         borderWidth: 2,
         cutout: "60%",  
@@ -134,7 +150,7 @@ function Final({ code, testsuite }) {
               for(let i = 0 ;i<3; i++ ){
                 total += ctx.dataset.data[i]
               }
-              let result = (value / total ) *100
+              let result = (value / total) *100
               if(value == 0){
                   return '';
               }else{
@@ -184,22 +200,48 @@ function Final({ code, testsuite }) {
       <div className={styles.outputs}>
         {
           type === 1 ?
-            <div style={{ backgroundColor: "#00B0F0", height: "100%" }}>
-              기능 점수 : {func_score} <br></br>
-              {func_msg}
+            <div style={{ backgroundColor: "#00B0F0", height: "100%", padding: "10px"}}>
+              <div>{`기능 점수 : ${func_score}`}</div>
+              <br></br>
+              {func_msg.map(
+                (f, index) => {
+                  var res;
+                  if ( f[1] === f[2]) {
+                    res = "통과";
+                  } else {
+                    res = "실패";
+                  }
+                  return (
+                    <div>
+                      <div>{`테스트케이스 ${index+1}: ${res}`}</div>
+                      <div>{`input: ${f[0]} output: ${f[1]} result: ${f[2]}`}</div>
+                    </div>
+                  )
+                }
+              )}
             </div>
             : type === 2 ?
-              <div style={{ backgroundColor: "#92D050", height: "100%" }}>
-                효율 점수 : {effi_score} <br></br>
-                Line of Code: {loc_score} <br></br>
-                Reservation Word: {rw_score} <br></br>
-                Control Flow: {cf_score} <br></br>
-                Data Flow: {df_score}
+              <div style={{ backgroundColor: "#92D050", height: "100%", padding: "10px"}}>
+                <div>{`효율 점수 : ${effi_score}`}</div>
+                <br></br>
+                <div>{`Line of Code: ${loc_score}`}</div>
+                <div>{`Reservation Word: ${rw_score}`}</div>
+                <div>{`Control Flow: ${cf_score}`}</div>
+                <div>{`Data Flow: ${df_score}`}</div>
               </div>
               :
-              <div style={{ backgroundColor: "#FFC000", height: "100%" }}>
-                가독성 점수 : {read_score} <br></br>
-                {read_msg}
+              <div style={{ backgroundColor: "#FFC000", height: "100%", padding: "10px"}}>
+                <div>{`가독성 점수 : ${read_score}`}</div>
+                <br></br>
+                {read_msg.map(
+                  (rm, index) => {
+                    return (
+                      <div>
+                        <div>{`${rm}`}</div>
+                      </div>
+                    )
+                  }
+                )}
               </div>
         }
       </div>
@@ -310,6 +352,11 @@ function TestResult({ code, testcase }) {
 function GradeResults({ code, testsuite }) {
   const api_url_grade = '/api/assignment/run'
   const [output, setOutput] = useState("채점중...");
+  const [check, setCheck] = useState(false);
+  const [result, setResult] = useState('');
+  const [test, setTest] = useState([]);
+  const [tc, setTC] = useState([]);
+  let op_json = null;
 
   useEffect(async () => {
     const response = await fetch(api_url_grade, {
@@ -323,19 +370,62 @@ function GradeResults({ code, testsuite }) {
       }),
     });
     const result = await response.json();
-    let output;
+    let op;
+    
     if (result?.success !== undefined) {
-      output = "채점에 실패했습니다 ㅜㅜ";
+      op = "채점에 실패했습니다 ㅜㅜ";
     } else {
-      output = result.data;
+      op = result.data;
+      op_json = JSON.parse(op)
+      setCheck(true)
+
+      if (op_json[0].result) {
+        setResult("정답")
+      } else {
+        setResult("오답")
+      }
+
+      setTest([op_json[1].test.total, op_json[1].test.pass, op_json[1].test.fail])
+
+      setTC([])
+
+      for (var i=1; i<=op_json[1].test.total; ++i) {
+        var num = new String(i)
+        setTC(tc => [...tc, op_json[2][num]])
+
+        // console.log(op_json[2][num])
+      }
+      // setTC(op_json[2])
     }
-    setOutput(output);
+    setOutput(op);
   }, [code, testsuite]);
+
   return (
     <div className={styles.feedback}>
       <h3 className={styles.section_title}>채점 결과</h3>
-      <div style={{ height: "100%", margin: "10px" }}>
-        {output}
+      <div style={{ overflowY: "scroll", height: "100%", margin: "10px" }}>
+        { check ? 
+        <div>
+          <div>{result}</div>
+          <div>{`total: ${test[0]} pass: ${test[1]} fail: ${test[2]}`}</div>
+          {tc.map(
+            (tc, index) => {
+              var res;
+              if ( tc[1] === tc[2]) {
+                res = "통과";
+              } else {
+                res = "실패";
+              }
+              return (
+                <div>
+                  <div>{`테스트케이스 ${index+1}: ${res}`}</div>
+                  <div>{`input: ${tc[0]} output: ${tc[1]} result: ${tc[2]}`}</div>
+                </div>
+              )
+            }
+          )}
+        </div>
+        : <div>{output}</div>}
       </div>
     </div>
   )
@@ -344,6 +434,9 @@ function GradeResults({ code, testsuite }) {
 function Hint({ code, testcase }) {
   const api_url_hint = '/api/assignment/run'
   const [output, setOutput] = useState("힌트를 만들고 있습니다 :)");
+  const [check, setCheck] = useState(false);
+  const [hint, setHint] = useState([]);
+  let op_json = null;
 
   useEffect(async () => {
     const response = await fetch(api_url_hint, {
@@ -357,21 +450,45 @@ function Hint({ code, testcase }) {
       }),
     });
     const result = await response.json();
-    let output;
+    let op;
     if (result?.success !== undefined) {
-      output = "실행에 실패했습니다 ㅜㅜ";
+      op = "실행에 실패했습니다 ㅜㅜ";
     } else {
-      output = result.data;
+      op = result.data;
+      op_json = JSON.parse(op)
+      console.log(op)
+
+      setCheck(true);
+      var num = Object.keys(op_json)
+      setHint([])
+
+      for (var i=0; i<Object.keys(op_json).length; ++i) {
+        setHint(hint => [...hint, [ num[i], op_json[num[i]]]])
+        // console.log(op_json[2][num])
+      }
     }
     setOutput(output);
   }, [code, testcase]);
   return (
     <div className={styles.feedback}>
       <h3 className={styles.section_title}>힌트</h3>
-      <div style={{ overflowY: "scroll", height: "100%" }}>
-        {output}
-      </div>
+      <div style={{ overflowY: "scroll", height: "100%", margin: "10px" }}>
+        { check ? 
+          <div>
+            {hint.map(
+              (h, index) => {
+                  return (
+                    <div>
+                      <div>{`${h[0]}`}</div>
+                      <div>{`${h[1]}`}</div>
+                    </div>
+                  )
+              }
+            )}
+          </div>
+        : <div>{output}</div>}
     </div>
+  </div>
   )
 }
 
