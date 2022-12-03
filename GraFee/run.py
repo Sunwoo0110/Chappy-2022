@@ -79,16 +79,28 @@ if __name__ == "__main__":
         #     print('The program passes all the test cases')
         #     exit()
 
+        ## 기존
+        # if test_results.count_fails != 0:
+        #     print('오답!')
+        # else:
+        #     print('정답!')
+        # print('Test results> ' +
+        #     f'total: {len(test_results)},' +
+        #     f'pass: {test_results.count_passes}, ' + 
+        #     f'fail: {test_results.count_fails}'
+        #     )
+        # print(json.dumps(test_results.result))
+        
+        ## json 형식으로 변경
         if test_results.count_fails != 0:
-            print('오답!')
+            print("[" + json.dumps({"result": False}) + ",")
         else:
-            print('정답!')
-        print('Test results> ' +
-            f'total: {len(test_results)},' +
-            f'pass: {test_results.count_passes}, ' + 
-            f'fail: {test_results.count_fails}'
-            )
-        print(json.dumps(test_results.result))
+            print("[" + json.dumps({"result": True})+ ",")
+        print(json.dumps({"test": { 
+            "total": len(test_results), 
+            "pass": test_results.count_passes, 
+            "fail": test_results.count_fails}}) + ",")
+        print(json.dumps(test_results.result) + "]")
         
     elif args.mode == 'hint':
         # Find the related references

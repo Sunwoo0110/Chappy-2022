@@ -310,6 +310,11 @@ function TestResult({ code, testcase }) {
 function GradeResults({ code, testsuite }) {
   const api_url_grade = '/api/assignment/run'
   const [output, setOutput] = useState("채점중...");
+  const [check, setCheck] = useState(false);
+  const [result, setResult] = useState('');
+  const [test, setTest] = useState([]);
+  const [tc, setTC] = useState([]);
+  let op_json = null;
 
   useEffect(async () => {
     const response = await fetch(api_url_grade, {
@@ -323,19 +328,62 @@ function GradeResults({ code, testsuite }) {
       }),
     });
     const result = await response.json();
-    let output;
+    let op;
+    
     if (result?.success !== undefined) {
-      output = "채점에 실패했습니다 ㅜㅜ";
+      op = "채점에 실패했습니다 ㅜㅜ";
     } else {
-      output = result.data;
+      op = result.data;
+      op_json = JSON.parse(op)
+      setCheck(true)
+
+      if (op_json[0].result) {
+        setResult("정답")
+      } else {
+        setResult("오답")
+      }
+
+      setTest([op_json[1].test.total, op_json[1].test.pass, op_json[1].test.fail])
+
+      setTC([])
+
+      for (var i=1; i<=op_json[1].test.total; ++i) {
+        var num = new String(i)
+        setTC(tc => [...tc, op_json[2][num]])
+
+        // console.log(op_json[2][num])
+      }
+      // setTC(op_json[2])
     }
-    setOutput(output);
+    setOutput(op);
   }, [code, testsuite]);
+
   return (
     <div className={styles.feedback}>
       <h3 className={styles.section_title}>채점 결과</h3>
-      <div style={{ height: "100%", margin: "10px" }}>
-        {output}
+      <div style={{ overflowY: "scroll", height: "100%", margin: "10px" }}>
+        { check ? 
+        <div>
+          <div>{result}</div>
+          <div>{`total: ${test[0]} pass: ${test[1]} fail: ${test[2]}`}</div>
+          {tc.map(
+            (tc, index) => {
+              var res;
+              if ( tc[1] === tc[2]) {
+                res = "통과";
+              } else {
+                res = "실패";
+              }
+              return (
+                <div>
+                  <div>{`테스트케이스 ${index+1}: ${res}`}</div>
+                  <div>{`input: ${tc[0]} output: ${tc[1]} result: ${tc[2]}`}</div>
+                </div>
+              )
+            }
+          )}
+        </div>
+        : <div>{output}</div>}
       </div>
     </div>
   )
@@ -344,6 +392,9 @@ function GradeResults({ code, testsuite }) {
 function Hint({ code, testcase }) {
   const api_url_hint = '/api/assignment/run'
   const [output, setOutput] = useState("힌트를 만들고 있습니다 :)");
+  const [check, setCheck] = useState(false);
+  const [hint, setHint] = useState([]);
+  let op_json = null;
 
   useEffect(async () => {
     const response = await fetch(api_url_hint, {
@@ -357,21 +408,45 @@ function Hint({ code, testcase }) {
       }),
     });
     const result = await response.json();
-    let output;
+    let op;
     if (result?.success !== undefined) {
-      output = "실행에 실패했습니다 ㅜㅜ";
+      op = "실행에 실패했습니다 ㅜㅜ";
     } else {
-      output = result.data;
+      op = result.data;
+      op_json = JSON.parse(op)
+      console.log(op)
+
+      setCheck(true);
+      var num = Object.keys(op_json)
+      setHint([])
+
+      for (var i=0; i<Object.keys(op_json).length; ++i) {
+        setHint(hint => [...hint, [ num[i], op_json[num[i]]]])
+        // console.log(op_json[2][num])
+      }
     }
     setOutput(output);
   }, [code, testcase]);
   return (
     <div className={styles.feedback}>
       <h3 className={styles.section_title}>힌트</h3>
-      <div style={{ overflowY: "scroll", height: "100%" }}>
-        {output}
-      </div>
+      <div style={{ overflowY: "scroll", height: "100%", margin: "10px" }}>
+        { check ? 
+          <div>
+            {hint.map(
+              (h, index) => {
+                  return (
+                    <div>
+                      <div>{`${h[0]}`}</div>
+                      <div>{`${h[1]}`}</div>
+                    </div>
+                  )
+              }
+            )}
+          </div>
+        : <div>{output}</div>}
     </div>
+  </div>
   )
 }
 
