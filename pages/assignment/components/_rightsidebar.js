@@ -48,11 +48,17 @@ function Final({ code, testsuite }) {
     let df_score;
     let read_score;
     let read_msg=[];
+
     
     if (result?.success !== undefined) {
       output = "실행에 실패했습니다 ㅜㅜ";
       setOutput(output);
-    } else {
+    } 
+    // else if(typeof(result.data) === "string"){
+    //   output = result.data;
+    //   setOutput(output);
+    // } 
+    else {
       output = result.data;
       var output_json = JSON.parse(output);
       var keys = Object.keys(output_json);
@@ -374,7 +380,12 @@ function GradeResults({ code, testsuite }) {
     
     if (result?.success !== undefined) {
       op = "채점에 실패했습니다 ㅜㅜ";
-    } else {
+    } 
+    // else if(typeof(result.data) === "string"){
+    //   op = result.data;
+    //   setOutput(output);
+    // } 
+    else {
       op = result.data;
       op_json = JSON.parse(op)
       setCheck(true)
@@ -402,32 +413,32 @@ function GradeResults({ code, testsuite }) {
 
   return (
     <div className={styles.feedback}>
-      <h3 className={styles.section_title}>채점 결과</h3>
-      <div style={{ overflowY: "scroll", height: "100%", margin: "10px" }}>
+      <div className={styles.section_title}>채점 결과</div>
         { check ? 
-        <div>
-          <div>{result}</div>
-          <div>{`total: ${test[0]} pass: ${test[1]} fail: ${test[2]}`}</div>
-          {tc.map(
-            (tc, index) => {
-              var res;
-              if ( tc[1] === tc[2]) {
-                res = "통과";
-              } else {
-                res = "실패";
+        <div style={{ overflowY: "scroll", height: "100%"}}>
+          <div className={styles.section_result}>{result}</div>
+          <div className={styles.section_element}>{`total: ${test[0]} pass: ${test[1]} fail: ${test[2]}`}</div>
+          <div>
+            {tc.map(
+              (tc, index) => {
+                var res;
+                if ( tc[1] === tc[2]) {
+                  res = "통과";
+                } else {
+                  res = "실패";
+                }
+                return (
+                  <div>
+                    <div className={styles.example_title}>{`테스트케이스 ${index+1}: ${res}`}</div>
+                    <div className={styles.example_content} style={{ padding: "5px"}}>{`input: ${tc[0]} output: ${tc[1]} result: ${tc[2]}`}</div>
+                  </div>
+                )
               }
-              return (
-                <div>
-                  <div>{`테스트케이스 ${index+1}: ${res}`}</div>
-                  <div>{`input: ${tc[0]} output: ${tc[1]} result: ${tc[2]}`}</div>
-                </div>
-              )
-            }
-          )}
+            )}
+          </div>
         </div>
         : <div>{output}</div>}
       </div>
-    </div>
   )
 }
 
@@ -453,7 +464,12 @@ function Hint({ code, testcase }) {
     let op;
     if (result?.success !== undefined) {
       op = "실행에 실패했습니다 ㅜㅜ";
-    } else {
+    } 
+    // else if(typeof(result.data) === "string"){
+    //   op = result.data;
+    //   setOutput(output);
+    // } 
+    else {
       op = result.data;
       op_json = JSON.parse(op)
       console.log(op)
@@ -471,16 +487,24 @@ function Hint({ code, testcase }) {
   }, [code, testcase]);
   return (
     <div className={styles.feedback}>
-      <h3 className={styles.section_title}>힌트</h3>
-      <div style={{ overflowY: "scroll", height: "100%", margin: "10px" }}>
+      <div className={styles.section_title}>힌트</div>
+      <div style={{ overflowY: "scroll", height: "100%"}}>
         { check ? 
-          <div>
+          <div style={{ overflowY: "scroll", height: "100%"}}>
             {hint.map(
               (h, index) => {
                   return (
                     <div>
-                      <div>{`${h[0]}`}</div>
-                      <div>{`${h[1]}`}</div>
+                      <div className={styles.section_element}>{`${h[0]}`}</div>
+                      <div style={{ padding: "5px"}}>
+                      {h[1].map(
+                        (a, index) => {
+                          return (
+                            <div className={styles.example_content} style={{padding: "5px"}}>{`${a}`}</div>
+                          )
+                        }
+                      )}
+                      </div>
                     </div>
                   )
               }

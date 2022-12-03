@@ -40,7 +40,7 @@ export default function LeftSideBar({ assignment, testsuite, onInteract }) {
       return (
         <div className={styles.testcase}>
           <div className={styles.section_title}>테스트케이스</div>
-          <p>금방 옵니다~</p>
+          <p>Loading</p>
         </div>
       )
     }

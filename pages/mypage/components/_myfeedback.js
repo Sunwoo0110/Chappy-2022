@@ -3,6 +3,7 @@ import Title from "./_title"
 import useSWR, { useSWRConfig } from "swr"
 import Link from "next/link";
 import { useSelector } from 'react-redux';
+import { useSession } from "next-auth/react"
 
 const fetcher = (url) => {
     // console.log('URL:', url, typeof url)
@@ -22,7 +23,8 @@ function TotalFeedback(){
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
 
-    // console.log("data.data:  ", data.data)
+
+    console.log("data.data:  ", data)
 
     return(
         <div className={styles.section_bg}>
