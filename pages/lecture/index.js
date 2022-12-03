@@ -25,9 +25,9 @@ export default function Index() {
 
     useEffect(async () => {
         if (status === "authenticated" && user_id != '') {
-            console.log("status" , status)
-            console.log("session.user" , session.user)
-            console.log("userid" , user_id)
+            // console.log("status" , status)
+            // console.log("session.user" , session.user)
+            // console.log("userid" , user_id)
             const response = await fetch(`/api/user/profile?_id=${user_id}`, {
             method: 'GET',
             headers: {
@@ -72,11 +72,11 @@ export default function Index() {
     async function toAddLecture() {
         router.push('/lecture/addlecture')
     }
-    console.log("LLLL: ",data)
+    // console.log("LLLL: ",data)
 
     return (
         <div>{
-            Array.isArray(data) ?
+            status === "authenticated"?
                 <div className={styles.container}>
                     <Header/>
                     <div className={styles.main}>
@@ -100,7 +100,7 @@ export default function Index() {
                     </div>
                     <Footer/>
                 </div>
-            : <div>Loading...</div>
+            : <div>Loading...?</div>
         }
         </div>
     )
