@@ -22,7 +22,7 @@ function TotalFeedback(){
     if (error) return <div>Getting Lectures Failed</div>
     if (!data) return <div>Loading...</div>
 
-    // console.log("data.data:  ", data.data)
+    console.log("data.data:  ", data.data)
 
     return(
         <div className={styles.section_bg}>

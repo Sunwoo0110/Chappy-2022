@@ -161,7 +161,7 @@ export default async function handler(req, res) {
                         }
                     });
 
-                    if(grade.data.data.length==0){
+                    if(grade.data.data.length===0){
                         endterm_state="채점 중"
                     }
                     else{
