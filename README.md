@@ -1,24 +1,23 @@
-# Cheppy
 
-## 1. 설치
 
-    # 1) Set the mongoDB
-    # 2) Install dependency
-    # 3) python >= 3.9
+# 📝 Chappy: Code Happy  
+AI 기반 실시간 코드 채점 및 개인화 피드백 시스템  
 
-    pip install -r requirements.txt
+---
 
-    npm install
+## 🪄 서비스 소개  
+**강의 수강 시스템과 과제 제출용 코딩 사이트의 기능이 통합된 웹 플랫폼**으로, AI 기반 코드 분석 및 실시간 피드백을 제공하는 서비스입니다.
 
-## 2. 실행
+---
 
-    npm run dev
+## ⚒️ Skills & Frameworks  
+### **Backend**  
+- **Next.js API Routes**  
+- **MongoDB**
+- **JavaScript**  
 
-## 3. 빌드할 때 에러
+### **Frontend**  
+- **Next.js**  
+- **JavaScript**  
 
-    rm -rf node_modules && rm package-lock.json && npm i
-    
-    
-## 4. 버전
 
-    node : v18.12.0
