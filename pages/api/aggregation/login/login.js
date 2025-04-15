@@ -22,7 +22,6 @@ export default async function handler(req, res) {
                     res.status(200).json({succes: true, data: -1})
                 }
             } catch (error) {
-                console.log("333");
                 res.status(400).json({success: false, error: error})
             }
             break

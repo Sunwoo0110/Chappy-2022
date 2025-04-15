@@ -9,6 +9,7 @@ export default async function handler(req, res) {
     switch(method) {
         case 'POST':
             try{
+                // 유저 프로필 조회
                 const user = await Profile.find({
                     "user_id": req.body.user_id,
                     "email": req.body.email,

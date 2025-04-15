@@ -6,6 +6,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
+                // 이전 과제를 찾기 위한 aggregate 쿼리
                 let pastAssignmentBody = {
                     pipeline: [
                       {
@@ -18,12 +19,6 @@ export default async function handler(req, res) {
                                   { $toInt: req.query.weeks } 
                                 ] 
                               },
-                            //   {
-                            //     $eq: [
-                            //       '$type' , 
-                            //       { $toInt: req.query.type } 
-                            //     ] 
-                            //   },
                               {
                                 $lt: [
                                   '$_id' , 
@@ -42,6 +37,7 @@ export default async function handler(req, res) {
                     ]
                 };                
 
+                // 이전 과제 조회
                 const pastAssignmentResponse = await axios({
                     method: 'post',
                     url: '/api/lecture/assignment/aggregate',
@@ -52,12 +48,14 @@ export default async function handler(req, res) {
                 });
                 const pastAssignmentData = pastAssignmentResponse.data.data[0];
                 let pastAssignmentId;
+
+                // 과제가 없으면 undefined, 있으면 과제 id
                 if (pastAssignmentData==undefined)
                     pastAssignmentId=undefined;
                 else
                     pastAssignmentId=pastAssignmentData._id;
 
-
+                // 다음 과제를 찾기 위한 aggregate 쿼리
                 let nextAssignmentBody = {
                     pipeline: [
                       {
@@ -70,12 +68,6 @@ export default async function handler(req, res) {
                                   { $toInt: req.query.weeks } 
                                 ] 
                               },
-                            //   {
-                            //     $eq: [
-                            //       '$type' , 
-                            //       { $toInt: req.query.type } 
-                            //     ] 
-                            //   },
                               {
                                 $gt: [
                                   '$_id' , 
@@ -93,7 +85,7 @@ export default async function handler(req, res) {
                       },
                     ]
                 };                
-
+                // 다음 과제 조회
                 const nextAssignmentResponse = await axios({
                     method: 'post',
                     url: '/api/lecture/assignment/aggregate',
@@ -104,11 +96,12 @@ export default async function handler(req, res) {
                 });
                 const nextAssignmentData = nextAssignmentResponse.data.data[0];
                 let nextAssignmentId;
+                // 과제가 없으면 undefined, 있으면 과제 id
                 if (nextAssignmentData==undefined)
                     nextAssignmentId=undefined
                 else
                     nextAssignmentId=nextAssignmentData._id;
-
+                // 이전 / 다음 과제 ID 반환
                 let resultData = {
                     pastAssignmentId: pastAssignmentId,
                     nextAssignmentId: nextAssignmentId,

@@ -9,6 +9,7 @@ export default async function handler(req, res) {
                 const startDay = req.query.start_day
                 let week = 1;
 
+                // 현재 주차 반환
                 const weekResponse = await axios({
                     method: 'get',
                     url: '/api/aggregation/lecture/getweek',
@@ -25,7 +26,7 @@ export default async function handler(req, res) {
                 else {
                     week = weekResponse.data.data;
                 }                    
-
+                // 제출 완료한 과제 ID 조회
                 let submissionBody = {
                     pipeline: [
                         {
@@ -46,8 +47,8 @@ export default async function handler(req, res) {
                                         }
                                     ]
                                 },
-                                type: 0,
-                                submission_state: 1,
+                                type: 0, // 과제
+                                submission_state: 1, // 제출 완료
                             }
                         },
                         {
@@ -67,10 +68,12 @@ export default async function handler(req, res) {
                     data: submissionBody
                 })
 
+                // 제출한 과제 ID만 추출
                 const submissionRefIds = await Promise.all(submissions.data.data.map( async (submission)=>{
                     return submission.ref_id;
                 }));
 
+                // 제출하지 않은 이번 주 과제
                 let assignmentBody = {
                     pipeline: [
                         {
@@ -98,9 +101,9 @@ export default async function handler(req, res) {
                                         }
                                     ]
                                 },
-                                type: 0,
-                                weeks: week,
-                                is_opened: true,
+                                type: 0, // 과제
+                                weeks: week, // 이번 주 과제만
+                                is_opened: true, // 공개된 과제
                             }
                         },
                         {
@@ -114,7 +117,7 @@ export default async function handler(req, res) {
                         },
                         {
                             $sort: {
-                                closing_at: -1
+                                closing_at: -1 // 마감일 기준 내림차순
                             }
                         }
                     ]
@@ -128,6 +131,7 @@ export default async function handler(req, res) {
                     data: assignmentBody
                 });
 
+                // 아직 제출하지 않은 과제 목록
                 res.status(200).json({success: true, data: assignments.data.data})
 
             } catch (error) {

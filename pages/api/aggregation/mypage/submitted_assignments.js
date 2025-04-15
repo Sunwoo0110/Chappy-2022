@@ -11,12 +11,14 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
+                // 강의 정보 조회
                 const lecture = await axios.get('/api/lecture/info', {
                     params: {
                         _id: req.query.lecture_id,
                     }
                 });
 
+                // 해당 강의의 과제 목록 조회
                 const assignments = await axios.get('/api/lecture/assignment', {
                     params: {
                         lecture_id: req.query.lecture_id,
@@ -27,8 +29,8 @@ export default async function handler(req, res) {
                 var assignmentsID = await Promise.all(assignments.data.data.map( async (assignment) => {
                     return assignment._id;
                 }))
-                // console.log("assignmentsID: ", assignmentsID)
 
+                // 각 과제별 가장 최근 제출물 조회
                 var latest_sub =[];
                 for(let assignment of assignments.data.data){
                     let submissions = await axios.get('/api/submission/submission', {
@@ -50,6 +52,8 @@ export default async function handler(req, res) {
                         latest_sub.push(min);
                     }
                 }
+
+                // 제출 ID 로 피드백 조회
                 var subID = await Promise.all(latest_sub.map( async (s) => { return s._id; }))
 
                 let grades = await axios.get('/api/submission/grade', {
@@ -58,6 +62,7 @@ export default async function handler(req, res) {
                     }
                 });
 
+                // 최종 과제 별 체점 요약 결과 정리
                 let mygrade = [];
                 for(let sub of latest_sub){
                     let g = {};
@@ -79,7 +84,6 @@ export default async function handler(req, res) {
                     mygrade.push(g);                    
                 }
 
-                // console.log("mygrade2: ",mygrade)
                 res.status(200).json({ success: true, data: mygrade });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });

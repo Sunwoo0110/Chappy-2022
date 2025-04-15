@@ -12,24 +12,25 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
+                // 강의 정보 조회
                 const lecture = await axios.get('/api/lecture/info', {
                     params: {
                         _id: req.query.lecture_id,
                     }
                 });
 
+                // 해당 강의의 오픈된 과제 목록 조회
                 const assignments = await axios.get('/api/lecture/assignment', {
                     params: {
                         lecture_id: lecture.data.data[0]._id,
                         is_ready: true, //임시저장 제외하기 위한 조건
-                        // $project: { weeks : 0, },
                     }
                 });
                 var assignmentsID = await Promise.all(assignments.data.data.map( async (assignment) => {
                     return assignment._id;
                 }))
-                // console.log("assignmentsID: ", assignmentsID)
 
+                // 유저가 제출한 과제 중 제출 완료만 필터링
                 let submissions=[];
                 if(assignmentsID.length!==0){
                     submissions = await axios.get('/api/submission/submission', {
@@ -45,8 +46,8 @@ export default async function handler(req, res) {
                 const submissionsID = await Promise.all(submissions.map( async (submission) => {
                     return submission._id;
                 }))
-                // console.log("submissionsID: ", submissionsID)
-
+                
+                // 해당 제출물에 대한 피드백 조회
                 let feedbacks=[];
 
                 if(submissionsID.length!==0){
@@ -57,9 +58,8 @@ export default async function handler(req, res) {
                     });
                     feedbacks=feedbacks.data.data;
                 }
-                // console.log("feedbacks: ", feedbacks)
-
-
+                
+                // 피드백 데이터 정리: 강의 제목, 과제 제목, 날짜
                 let myfeedback = [];
                 for(let f of feedbacks){
                     let fb = {};
@@ -68,6 +68,7 @@ export default async function handler(req, res) {
                     let a=assignments.data.data.find(a=>a._id===sub.ref_id)
                     fb["title"] = a.title;
 
+                    // 가장 최근 제출물
                     const latest_subs = await axios.get('api/submission/submission', {
                         params: {
                             user_id: sub.user_id,
@@ -82,17 +83,14 @@ export default async function handler(req, res) {
                         }
                         return submission._id;
                     }))
-                    // console.log("min")
-                    // console.log(min)
-                    // console.log(min.submission_date)
+                    
                     let d= new Date(min.submission_date);
-                    // console.log(d)
                     fb["date"] = d.getFullYear()+"."+(d.getMonth()+1)+"."+d.getDate();
                     fb["assignment_id"] = a._id;
                     myfeedback.push(fb);                    
                 }
 
-                // console.log("myfeedback: ",myfeedback)
+                
                 res.status(200).json({ success: true, data: myfeedback });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });

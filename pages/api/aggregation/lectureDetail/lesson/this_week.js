@@ -9,6 +9,7 @@ export default async function handler(req, res) {
                 const startDay = req.query.start_day
                 let week = 1;
 
+                // 현재 주차 반환
                 const weekResponse = await axios({
                     method: 'get',
                     url: '/api/aggregation/lecture/getweek',
@@ -26,6 +27,7 @@ export default async function handler(req, res) {
                     week = weekResponse.data.data;
                 }                    
                 
+                // 현재 주차에 해당하는 수업 조회
                 const lessons = await axios.get('/api/lecture/lesson', {
                     params: {
                         lecture_id: req.query.lecture_id, 
@@ -38,6 +40,7 @@ export default async function handler(req, res) {
                     return lesson._id;
                 }));
 
+                // 수업 ID에 해당하는 출석 정보 조회
                 const attendances = await axios.get('/api/lecture/attendance', {
                     params: {
                         lesson_id: {$in: lesson_ids},
@@ -46,6 +49,7 @@ export default async function handler(req, res) {
                     }    
                 })
 
+                // 수업 ID에 해당하는 출석 정보에서 유저 ID에 해당하는 출석 정보만 추출
                 let attendancInfoLessons = [];
                 for(let i=0; i<lesson_ids.length; i++){
                     let attendancePerLesson = {};

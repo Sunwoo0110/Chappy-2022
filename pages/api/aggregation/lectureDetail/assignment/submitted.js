@@ -6,6 +6,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try{
+                // 유저 제출물 중 조건에 맞는 과제 ID 조회
                 let submissionBody = {
                     pipeline: [
                         {
@@ -46,11 +47,12 @@ export default async function handler(req, res) {
                     },
                     data: submissionBody
                 })
-
+                // 유저 제출물 중 ref_id만 추출
                 const submissionRefIds = await Promise.all(submissions.data.data.map( async (submission)=>{
                     return submission.ref_id;
                 }));
 
+                // 제출 과제 중 공개한 과제 목록 조회
                 let assignmentBody = {
                     pipeline: [
                         {
@@ -66,18 +68,18 @@ export default async function handler(req, res) {
                                         }
                                     ]
                                 },                                            
-                                is_opened: true,
+                                is_opened: true, // 과제 공개 여부
                             }
                         },
                         {
                             $project: {
                                 _id: 1,
-                                title: 1,
+                                title: 1, // 과제 제목
                             }
                         },
                         {
                             $sort: {
-                                open_at: -1
+                                open_at: -1 // 최신 순
                             }
                         },
                     ]

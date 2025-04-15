@@ -12,30 +12,30 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
+                // 유저가 수강중인 강의 목록 조회
                 const users = await axios.get('/api/user/profile', {
                     params: {
                         _id: req.query.user_id,
                     }
                 });
                 var lecID = users.data.data[0].lecture_list;
-                // console.log("lecID: ", lecID)
 
+                // 유저 전체 성적 정보
                 const grades = await axios.get('/api/user/grade', {
                     params: {
                         user_id: req.query.user_id,
                     }
                 });
-                // console.log("req.query.user_id: ", req.query.user_id)
-                // console.log("grades.data.data: ", grades.data.data)
 
+                // 유저가 수강중인 강의 목록 조회
                 const lectures = await axios.get('/api/lecture/info', {
                     params: {
                         _id: {$in: lecID},
                         is_ready: true, //임시저장 제외하기 위한 조건
                     }
                 });
-                // console.log("lectures: ", lectures.data.data)
 
+                // 학기 목록
                 let x_semesters=[];
 
                 for(let lec of lectures.data.data){
@@ -44,11 +44,10 @@ export default async function handler(req, res) {
                     }
                 }
                 x_semesters.sort();
-                // console.log("x_semesters: ", x_semesters);
-
+                
+                // 학기 별 성적
                 var y_grades=new Array(x_semesters.length);
                 y_grades.fill(0);
-                // console.log("y_grades: ", y_grades);
 
                 let total_credit=0;
                 let total_grade=0;
@@ -71,15 +70,14 @@ export default async function handler(req, res) {
                     }
                     y_grades[x_semesters.indexOf(sem)]/=credit;
                 }
-                // console.log("y_grades: ", y_grades);
-
+                
+                // 최종 성적 결과
                 let grade = {};
                 grade["total"] = total_grade/total_credit;
                 grade["this_semester"] = y_grades[x_semesters.indexOf(req.query.semester)];
                 grade["semesters"] = x_semesters;
                 grade["grades"] = y_grades;
 
-                // console.log("grade: ",grade)
                 res.status(200).json({ success: true, data: grade});
             } catch (error) {
                 res.status(400).json({ success: false, error: error });

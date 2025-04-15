@@ -4,7 +4,7 @@ const db = mongoose.connection.useDb("submission");
 const GradeSchema = new mongoose.Schema({
     submission_id: mongoose.Schema.Types.ObjectId,
     total_score: Number || null,
-    score: Object,
+    score: Object, 
     deduction: Object,
 });
 

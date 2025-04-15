@@ -13,6 +13,7 @@ export default async function handler(req, res) {
         case 'POST':
             try {
                 let cnt=0;
+                // 유저가 담은 강의 목록 조회
                 let userDataBody = {
                     pipeline: [
                         {
@@ -33,6 +34,8 @@ export default async function handler(req, res) {
                         },
                     ]
                 }
+
+                // 유저가 담은 강의 목록 조회
                 const users = await axios({
                     method: 'post',
                     url: '/api/user/profile/aggregate',
@@ -41,6 +44,8 @@ export default async function handler(req, res) {
                     },
                     data: userDataBody
                 })
+
+                // 유저가 담은 강의 목록에 강의 id가 없으면 추가
                 var lecID = users.data.data[0].lecture_list;
                 if(!lecID.includes(req.body.lecture_id)){
                     lecID.push(req.body.lecture_id);
@@ -58,7 +63,7 @@ export default async function handler(req, res) {
                     cnt++;
                 }
 
-
+                // 강의에 user_list 추가
                 let lectureDataBody = {
                     pipeline: [
                         {
@@ -79,6 +84,8 @@ export default async function handler(req, res) {
                         },
                     ]
                 }
+
+
                 const lectures = await axios({
                     method: 'post',
                     url: '/api/lecture/info/aggregate',
@@ -87,6 +94,8 @@ export default async function handler(req, res) {
                     },
                     data: lectureDataBody
                 })
+
+                // 강의에 아직 해당 유저가 없으면 추가
                 var userID = lectures.data.data[0].user_list;
                 if(!userID.includes(req.body.user_id)){
                     userID.push(req.body.user_id);

@@ -31,21 +31,31 @@
 
 ```
 Chappy-2022
-├─ GraFee/                # AI 기반 피드백 생성 모듈
-│  ├─ core/               # Feedback, Grader 등 기능 모듈
-│  ├─ models/             # 프로그램/과제/피드백 등 구조 정의
-│  └─ utils/              # 코드 실행, AST 파싱 등 유틸
-├─ pages/api/             # Next.js API Routes
-│  ├─ lecture/            # 강의 정보, 과제 등록/조회
-│  ├─ submission/         # 제출/피드백/채점
-│  ├─ user/               # 유저 정보 및 권한 관리
-│  └─ ...
-├─ models/                # MongoDB 기반 도메인별 모델
-│  ├─ lecture/
-│  ├─ submission/
-│  └─ user/
-├─ lib/                   # DB 연결, API 통합
-├─ store/                 # Redux 기반 상태 관리
-├─ public/, styles/, components/  # UI 및 디자인
-├─ README.md, next.config.js, package.json, ...
+├─ GraFee/                    # AI 기반 코드 피드백 생성 (Python)
+├─ models/                    # MongoDB 기반 도메인별 모델
+│  ├─ lecture/                # 강의 스키마 (과제, 출결, 공지)
+│  ├─ submission/             # 제출물 스키마 (제출, 피드백, 성적, 이의제기)
+│  └─ user/                   # 사용자 스키마 (프로필, 성적)
+├─ lib/                       # DB 연결, 공통 API 유틸
+├─ pages/
+│  ├─ index.js                
+│  ├─ login/                  # 로그인, 비밀번호 찾기 페이지
+│  ├─ signup/                 # 회원가입 페이지
+│  ├─ lecture/                # 강의 페이지
+│  ├─ lectureDetail/          # 강의 세부 페이지 (공지, 과제, 수업 등)
+│  ├─ assignment/             # 과제 페이지
+│  ├─ mypage/                 # 마이페이지 (피드백, 성적, 과제 현황 등)
+│  └─ api/                    # Next.js API Route
+│     ├─ lecture/             # 강의 관련 API
+│     ├─ assignment/          # 과제 실행/제출 API
+│     ├─ submission/          # 제출/피드백/성적 API
+│     ├─ user/                # 회원 정보 API
+│     └─ aggregation/         # 종합 조회용 API
+├─ public/                    
+├─ styles/                    # 페이지별 CSS 모듈
+├─ store/                     # Redux 기반 상태관리
+├─ next.config.js
+├─ package.json
+└─ yarn.lock
+
 ```

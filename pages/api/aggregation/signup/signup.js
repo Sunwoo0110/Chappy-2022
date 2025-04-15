@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     switch(method) {
         case 'POST':
             try{
+                // 회원가입 시 중복된 유저가 있는지 확인
                 const duplicatedUser = await axios({
                     method: 'get',
                     url: '/api/user/profile',
@@ -20,7 +21,6 @@ export default async function handler(req, res) {
                         'user_id': req.body.user_id,
                     }
                 });
-                // console.log("============", duplicatedUser.data);
 
                 if (duplicatedUser.data.data.length > 0){
                     return res.status(200).json({success: false, error: "duplicated user exists"});                   

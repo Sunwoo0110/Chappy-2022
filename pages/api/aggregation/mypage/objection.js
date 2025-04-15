@@ -12,8 +12,11 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
+                // 조건에 맞는 제출물 조회
                 const submissions = await axios.get('/api/submission/submission', { params : req.query });
-                var objections = [];                
+                var objections = [];
+                
+                // 각 제출물에 연결된 이의제기 목록 조회
                 for (let sub of submissions.data.data){
                     const obj = await axios.get('/api/submission/objection'
                     , {
@@ -21,6 +24,8 @@ export default async function handler(req, res) {
                             submission_id: sub._id,
                         }
                     });
+
+                    // 이의 제기 목록 정리
                     for(let o of obj.data.data){
                         let d= new Date(o.date);
                         const year=d.getFullYear();
@@ -42,7 +47,6 @@ export default async function handler(req, res) {
                         objections.push(objection);
                     }                    
                 }
-                // console.log("objections: ",objections)
                 res.status(200).json({ success: true, data: objections });
             } catch (error) {
                 res.status(400).json({ success: false, error: error });

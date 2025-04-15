@@ -23,8 +23,10 @@ export default async function handler(req, res) {
                 var lecID = users.data.data[0].lecture_list;
                 var lectures = [];
                 
+                // 강의 상세 정보 조회
                 for (let id of lecID){
                     let p;
+
                     if(semester===undefined){
                         p={_id: id,}
                     }

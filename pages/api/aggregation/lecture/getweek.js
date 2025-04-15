@@ -11,21 +11,20 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
+                // 수업 시작일 한국 시간 기준으로 변환
                 const startDay = new Date(req.query.start_day) //한국시간 기준 string으로 넘어온 쿼리에 9시간이 추가로 더해짐
                 const utcStartDay = startDay.getTime() + (startDay.getTimezoneOffset() * 60 * 1000);
                 const koreaStartDay = new Date(utcStartDay);
                 
+                // 현재 시간 한국 시간 기준으로 변환
                 const now = new Date(); // 현재 시간
                 const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000); // 현재 시간을 utc로 변환한 밀리세컨드값
                 const koreaTimeDiff = 9 * 60 * 60 * 1000; // 한국 시간은 UTC보다 9시간 빠름(9시간의 밀리세컨드 표현)
                 const koreaNow = new Date(utcNow+koreaTimeDiff);
 
-                // console.log("startDay: ",koreaStartDay.toString())
-                // console.log("koreaNow: ",koreaNow.toString())
-
+                // 수업 시작일과 현재 시간의 차이를 계산하여 주차 계산
                 var week=parseInt((koreaNow.getTime()-koreaStartDay.getTime())/(1000*3600*24));
                 week=parseInt(week / 7)+1;
-                // console.log("week: ",week)
                 
                 res.status(200).json({ success: true, data: week });
             } catch (error) {
